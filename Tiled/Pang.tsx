@@ -18,8 +18,8 @@
   </objectgroup>
  </tile>
  <tile id="0" probability="0.4"/>
- <tile id="2" probability="0.3"/>
  <tile id="1" probability="0.3"/>
+ <tile id="2" probability="0.3"/>
  <tile id="43"/>
  <tile id="3"/>
  <tile id="63"/>
@@ -121,11 +121,12 @@
  <wangsets>
   <wangset name="Misc" type="edge" tile="16">
    <wangcolor name="" color="#ff0000" tile="15" probability="1"/>
-   <wangcolor name="" color="#00ff00" tile="0" probability="1"/>
+   <wangcolor name="B2" color="#00ff00" tile="0" probability="1"/>
    <wangcolor name="" color="#0000ff" tile="55" probability="1"/>
-   <wangtile tileid="0" wangid="2,0,2,0,2,0,2,0"/>
-   <wangtile tileid="1" wangid="2,0,2,0,2,0,2,0"/>
-   <wangtile tileid="2" wangid="2,0,2,0,2,0,2,0"/>
+   <wangcolor name="B1" color="#ff7700" tile="-1" probability="1"/>
+   <wangtile tileid="0" wangid="4,0,0,0,4,0,0,0"/>
+   <wangtile tileid="1" wangid="0,0,0,0,0,0,2,0"/>
+   <wangtile tileid="2" wangid="0,0,2,0,0,0,0,0"/>
    <wangtile tileid="15" wangid="0,0,1,0,0,0,0,0"/>
    <wangtile tileid="16" wangid="0,0,1,0,0,0,1,0"/>
    <wangtile tileid="17" wangid="0,0,0,0,0,0,1,0"/>
