@@ -1,1 +1,4 @@
-﻿D:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(456,5): error MSB8020: The build tools for Visual Studio 2015 (Platform Toolset = 'v140') cannot be found. To build using the v140 build tools, please install Visual Studio 2015 build tools.  Alternatively, you may upgrade to the current Visual Studio tools by selecting the Project menu or right-click the solution, and then selecting "Retarget solution".
+﻿  TileMap.cpp
+s:\clase\proj2d\panggame\02-bubble\tilemap.cpp(57): warning C4101: 'tile': unreferenced local variable
+  02-Bubble.vcxproj -> S:\Clase\Proj2D\PangGame\Debug\Pang-GuillemDavid.exe
+  02-Bubble.vcxproj -> S:\Clase\Proj2D\PangGame\Debug\Pang-GuillemDavid.pdb (Full PDB)

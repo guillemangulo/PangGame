@@ -3,6 +3,8 @@
 #include <sstream>
 #include <vector>
 #include "TileMap.h"
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 
 
@@ -46,12 +48,8 @@ void TileMap::free()
 	glDeleteBuffers(1, &vbo);
 }
 
+ 
 bool TileMap::loadLevel(const string& levelFile)
-{
-
-}
-
-bool TileMap::loadLevelOld(const string& levelFile)
 {
 	ifstream fin;
 	string line, tilesheetFile;
@@ -83,7 +81,61 @@ bool TileMap::loadLevelOld(const string& levelFile)
 	sstream >> tilesheetSize.x >> tilesheetSize.y;
 	tileTexSize = glm::vec2(1.f / tilesheetSize.x, 1.f / tilesheetSize.y);
 	
-	map = new int[mapSize.x * mapSize.y];
+	int size = mapSize.x * mapSize.y;
+	map = new int[size];
+	background = new int[size];
+	foreground = new int[size];
+
+	getline(fin, line);
+	if (line.compare(0, 4, "CAPA") != 0)
+	{
+		getline(fin, line);
+	}
+	else {
+		for (int i = 0; i < size; ++i) {
+			std::string token;
+			if (i == size - 1)
+				std::getline(fin, token);
+			else
+				std::getline(fin, token, ',');
+
+			background[i] = std::stoi(token);
+		}
+	}
+	getline(fin, line);
+	if (line.compare(0, 4, "CAPA") != 0)
+	{
+		getline(fin, line);
+	}
+	else {
+		for (int i = 0; i < size; ++i) {
+			std::string token;
+			if (i == size - 1)
+				std::getline(fin, token);
+			else
+				std::getline(fin, token, ',');
+
+			map[i] = std::stoi(token);
+		}
+	}
+	getline(fin, line);
+	if (line.compare(0, 4, "CAPA") != 0)
+	{
+		getline(fin, line);
+	}
+	else {
+		for (int i = 0; i < size; ++i) {
+			std::string token;
+			if (i == size - 1)
+				std::getline(fin, token);
+			else
+				std::getline(fin, token, ',');
+
+			foreground[i] = std::stoi(token);
+		}
+	}
+
+	/*
 	for(int j=0; j<mapSize.y; j++)
 	{
 		for(int i=0; i<mapSize.x; i++)
@@ -99,7 +151,7 @@ bool TileMap::loadLevelOld(const string& levelFile)
 		fin.get(tile);
 #endif
 	}
-	fin.close();
+	fin.close();//*/
 	
 	return true;
 }//*/

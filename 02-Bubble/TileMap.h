@@ -27,6 +27,9 @@ public:
 
 	void render() const;
 	void free();
+
+	
+
 	
 	int getTileSize() const { return tileSize; }
 
@@ -35,8 +38,8 @@ public:
 	bool collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, int *posY) const;
 	
 private:
-	bool loadLevel(const string &levelFile);
-	bool loadLevelOld(const string& levelFile);
+
+	bool loadLevel(const string& levelFile);//, const string& tilesetFile = "images/pangTileset.json");
 	void prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program);
 
 private:
@@ -48,7 +51,9 @@ private:
 	int tileSize, blockSize;
 	Texture tilesheet;
 	glm::vec2 tileTexSize;
-	int *map;
+	int* map;
+	int* foreground;
+	int* background;
 
 };
 

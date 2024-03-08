@@ -1,2 +1,5 @@
 
 *.tiled-session
+*.vsidx
+/.vs
+*.tlog
