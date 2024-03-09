@@ -1,6 +1,6 @@
 TILEMAP
 30 20 
-8 8 
+16 16 
 images/pangtileset.png 
 10 10 
 CAPA Background
