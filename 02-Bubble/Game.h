@@ -44,6 +44,9 @@ private:
 	bool bPlay; // Continue to play game?
 	bool keys[GLFW_KEY_LAST+1]; // Store key states so that 
 							    // we can have access at any time
+
+	int mouseX, mouseY;
+	bool mouse_down = false;
 	Scene scene;
 
 };

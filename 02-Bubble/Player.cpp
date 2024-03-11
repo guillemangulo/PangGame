@@ -12,32 +12,58 @@
 
 enum PlayerAnims
 {
-	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT
+	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, SHOOT, CLIMB_UP, CLIMB_DOWN,TAKE_DAMAGE, END_CLIMB
 };
 
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
 	bJumping = false;
-	spritesheet.loadFromFile("images/bub.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.25, 0.25), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(4);
+	spritesheet.loadFromFile("images/PlayerDefault.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	#define SPRITE_BLOCK 0.125f
+	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(SPRITE_BLOCK, SPRITE_BLOCK), &spritesheet, &shaderProgram);
+	sprite->setNumberAnimations(9);
 	
 		sprite->setAnimationSpeed(STAND_LEFT, 8);
-		sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 0.f));
+		sprite->addKeyframe(STAND_LEFT, glm::vec2(SPRITE_BLOCK * 7, SPRITE_BLOCK * 0));
 		
 		sprite->setAnimationSpeed(STAND_RIGHT, 8);
-		sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.25f, 0.f));
+		sprite->addKeyframe(STAND_RIGHT, glm::vec2(SPRITE_BLOCK * 0, SPRITE_BLOCK * 0));
 		
 		sprite->setAnimationSpeed(MOVE_LEFT, 8);
-		sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.f, 0.f));
-		sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.f, 0.25f));
-		sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.f, 0.5f));
+		sprite->addKeyframe(MOVE_LEFT, glm::vec2(SPRITE_BLOCK * 7, SPRITE_BLOCK * 0));
+		sprite->addKeyframe(MOVE_LEFT, glm::vec2(SPRITE_BLOCK * 6, SPRITE_BLOCK * 0));
+		sprite->addKeyframe(MOVE_LEFT, glm::vec2(SPRITE_BLOCK * 5, SPRITE_BLOCK * 0));
+		sprite->addKeyframe(MOVE_LEFT, glm::vec2(SPRITE_BLOCK * 6, SPRITE_BLOCK * 1));
+		sprite->addKeyframe(MOVE_LEFT, glm::vec2(SPRITE_BLOCK * 5, SPRITE_BLOCK * 1));
 		
 		sprite->setAnimationSpeed(MOVE_RIGHT, 8);
-		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.25, 0.f));
-		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.25, 0.25f));
-		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.25, 0.5f));
+		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(SPRITE_BLOCK * 0, SPRITE_BLOCK * 0));
+		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(SPRITE_BLOCK * 1, SPRITE_BLOCK * 0));
+		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(SPRITE_BLOCK * 2, SPRITE_BLOCK * 0));
+		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(SPRITE_BLOCK * 3, SPRITE_BLOCK * 0));
+		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(SPRITE_BLOCK * 4, SPRITE_BLOCK * 0));
+
+		sprite->setAnimationSpeed(SHOOT, 8);
+		sprite->addKeyframe(SHOOT, glm::vec2(SPRITE_BLOCK * 0, SPRITE_BLOCK * 3));
+		sprite->addKeyframe(SHOOT, glm::vec2(SPRITE_BLOCK * 1, SPRITE_BLOCK * 3));
+
+		sprite->setAnimationSpeed(CLIMB_UP, 8);
+		sprite->addKeyframe(CLIMB_UP, glm::vec2(SPRITE_BLOCK * 0, SPRITE_BLOCK * 1));
+		sprite->addKeyframe(CLIMB_UP, glm::vec2(SPRITE_BLOCK * 1, SPRITE_BLOCK * 1));
+		sprite->addKeyframe(CLIMB_UP, glm::vec2(SPRITE_BLOCK * 2, SPRITE_BLOCK * 1));
+		sprite->addKeyframe(CLIMB_UP, glm::vec2(SPRITE_BLOCK * 3, SPRITE_BLOCK * 1));
+
+		sprite->setAnimationSpeed(CLIMB_DOWN, 8);
+		sprite->addKeyframe(CLIMB_DOWN, glm::vec2(SPRITE_BLOCK * 0, SPRITE_BLOCK * 2));
+		sprite->addKeyframe(CLIMB_DOWN, glm::vec2(SPRITE_BLOCK * 0, SPRITE_BLOCK * 2));
+		sprite->addKeyframe(CLIMB_DOWN, glm::vec2(SPRITE_BLOCK * 0, SPRITE_BLOCK * 2));
+
+		sprite->setAnimationSpeed(TAKE_DAMAGE, 8);
+		sprite->addKeyframe(TAKE_DAMAGE, glm::vec2(SPRITE_BLOCK * 4, SPRITE_BLOCK * 2));
+
+		sprite->setAnimationSpeed(END_CLIMB, 8);
+		sprite->addKeyframe(END_CLIMB, glm::vec2(SPRITE_BLOCK * 3, SPRITE_BLOCK * 2));
 		
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;

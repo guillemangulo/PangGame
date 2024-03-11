@@ -37,14 +37,23 @@ void Game::keyReleased(int key)
 
 void Game::mouseMove(int x, int y)
 {
+	if (mouse_down)
+	{
+		scene.teleportPlayer(x-35, y-15);
+	}
+	mouseX = x;
+	mouseY = y;
 }
 
 void Game::mousePress(int button)
 {
+	scene.teleportPlayer(mouseX-35, mouseY-15);
+	mouse_down = true;
 }
 
 void Game::mouseRelease(int button)
 {
+	mouse_down = false;
 }
 
 bool Game::getKey(int key) const

@@ -1,4 +1,9 @@
-﻿  TileMap.cpp
-s:\clase\proj2d\panggame\02-bubble\tilemap.cpp(56): warning C4101: 'tile': unreferenced local variable
+﻿  Game.cpp
+  Generating Code...
+  Compiling...
+  main.cpp
+  Scene.cpp
+  Player.cpp
+  Generating Code...
   02-Bubble.vcxproj -> S:\Clase\Proj2D\PangGame\Debug\Pang-GuillemDavid.exe
   02-Bubble.vcxproj -> S:\Clase\Proj2D\PangGame\Debug\Pang-GuillemDavid.pdb (Full PDB)

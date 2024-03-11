@@ -22,6 +22,7 @@ public:
 	void init();
 	void update(int deltaTime);
 	void render();
+	void teleportPlayer(int x, int y);
 
 private:
 	void initShaders();

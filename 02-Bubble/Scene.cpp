@@ -59,6 +59,11 @@ void Scene::render()
 	player->render();
 }
 
+void Scene::teleportPlayer(int x, int y)
+{
+	player->setPosition(glm::vec2(x, y));
+}
+
 void Scene::initShaders()
 {
 	Shader vShader, fShader;
