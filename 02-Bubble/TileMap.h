@@ -55,6 +55,7 @@ private:
 	int* map;
 	int* foreground;
 	int* background;
+	int* ladders;
 
 	bool* colisions;
 	bool* stairscase;
