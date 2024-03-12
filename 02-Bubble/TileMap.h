@@ -26,9 +26,6 @@ public:
 	~TileMap();
 
 	void render() const;
-
-	//TODO: void renderScale() const;
-
 	void free();
 
 
@@ -44,7 +41,7 @@ private:
 
 	bool loadLevel(const string& levelFile);//, const string& tilesetFile = "images/pangTileset.json");
 	void prepareArrays(const glm::vec2& minCoords, ShaderProgram& program);
-	bool is_ladder(int idstair);
+	void stair(int pos);
 
 private:
 	GLuint vao;
@@ -55,11 +52,9 @@ private:
 	int tileSize, blockSize;
 	Texture tilesheet;
 	glm::vec2 tileTexSize;
-
-	int* interactive;
+	int* map;
 	int* foreground;
 	int* background;
-	int* ladders;
 
 	bool* colisions;
 	bool* stairscase;

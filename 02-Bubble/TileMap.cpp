@@ -26,8 +26,8 @@ TileMap::TileMap(const string& levelFile, const glm::vec2& minCoords, ShaderProg
 
 TileMap::~TileMap()
 {
-	if (interactive != NULL)
-		delete interactive;
+	if (map != NULL)
+		delete map;
 }
 
 
@@ -81,7 +81,7 @@ bool TileMap::loadLevel(const string& levelFile)
 	tileTexSize = glm::vec2(1.f / tilesheetSize.x, 1.f / tilesheetSize.y);
 
 	int size = mapSize.x * mapSize.y;
-	interactive = new int[size];
+	map = new int[size];
 	background = new int[size];
 	foreground = new int[size];
 
@@ -100,6 +100,8 @@ bool TileMap::loadLevel(const string& levelFile)
 				std::getline(fin, token);
 			else
 				std::getline(fin, token, ',');
+
+
 		}
 	}
 	getline(fin, line);
@@ -115,7 +117,11 @@ bool TileMap::loadLevel(const string& levelFile)
 			else
 				std::getline(fin, token, ',');
 
-			interactive[i] = std::stoi(token);
+			map[i] = std::stoi(token);
+
+
+
+
 		}
 	}
 	getline(fin, line);
@@ -139,13 +145,17 @@ bool TileMap::loadLevel(const string& levelFile)
 	// tractament de colisions
 
 	for (int i = 0; i < size; ++i) {
-		//totes les colisions estan en capa interactive
-		if (interactive[i] != 0) colisions[i] = true;
+
+		if (background[i] != 0) colisions[i] = true;
+		// sino false i així inicialitzem colisions a fals
 		else colisions[i] = false;
 
-		// si hi ha algo en capa scale mirar si es escala
-		if (is_ladder(ladders[i])) stairscase[i] = true;
+		if (map[i] != 0) colisions[i] = true;
+
+		// si hi ha en les dos sabem que alla comença escala
+		if (background[i] != 0 && map[i] != 0) stair(i);
 		else stairscase[i] = false;
+
 	}
 
 	/*
@@ -170,10 +180,17 @@ bool TileMap::loadLevel(const string& levelFile)
 }//*/
 
 
-bool TileMap::is_ladder(int idstair) {
-	return ((idstair == 16) || (idstair == 17) || (idstair == 18));
+void TileMap::stair(int pos) {
+	// mirar fins on arriba l'escala
+	bool fin = false;
+	int idstair = map[pos];
+	stairscase[pos] = true;
+	while (!fin) {
+		++pos;
+		if (map[pos] == idstair) stairscase[pos] = true;
+		else fin = true;
+	}
 }
-
 
 void TileMap::prepareArrays(const glm::vec2& minCoords, ShaderProgram& program)
 {
@@ -187,7 +204,7 @@ void TileMap::prepareArrays(const glm::vec2& minCoords, ShaderProgram& program)
 	{
 		for (int i = 0; i < mapSize.x; i++)
 		{
-			tile = interactive[j * mapSize.x + i];
+			tile = map[j * mapSize.x + i];
 			if (tile != 0)
 			{
 				// Non-empty tile
@@ -212,9 +229,7 @@ void TileMap::prepareArrays(const glm::vec2& minCoords, ShaderProgram& program)
 				vertices.push_back(posTile.x); vertices.push_back(posTile.y + blockSize);
 				vertices.push_back(texCoordTile[0].x); vertices.push_back(texCoordTile[1].y);
 			}
-			
 		}
-		
 	}
 
 	glGenVertexArrays(1, &vao);
@@ -239,7 +254,7 @@ bool TileMap::collisionMoveLeft(const glm::ivec2& pos, const glm::ivec2& size) c
 	y1 = (pos.y + size.y - 1) / tileSize;
 	for (int y = y0; y <= y1; y++)
 	{
-		if (interactive[y * mapSize.x + x] != 0)
+		if (map[y * mapSize.x + x] != 0)
 			return true;
 	}
 
@@ -255,7 +270,7 @@ bool TileMap::collisionMoveRight(const glm::ivec2& pos, const glm::ivec2& size) 
 	y1 = (pos.y + size.y - 1) / tileSize;
 	for (int y = y0; y <= y1; y++)
 	{
-		if (interactive[y * mapSize.x + x] != 0)
+		if (map[y * mapSize.x + x] != 0)
 			return true;
 	}
 
@@ -271,7 +286,7 @@ bool TileMap::collisionMoveDown(const glm::ivec2& pos, const glm::ivec2& size, i
 	y = (pos.y + size.y - 1) / tileSize;
 	for (int x = x0; x <= x1; x++)
 	{
-		if (interactive[y * mapSize.x + x] != 0)
+		if (map[y * mapSize.x + x] != 0)
 		{
 			if (*posY - tileSize * y + size.y <= 4)
 			{
