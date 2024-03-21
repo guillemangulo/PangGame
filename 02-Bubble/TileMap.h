@@ -33,6 +33,7 @@ public:
 
 	int getTileSize() const { return tileSize; }
 
+	bool isFloorTile(int x, int y) const;
 	bool collisionMoveLeft(const glm::ivec2& pos, const glm::ivec2& size) const;
 	bool collisionMoveRight(const glm::ivec2& pos, const glm::ivec2& size) const;
 	bool collisionMoveDown(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const;

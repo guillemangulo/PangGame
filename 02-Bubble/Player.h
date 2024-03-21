@@ -1,7 +1,7 @@
 #ifndef _PLAYER_INCLUDE
 #define _PLAYER_INCLUDE
 
-
+#include "PowerUp.h"
 #include "Sprite.h"
 #include "TileMap.h"
 
@@ -20,7 +20,8 @@ public:
 	
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
-	
+
+
 private:
 	bool bJumping;
 	glm::ivec2 tileMapDispl, posPlayer;
@@ -28,6 +29,7 @@ private:
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
+	
 
 };
 
