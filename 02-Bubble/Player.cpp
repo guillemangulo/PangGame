@@ -110,6 +110,10 @@ void Player::update(int deltaTime)
 	case Game::DOWNRIGHT:
 		break;
 	case Game::NONE:
+		if (sprite->animation() == MOVE_LEFT)
+			sprite->changeAnimation(STAND_LEFT);
+		else if (sprite->animation() == MOVE_RIGHT)
+			sprite->changeAnimation(STAND_RIGHT);
 		break;
 	default:
 		if (sprite->animation() == MOVE_LEFT)

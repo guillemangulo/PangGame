@@ -5,6 +5,11 @@
 #include <glm/glm.hpp>
 #include "ShaderProgram.h"
 
+#define SCALING 2
+
+#define SCREEN_WIDTH (48*8+64)*SCALING
+#define SCREEN_HEIGHT (26*8+32)*SCALING
+
 class Pantalla
 {
 
@@ -16,15 +21,14 @@ public:
 	virtual void update(int deltaTime);
 	virtual void render();
 
-private:
+protected:
 	void initShaders();
 
-private:
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
 };
 
 
-#endif // _SCENE_INCLUDE
+#endif // _PANTALLA_INCLUDE
 

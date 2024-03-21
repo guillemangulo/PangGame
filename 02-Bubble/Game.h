@@ -6,11 +6,6 @@
 #include "Pantalla.h"
 #include "Joc.h"
 
-#define SCALING 2
-
-#define SCREEN_WIDTH (48*8+64)*SCALING
-#define SCREEN_HEIGHT (26*8+32)*SCALING
-
 
 // Game is a singleton (a class with a single instance) that represents our whole application
 
@@ -69,10 +64,11 @@ private:
 	bool mouse_down = false;
 
 	int level = 1;
-	Joc nivell;
 
 	
 	Pantalla* scene;
+
+	Joc nivell; 
 
 };
 

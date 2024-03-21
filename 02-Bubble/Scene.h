@@ -27,11 +27,6 @@ public:
 private:
 	void initShaders();
 
-private:
-	TileMap *map;
-	TileMap* foreground;
-	TileMap* background;
-	Player *player;
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
