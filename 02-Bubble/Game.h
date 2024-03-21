@@ -3,7 +3,8 @@
 
 
 #include <GLFW/glfw3.h>
-#include "Scene.h"
+#include "Pantalla.h"
+#include "Joc.h"
 
 #define SCALING 2
 
@@ -32,7 +33,13 @@ public:
 	{
 		UP,DOWN,LEFT,RIGHT,UPLEFT,UPRIGHT,DOWNLEFT,DOWNRIGHT,NONE
 	};
+	enum pantalles
+	{
+		MAINMENU, GAME, GAMEOVER, TIMEOVER, WIN, CREDITS, CONTROLS, MAPA
+	};
 	
+
+
 	void init();
 	bool update(int deltaTime);
 	void render();
@@ -44,9 +51,11 @@ public:
 	void mousePress(int button);
 	void mouseRelease(int button);
 
+	void loadScreen(pantalles p);
+
 	bool getKey(int key) const;
 
-	directions GetDirection() const;
+	directions getDirection() const;
 
 	bool IsShooting() const;
 
@@ -58,7 +67,12 @@ private:
 
 	int mouseX, mouseY;
 	bool mouse_down = false;
-	Scene scene;
+
+	int level = 1;
+	Joc nivell;
+
+	
+	Pantalla* scene;
 
 };
 

@@ -74,7 +74,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
-	Game::directions dir = Game::instance().GetDirection();
+	Game::directions dir = Game::instance().getDirection();
 	switch (dir)
 	{
 	case Game::UP:

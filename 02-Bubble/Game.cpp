@@ -5,14 +5,16 @@
 
 void Game::init()
 {
+	loadScreen(GAME);
 	bPlay = true;
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-	scene.init();
+	level = 30;
+
 }
 
 bool Game::update(int deltaTime)
 {
-	scene.update(deltaTime);
+	scene->update(deltaTime);
 
 	return bPlay;
 }
@@ -20,7 +22,7 @@ bool Game::update(int deltaTime)
 void Game::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	scene.render();
+	scene->render();
 }
 
 void Game::keyPressed(int key)
@@ -39,7 +41,9 @@ void Game::mouseMove(int x, int y)
 {
 	if (mouse_down)
 	{
-		scene.teleportPlayer(x-35, y-15);
+		if (Joc* nivellpa = dynamic_cast<Joc*>(scene)) {
+			nivellpa->teleportPlayer(mouseX - 35, mouseY - 15);
+		}
 	}
 	mouseX = x;
 	mouseY = y;
@@ -47,7 +51,10 @@ void Game::mouseMove(int x, int y)
 
 void Game::mousePress(int button)
 {
-	scene.teleportPlayer(mouseX-35, mouseY-15);
+
+	if (Joc* nivellpa = dynamic_cast<Joc*>(scene)) {
+		nivellpa->teleportPlayer(mouseX - 35, mouseY - 15);
+	}
 	mouse_down = true;
 }
 
@@ -56,7 +63,41 @@ void Game::mouseRelease(int button)
 	mouse_down = false;
 }
 
-Game::directions Game::GetDirection() const
+void Game::loadScreen(pantalles p)
+{
+	switch(p)
+	{
+	case Game::MAINMENU:
+
+		break;
+	case Game::GAME:
+	{
+		nivell = Joc();
+		scene = &nivell;
+
+		if (Joc* nivellpa = dynamic_cast<Joc*>(scene)) {
+			nivellpa->init(level);
+		}
+		break;
+	}
+	case Game::GAMEOVER:
+		break;
+	case Game::TIMEOVER:
+		break;
+	case Game::WIN:
+		break;
+	case Game::CREDITS:
+		break;
+	case Game::CONTROLS:
+		break;
+	case Game::MAPA:
+		break;
+	default:
+		break;
+	}
+}
+
+Game::directions Game::getDirection() const
 {
 	//Aixó es pot ampliar per donar suport a més tecles i controladors
 	if (keys[GLFW_KEY_UP] || keys[GLFW_KEY_W])

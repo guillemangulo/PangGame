@@ -19,7 +19,7 @@ public:
 	Scene();
 	~Scene();
 
-	void init();
+	void init(int nivell);
 	void update(int deltaTime);
 	void render();
 	void teleportPlayer(int x, int y);

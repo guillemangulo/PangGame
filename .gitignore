@@ -9,3 +9,12 @@
 Debug/Pang-GuillemDavid.exe
 Debug/Pang-GuillemDavid.ilk
 Debug/Pang-GuillemDavid.pdb
+*.vcxproj
+*.filters
+*.log
+*.obj
+*.idb
+*.pdb
+*.exe
+*.ilk
+*.pdb

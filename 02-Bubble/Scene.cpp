@@ -27,10 +27,10 @@ Scene::~Scene()
 }
 
 
-void Scene::init()
+void Scene::init(int nivell)
 {
 	initShaders();
-	map = TileMap::createTileMap("levels/N1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	map = TileMap::createTileMap("levels/N" + std::to_string(nivell) + ".txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	//foreground = TileMap::createTileMap("levels/MapaProva1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	//background = TileMap::createTileMap("levels/MapaProva1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
