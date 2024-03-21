@@ -1,4 +1,3 @@
-﻿  TileMap.cpp
-c:\users\guill\onedrive\escritorio\vj\panggame\panggame\02-bubble\tilemap.cpp(56): warning C4101: 'tile': variable local sin referencia
-  02-Bubble.vcxproj -> C:\Users\guill\OneDrive\Escritorio\VJ\PangGame\PangGame\Debug\Pang-GuillemDavid.exe
-  02-Bubble.vcxproj -> C:\Users\guill\OneDrive\Escritorio\VJ\PangGame\PangGame\Debug\Pang-GuillemDavid.pdb (Full PDB)
+﻿  Player.cpp
+  02-Bubble.vcxproj -> S:\Clase\Proj2D\PangGame\Debug\Pang-GuillemDavid.exe
+  02-Bubble.vcxproj -> S:\Clase\Proj2D\PangGame\Debug\Pang-GuillemDavid.pdb (Full PDB)

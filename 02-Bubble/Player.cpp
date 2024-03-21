@@ -74,34 +74,49 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
-	if(Game::instance().getKey(GLFW_KEY_LEFT))
+	Game::directions dir = Game::instance().GetDirection();
+	switch (dir)
 	{
-		if(sprite->animation() != MOVE_LEFT)
+	case Game::UP:
+		break;
+	case Game::DOWN:
+		break;
+	case Game::LEFT:
+		if (sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
 		posPlayer.x -= 2;
-		if(map->collisionMoveLeft(posPlayer, glm::ivec2(32, 32)))
+		if (map->collisionMoveLeft(posPlayer, glm::ivec2(32, 32)))
 		{
 			posPlayer.x += 2;
 			sprite->changeAnimation(STAND_LEFT);
 		}
-	}
-	else if(Game::instance().getKey(GLFW_KEY_RIGHT))
-	{
-		if(sprite->animation() != MOVE_RIGHT)
+		break;
+	case Game::RIGHT:
+		if (sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
 		posPlayer.x += 2;
-		if(map->collisionMoveRight(posPlayer, glm::ivec2(32, 32)))
+		if (map->collisionMoveRight(posPlayer, glm::ivec2(32, 32)))
 		{
 			posPlayer.x -= 2;
 			sprite->changeAnimation(STAND_RIGHT);
 		}
-	}
-	else
-	{
-		if(sprite->animation() == MOVE_LEFT)
+		break;
+	case Game::UPLEFT:
+		break;
+	case Game::UPRIGHT:
+		break;
+	case Game::DOWNLEFT:
+		break;
+	case Game::DOWNRIGHT:
+		break;
+	case Game::NONE:
+		break;
+	default:
+		if (sprite->animation() == MOVE_LEFT)
 			sprite->changeAnimation(STAND_LEFT);
-		else if(sprite->animation() == MOVE_RIGHT)
+		else if (sprite->animation() == MOVE_RIGHT)
 			sprite->changeAnimation(STAND_RIGHT);
+		break;	
 	}
 	
 	if(bJumping)

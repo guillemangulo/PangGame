@@ -30,15 +30,15 @@ Scene::~Scene()
 void Scene::init()
 {
 	initShaders();
-	map = TileMap::createTileMap("levels/MapaProva1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	foreground = TileMap::createTileMap("levels/MapaProva1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	background = TileMap::createTileMap("levels/MapaProva1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	map = TileMap::createTileMap("levels/N1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	//foreground = TileMap::createTileMap("levels/MapaProva1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	//background = TileMap::createTileMap("levels/MapaProva1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
-	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.f);
+	projection = glm::ortho(0.f, float(SCREEN_WIDTH/SCALING), float(SCREEN_HEIGHT/SCALING), 0.f);
 	currentTime = 0.0f;
 }
 
@@ -59,9 +59,10 @@ void Scene::render()
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 
-	background->render();
+	
+	//background->render();
 	map->render();
-	foreground->render();
+	//foreground->render();
 	player->render();
 }
 

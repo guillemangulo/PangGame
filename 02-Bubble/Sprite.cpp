@@ -55,6 +55,8 @@ void Sprite::render() const
 	shaderProgram->setUniform2f("texCoordDispl", texCoordDispl.x, texCoordDispl.y);
 	glEnable(GL_TEXTURE_2D);
 	texture->use();
+	texture->setMinFilter(GL_NEAREST);
+	texture->setMagFilter(GL_NEAREST);
 	glBindVertexArray(vao);
 	glEnableVertexAttribArray(posLocation);
 	glEnableVertexAttribArray(texCoordLocation);
