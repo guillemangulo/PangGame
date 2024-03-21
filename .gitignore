@@ -3,12 +3,8 @@
 *.vsidx
 /.vs
 *.tlog
-/.vs
 *.log
-*.obj
-Debug/Pang-GuillemDavid.exe
-Debug/Pang-GuillemDavid.ilk
-Debug/Pang-GuillemDavid.pdb
+Debug/
 *.vcxproj
 *.vcxproj.*
 *.filters
@@ -19,5 +15,4 @@ Debug/Pang-GuillemDavid.pdb
 *.exe
 *.ilk
 *.pdb
-*.obj
 /02-Bubble/Debug
