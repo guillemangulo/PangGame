@@ -66,7 +66,7 @@ private:
 	int level = 1;
 
 	
-	Pantalla* scene;
+	Pantalla* activeScene;
 
 	Joc nivell; 
 
