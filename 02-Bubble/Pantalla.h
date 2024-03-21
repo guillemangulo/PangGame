@@ -1,6 +1,9 @@
 #ifndef _PANTALLA_INCLUDE
 #define _PANTALLA_INCLUDE
 
+#include <iostream>
+#include <cmath>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <glm/glm.hpp>
 #include "ShaderProgram.h"

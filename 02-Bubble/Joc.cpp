@@ -60,5 +60,5 @@ void Joc::render()
 
 void Joc::teleportPlayer(int x, int y)
 {
-	player->setPosition(glm::vec2(x, y));
+	player->setPosition(glm::vec2(x/SCALING, y / SCALING));
 }

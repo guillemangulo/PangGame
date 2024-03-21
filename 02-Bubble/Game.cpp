@@ -26,8 +26,19 @@ void Game::render()
 
 void Game::keyPressed(int key)
 {
-	if(key == GLFW_KEY_ESCAPE) // Escape code
+	if (key == GLFW_KEY_ESCAPE) // Escape code
 		bPlay = false;
+	if (key == GLFW_KEY_1) // Escape code
+	{
+		level = 1;
+		loadScreen(GAME);
+	}
+	if (key == GLFW_KEY_2) // Escape code
+	{
+		level = 2;
+		loadScreen(GAME);
+	}
+
 	keys[key] = true;
 }
 
@@ -41,7 +52,7 @@ void Game::mouseMove(int x, int y)
 	if (mouse_down)
 	{
 		if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
-			nivellpa->teleportPlayer(mouseX - 35, mouseY - 15);
+			nivellpa->teleportPlayer(mouseX, mouseY);
 		}
 	}
 	mouseX = x;
@@ -52,7 +63,7 @@ void Game::mousePress(int button)
 {
 
 	if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
-		nivellpa->teleportPlayer(mouseX - 35, mouseY - 15);
+		nivellpa->teleportPlayer(mouseX, mouseY);
 	}
 	mouse_down = true;
 }

@@ -2,11 +2,9 @@
 #include "Pantalla.h"
 
 #include "TileMap.h"
+#include "Animated.h"
 #include "Player.h"
 
-#include <iostream>
-#include <cmath>
-#include <glm/gtc/matrix_transform.hpp>
 
 class Joc :
     public Pantalla

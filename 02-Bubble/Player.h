@@ -1,39 +1,20 @@
-#ifndef _PLAYER_INCLUDE
-#define _PLAYER_INCLUDE
+#pragma once
 
-#include "PowerUp.h"
-#include "Sprite.h"
-#include "TileMap.h"
+#include "Animated.h"
 
 
-// Player is basically a Sprite that represents the player. As such it has
-// all properties it needs to track its movement, jumping, and collisions.
-
-
-class Player
+class Player : 
+	public Animated
 {
+	public:
+		void init(const glm::ivec2 &tileMapPos, ShaderProgram& shaderProgram,const char* sprtsht = "images/PlayerDefault.png");
+		void update(int deltaTime);
 
-public:
-	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
-	void update(int deltaTime);
-	void render();
-	
-	void setTileMap(TileMap *tileMap);
-	void setPosition(const glm::vec2 &pos);
-
-
-private:
-	bool bJumping;
-	glm::ivec2 tileMapDispl, posPlayer;
-	int jumpAngle, startY;
-	Texture spritesheet;
-	Sprite *sprite;
-	TileMap *map;
-	
-
+	private:
+		enum PlayerAnims
+		{
+			STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, SHOOT, CLIMB_UP, CLIMB_DOWN, TAKE_DAMAGE, END_CLIMB
+		};
 };
-
-
-#endif // _PLAYER_INCLUDE
 
 

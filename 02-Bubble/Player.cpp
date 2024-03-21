@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iostream>
 #include <GL/glew.h>
+
 #include "Player.h"
 #include "Game.h"
 
@@ -10,16 +11,10 @@
 #define FALL_STEP 4
 
 
-enum PlayerAnims
-{
-	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, SHOOT, CLIMB_UP, CLIMB_DOWN,TAKE_DAMAGE, END_CLIMB
-};
 
-
-void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
+void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const char* sprtsht)
 {
-	bJumping = false;
-	spritesheet.loadFromFile("images/PlayerDefault.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheet.loadFromFile(sprtsht, TEXTURE_PIXEL_FORMAT_RGBA);
 	#define SPRITE_BLOCK 0.125f
 	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(SPRITE_BLOCK, SPRITE_BLOCK), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(9);
@@ -67,7 +62,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 		
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 	
 }
 
@@ -84,20 +79,20 @@ void Player::update(int deltaTime)
 	case Game::LEFT:
 		if (sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
-		posPlayer.x -= 2;
-		if (map->collisionMoveLeft(posPlayer, glm::ivec2(32, 32)))
+		pos.x -= 2;
+		if (map->collisionMoveLeft(pos, glm::ivec2(32, 32)))
 		{
-			posPlayer.x += 2;
+			pos.x += 2;
 			sprite->changeAnimation(STAND_LEFT);
 		}
 		break;
 	case Game::RIGHT:
 		if (sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
-		posPlayer.x += 2;
-		if (map->collisionMoveRight(posPlayer, glm::ivec2(32, 32)))
+		pos.x += 2;
+		if (map->collisionMoveRight(pos, glm::ivec2(32, 32)))
 		{
-			posPlayer.x -= 2;
+			pos.x -= 2;
 			sprite->changeAnimation(STAND_RIGHT);
 		}
 		break;
@@ -123,52 +118,9 @@ void Player::update(int deltaTime)
 		break;	
 	}
 	
-	if(bJumping)
-	{
-		jumpAngle += JUMP_ANGLE_STEP;
-		if(jumpAngle == 180)
-		{
-			bJumping = false;
-			posPlayer.y = startY;
-		}
-		else
-		{
-			posPlayer.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
-			if(jumpAngle > 90)
-				bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y);
-		}
-	}
-	else
-	{
-		posPlayer.y += FALL_STEP;
-		if(map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
-		{
-			if(Game::instance().getKey(GLFW_KEY_UP))
-			{
-				bJumping = true;
-				jumpAngle = 0;
-				startY = posPlayer.y;
-			}
-		}
-	}
-	
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
-}
-
-void Player::render()
-{
-	sprite->render();
-}
-
-void Player::setTileMap(TileMap *tileMap)
-{
-	map = tileMap;
-}
-
-void Player::setPosition(const glm::vec2 &pos)
-{
-	posPlayer = pos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+	pos.y += FALL_STEP;
+	map->collisionMoveDown(pos, glm::ivec2(32, 32), &pos.y);	
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 }
 
 
