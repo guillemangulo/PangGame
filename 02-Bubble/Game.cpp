@@ -5,16 +5,15 @@
 
 void Game::init()
 {
-	loadScreen(GAME);
-	bPlay = true;
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	level = 30;
-
+	loadScreen(GAME);
+	bPlay = true;
 }
 
 bool Game::update(int deltaTime)
 {
-	scene->update(deltaTime);
+	activeScene->update(deltaTime);
 
 	return bPlay;
 }
@@ -22,7 +21,7 @@ bool Game::update(int deltaTime)
 void Game::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	scene->render();
+	activeScene->render();
 }
 
 void Game::keyPressed(int key)
@@ -41,7 +40,7 @@ void Game::mouseMove(int x, int y)
 {
 	if (mouse_down)
 	{
-		if (Joc* nivellpa = dynamic_cast<Joc*>(scene)) {
+		if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
 			nivellpa->teleportPlayer(mouseX - 35, mouseY - 15);
 		}
 	}
@@ -52,7 +51,7 @@ void Game::mouseMove(int x, int y)
 void Game::mousePress(int button)
 {
 
-	if (Joc* nivellpa = dynamic_cast<Joc*>(scene)) {
+	if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
 		nivellpa->teleportPlayer(mouseX - 35, mouseY - 15);
 	}
 	mouse_down = true;
@@ -73,11 +72,8 @@ void Game::loadScreen(pantalles p)
 	case Game::GAME:
 	{
 		nivell = Joc();
-		scene = &nivell;
-
-		if (Joc* nivellpa = dynamic_cast<Joc*>(scene)) {
-			nivellpa->init(level);
-		}
+		activeScene = &nivell;
+		nivell.init(level);
 		break;
 	}
 	case Game::GAMEOVER:

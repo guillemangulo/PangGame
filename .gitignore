@@ -10,6 +10,7 @@ Debug/Pang-GuillemDavid.exe
 Debug/Pang-GuillemDavid.ilk
 Debug/Pang-GuillemDavid.pdb
 *.vcxproj
+*.vcxproj.*
 *.filters
 *.log
 *.obj
@@ -18,3 +19,5 @@ Debug/Pang-GuillemDavid.pdb
 *.exe
 *.ilk
 *.pdb
+*.obj
+/02-Bubble/Debug
