@@ -5,6 +5,8 @@
 #include "TileMap.h"
 #include "ShaderProgram.h"
 
+#define fallTableSize 4
+
 
 
 class Animated
@@ -17,9 +19,17 @@ class Animated
 		void setTileMap(TileMap* tileMap);
 		void setPosition(const glm::vec2 &_pos);
 
+		bool doGravity(bool gravity);
+
 
 	protected:
+
+		void fall(int deltaTime);
 		glm::ivec2 tileMapDispl, pos;
+		bool doGrav;
+		bool falling;
+		int fallFrame;
+		float* fallTable = new float[fallTableSize]{ 0.1f, 0.2f, 0.3f, 0.4f };
 		Texture spritesheet;
 		Sprite* sprite;
 		TileMap* map;

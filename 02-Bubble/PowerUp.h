@@ -1,9 +1,8 @@
-#include <cstdlib>
-#include "Player.h"
-#include "TileMap.h"
+#pragma once
+#include "Animated.h"
 
-
-class PowerUp
+class PowerUp : 
+	public Animated
 {
 public: 
 	enum class Type {
@@ -28,7 +27,6 @@ public:
 	bool collidesWithFloor(const TileMap& tileMap) const;
 	bool collidesWithPlayer() const;
 
-	void moveDown(float gravity);
 
 private:
 	Type type;

@@ -29,13 +29,7 @@ void PowerUp::desactivate() {
 
 void PowerUp::update() {
 
-    for (auto& powerUp : powerUps) {
-
-        if (collidesWithFloor || collidesWithPlayer) {
-
-        }
-        else powerUp.moveDown(6.5);
-    }
+    fall(0.0f);
 
 }
 
@@ -46,9 +40,9 @@ bool PowerUp::collidesWithFloor(const TileMap& tileMap) const {
     return tileMap.isFloorTile(tileX, tileY);
 }
 
-void PowerUp::moveDown(float gravity) {
-    posY += velocity.y;
-    velocity.y = gravity;
+bool PowerUp::collidesWithPlayer() const
+{
+    return false;
 }
 
 

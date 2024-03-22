@@ -118,9 +118,8 @@ void Player::update(int deltaTime)
 		break;	
 	}
 	
-	pos.y += FALL_STEP;
-	map->collisionMoveDown(pos, glm::ivec2(32, 32), &pos.y);	
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
+	fall(deltaTime);
+	
 }
 
 

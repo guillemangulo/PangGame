@@ -236,57 +236,87 @@ void TileMap::prepareArrays(const glm::vec2& minCoords, ShaderProgram& program)
 // Method collisionMoveDown also corrects Y coordinate if the box is
 // already intersecting a tile below.
 
-bool TileMap::collisionMoveLeft(const glm::ivec2& pos, const glm::ivec2& size) const
+
+/// <summary>
+/// collisionMove mira si hi ha colisio amb la posicio i la direccio per una capsa de size i aplica aquest moviment.
+/// Les colisions no son elastiques i deixarán l'objecte just a la vora del bloc.
+/// </summary>
+/// <param name="pos">Punter a la posició actual del objecte</param>
+/// <param name="size">Escala de la caixa de colisions</param>
+/// <param name="dir">Cantitat de moviment a intentar</param>
+/// <returns>Retorna el short de colisions com a un bitmap de +x -x +y -y en els bits menys significatius.</returns>
+short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm::ivec2 dir) const
 {
-	int x, y0, y1;
+	int x, y, y1, x1;
+	glm::ivec2 posi = *pos;
+    short col = 0b0000;
 
-	x = pos.x / tileSize;
-	y0 = pos.y / tileSize;
-	y1 = (pos.y + size.y - 1) / tileSize;
-	for (int y = y0; y <= y1; y++)
-	{
-		if (interactive[y * mapSize.x + x] != 0)
-			return true;
-	}
+	//Nova posicio de la capsa en tilespace
+	x = (posi.x + dir.x) / tileSize;
+	y = (posi.y + dir.y) / tileSize;
+	y1 = (posi.y + size.y - 1) / tileSize;
+	x1 = (posi.x + size.x - 1) / tileSize;
 
-	return false;
-}
-
-bool TileMap::collisionMoveRight(const glm::ivec2& pos, const glm::ivec2& size) const
-{
-	int x, y0, y1;
-
-	x = (pos.x + size.x - 1) / tileSize;
-	y0 = pos.y / tileSize;
-	y1 = (pos.y + size.y - 1) / tileSize;
-	for (int y = y0; y <= y1; y++)
-	{
-		if (interactive[y * mapSize.x + x] != 0)
-			return true;
-	}
-
-	return false;
-}
-
-bool TileMap::collisionMoveDown(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
-{
-	int x0, x1, y;
-
-	x0 = pos.x / tileSize;
-	x1 = (pos.x + size.x - 1) / tileSize;
-	y = (pos.y + size.y - 1) / tileSize;
-	for (int x = x0; x <= x1; x++)
-	{
-		if (interactive[y * mapSize.x + x] != 0)
+	if(dir.x>0)
+	{ 
+		for (int _y = y; _y <= y1; _y++)
 		{
-			if (*posY - tileSize * y + size.y <= 4)
+			if (interactive[_y * mapSize.x + x] != 0)
 			{
-				*posY = tileSize * y - size.y;
-				return true;
+				col += 0b1000;
+				//TODO: aplicar correccio de colisio per que quedi just a la vora del bloc
+			}
+				
+		}
+		if(!(col & 0b1000))
+		{
+			posi.x += dir.x;
+		}
+
+	}
+	else if(dir.x<0)
+	{
+		for (int _y = y; _y <= y1; _y++)
+		{
+			if (interactive[_y * mapSize.x + x] != 0)
+			{
+				col += 0b0100;
+				//TODO: aplicar correccio de colisio per que quedi just a la vora del bloc
+			}
+
+			if(!(col & 0b0100))
+			{
+				posi.x += dir.x;
 			}
 		}
 	}
+	if (dir.y < 0)
+	{
+		for (int _x = x; _x <= x1; _x++)
+		{
+			if (interactive[y * mapSize.x + _x] != 0)
+			{
+				col += 0b0001;
+				//TODO: aplicar correccio de colisio per que quedi just a la vora del terra
+			}
+		}
+		if(!(col & 0b0001))
+		{
+			posi.y += dir.y;
+		}
+	}
 
+	return col;
+}
+
+
+bool TileMap::advCollisionMoveBox(const glm::ivec2& pos, const glm::ivec2& size, const glm::ivec2& dir) const
+{
+	return false;
+}
+
+bool TileMap::advCollisionMoveSphere(const glm::ivec2& pos, const float radius, const glm::ivec2& dir) const
+{
 	return false;
 }
 

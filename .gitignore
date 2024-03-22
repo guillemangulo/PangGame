@@ -1,18 +1,6 @@
 
-*.tiled-session
-*.vsidx
 /.vs
-*.tlog
-*.log
-Debug/
-*.vcxproj
-*.vcxproj.*
-*.filters
-*.log
 *.obj
-*.idb
-*.pdb
-*.exe
-*.ilk
-*.pdb
 /02-Bubble/Debug
+/Debug
+*.tiled-session
