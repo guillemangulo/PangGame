@@ -38,6 +38,11 @@ void Pantalla::render()
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 }
 
+void Pantalla::toggleDebugBoxes()
+{
+	debugBoxes = !debugBoxes;
+}
+
 void Pantalla::initShaders()
 {
 	Shader vShader, fShader;

@@ -14,6 +14,8 @@
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const char* sprtsht)
 {
+	size = glm::ivec2(16, 32);
+	sizeoff = glm::ivec2(8, 0);
 	spritesheet.loadFromFile(sprtsht, TEXTURE_PIXEL_FORMAT_RGBA);
 	#define SPRITE_BLOCK 0.125f
 	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(SPRITE_BLOCK, SPRITE_BLOCK), &spritesheet, &shaderProgram);
@@ -69,58 +71,45 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, co
 void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
-	Game::directions dir = Game::instance().getDirection();
-	switch (dir)
+
+	//Direcció que indica el jugador
+	glm::ivec2 dir = Game::instance().getDirection();
+	dir.x *= speed;
+	dir.y *= 0;
+
+
+	short col = map->collisionMove(&pos, size,sizeoff, dir);
+	//Actualitzem les animacions en funció de la direcció i les colisions
+	if (dir.x < 0)
 	{
-	case Game::UP:
-		break;
-	case Game::DOWN:
-		break;
-	case Game::LEFT:
 		if (sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
-		pos.x -= 2;
-		if (map->collisionMoveLeft(pos, glm::ivec2(32, 32)))
+		if (col & 0b1000)
 		{
-			pos.x += 2;
 			sprite->changeAnimation(STAND_LEFT);
 		}
-		break;
-	case Game::RIGHT:
+	}
+	else if (dir.x > 0)
+	{
 		if (sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
-		pos.x += 2;
-		if (map->collisionMoveRight(pos, glm::ivec2(32, 32)))
+		if (col & 0b0100 )
 		{
-			pos.x -= 2;
 			sprite->changeAnimation(STAND_RIGHT);
 		}
-		break;
-	case Game::UPLEFT:
-		break;
-	case Game::UPRIGHT:
-		break;
-	case Game::DOWNLEFT:
-		break;
-	case Game::DOWNRIGHT:
-		break;
-	case Game::NONE:
-		if (sprite->animation() == MOVE_LEFT)
-			sprite->changeAnimation(STAND_LEFT);
-		else if (sprite->animation() == MOVE_RIGHT)
-			sprite->changeAnimation(STAND_RIGHT);
-		break;
-	default:
-		if (sprite->animation() == MOVE_LEFT)
-			sprite->changeAnimation(STAND_LEFT);
-		else if (sprite->animation() == MOVE_RIGHT)
-			sprite->changeAnimation(STAND_RIGHT);
-		break;	
 	}
-	
-	pos.y += FALL_STEP;
-	map->collisionMoveDown(pos, glm::ivec2(32, 32), &pos.y);	
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
+	else
+	{
+		if (sprite->animation() == MOVE_LEFT)
+			sprite->changeAnimation(STAND_LEFT);
+		else if (sprite->animation() == MOVE_RIGHT)
+			sprite->changeAnimation(STAND_RIGHT);
+	}
+
+	fall(deltaTime);
+
+	//Renderitzem el que cal
+	updatePosition();	
 }
 
 
