@@ -11,6 +11,7 @@ class Player :
 		void update(int deltaTime);
 
 	private:
+		float speed = 1.5f;
 		enum PlayerAnims
 		{
 			STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, SHOOT, CLIMB_UP, CLIMB_DOWN, TAKE_DAMAGE, END_CLIMB

@@ -21,8 +21,8 @@ public:
 	int getY() const;
 
 	bool isActivated() const;
-	void activate() { activated = true; }
-	void desactivate() { activated = false; }
+	void activate();
+	void desactivate();
 	void update();
 	bool collidesWithFloor(const TileMap& tileMap) const;
 	bool collidesWithPlayer() const;

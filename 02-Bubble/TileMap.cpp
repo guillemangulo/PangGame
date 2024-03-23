@@ -26,6 +26,11 @@ TileMap::TileMap(const string& levelFile, const glm::vec2& minCoords, ShaderProg
 
 TileMap::~TileMap()
 {
+	free();
+	if (background != NULL)
+		delete background;
+	if (foreground != NULL)
+		delete foreground;
 	if (interactive != NULL)
 		delete interactive;
 }
@@ -237,76 +242,82 @@ void TileMap::prepareArrays(const glm::vec2& minCoords, ShaderProgram& program)
 // already intersecting a tile below.
 
 
-/// <summary>
-/// collisionMove mira si hi ha colisio amb la posicio i la direccio per una capsa de size i aplica aquest moviment.
-/// Les colisions no son elastiques i deixarán l'objecte just a la vora del bloc.
-/// </summary>
-/// <param name="pos">Punter a la posició actual del objecte</param>
-/// <param name="size">Escala de la caixa de colisions</param>
-/// <param name="dir">Cantitat de moviment a intentar</param>
-/// <returns>Retorna el short de colisions com a un bitmap de +x -x +y -y en els bits menys significatius.</returns>
-short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm::ivec2 dir) const
+short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm::ivec2& sizeoff, const glm::ivec2 dir) const
 {
-	int x, y, y1, x1;
-	glm::ivec2 posi = *pos;
-    short col = 0b0000;
+	if (dir.x != 0 || dir.y != 0)
+	{
+		int x, y, y1, x1;
+		glm::ivec2 posi = *pos;
+		short col = 0b0000;
 
-	//Nova posicio de la capsa en tilespace
-	x = (posi.x + dir.x) / tileSize;
-	y = (posi.y + dir.y) / tileSize;
-	y1 = (posi.y + size.y - 1) / tileSize;
-	x1 = (posi.x + size.x - 1) / tileSize;
+		//Nova posicio de la capsa en tilespace
+		x =  (posi.x + sizeoff.y + dir.x -1) / tileSize;
+		x1 = (posi.x + sizeoff.x + size.x + dir.x) / tileSize;
 
-	if(dir.x>0)
-	{ 
+		y =  (posi.y + sizeoff.x + dir.y-1) / tileSize;
+		y1 = (posi.y + sizeoff.y + size.y + dir.y) / tileSize;
+
 		for (int _y = y; _y <= y1; _y++)
 		{
-			if (interactive[_y * mapSize.x + x] != 0)
+			for (int _x = x; _x <= x1; _x++)
 			{
-				col += 0b1000;
-				//TODO: aplicar correccio de colisio per que quedi just a la vora del bloc
+				cout << "(" << _x << "," << _y << ")" << interactive[_y * mapSize.x + _x] << " ";
 			}
-				
+			cout << endl;
 		}
-		if(!(col & 0b1000))
-		{
-			posi.x += dir.x;
-		}
+		cout << endl;
 
-	}
-	else if(dir.x<0)
-	{
-		for (int _y = y; _y <= y1; _y++)
+		if (dir.x > 0)
 		{
-			if (interactive[_y * mapSize.x + x] != 0)
+			for (int _y = y; !(col&0b1000) && _y <= y1-1; _y++)
 			{
-				col += 0b0100;
-				//TODO: aplicar correccio de colisio per que quedi just a la vora del bloc
+				if (interactive[_y * mapSize.x + x1] != 0)
+				{
+					col |= 0b1000;
+					//TODO: aplicar correccio de colisio per que quedi just a la vora del bloc
+				}
+
+			}
+			if (!(col & 0b1000))
+			{
+				pos->x += dir.x;
 			}
 
-			if(!(col & 0b0100))
+		}
+		else if (dir.x < 0)
+		{
+			for (int _y = y; !(col & 0b0100) && _y <= y1-1; _y++)
 			{
-				posi.x += dir.x;
+				if (interactive[_y * mapSize.x + x] != 0)
+				{
+					col |= 0b0100;
+					//TODO: aplicar correccio de colisio per que quedi just a la vora del bloc
+				}
+			}
+			if (!(col & 0b0100))
+			{
+				pos->x += dir.x;
 			}
 		}
-	}
-	if (dir.y < 0)
-	{
-		for (int _x = x; _x <= x1; _x++)
+		if (dir.y > 0)
 		{
-			if (interactive[y * mapSize.x + _x] != 0)
+			for (int _x = x; !(col & 0b0001) && _x <= x1; _x++)
 			{
-				col += 0b0001;
-				//TODO: aplicar correccio de colisio per que quedi just a la vora del terra
+				if (interactive[y1 * mapSize.x + _x] != 0)
+				{
+					col |= 0b0001;
+					pos->y = (y-1) * tileSize;
+					//TODO: aplicar correccio de colisio per que quedi just a la vora del terra
+				}
+			}
+			if (!(col & 0b0001))
+			{
+				pos->y += dir.y;
 			}
 		}
-		if(!(col & 0b0001))
-		{
-			posi.y += dir.y;
-		}
+		return col;
 	}
-
-	return col;
+	return 0b10000;
 }
 
 

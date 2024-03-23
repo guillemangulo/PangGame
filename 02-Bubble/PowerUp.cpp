@@ -29,7 +29,7 @@ void PowerUp::desactivate() {
 
 void PowerUp::update() {
 
-    fall(0.0f);
+    fall(0);
 
 }
 

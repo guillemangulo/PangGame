@@ -39,6 +39,11 @@ void Game::keyPressed(int key)
 		loadScreen(GAME);
 	}
 
+	if (key == GLFW_KEY_C)
+	{
+		activeScene->toggleDebugBoxes();
+	}
+
 	keys[key] = true;
 }
 
@@ -82,6 +87,8 @@ void Game::loadScreen(pantalles p)
 		break;
 	case Game::GAME:
 	{
+		if (activeScene != NULL)
+			delete activeScene;
 		nivell = Joc();
 		activeScene = &nivell;
 		nivell.init(level);
@@ -104,33 +111,33 @@ void Game::loadScreen(pantalles p)
 	}
 }
 
-Game::directions Game::getDirection() const
+glm::ivec2 Game::getDirection() const
 {
 	//Aixó es pot ampliar per donar suport a més tecles i controladors
 	if (keys[GLFW_KEY_UP] || keys[GLFW_KEY_W])
 	{
 		if(keys[GLFW_KEY_LEFT] || keys[GLFW_KEY_A])
-			return UPLEFT;
+			return glm::ivec2(-1,-1);
 		else if(keys[GLFW_KEY_RIGHT] || keys[GLFW_KEY_D])
-			return UPRIGHT;
+			return glm::ivec2(1, -1);
 		else
-			return UP;
+			return glm::ivec2(0, -1);;
 	}
 	else if (keys[GLFW_KEY_DOWN] || keys[GLFW_KEY_S])
 	{
-		if(keys[GLFW_KEY_LEFT] || keys[GLFW_KEY_A])
-			return DOWNLEFT;
-		else if(keys[GLFW_KEY_RIGHT] || keys[GLFW_KEY_D])
-			return DOWNRIGHT;
+		if (keys[GLFW_KEY_LEFT] || keys[GLFW_KEY_A])
+			return glm::ivec2(-1, 1);
+		else if (keys[GLFW_KEY_RIGHT] || keys[GLFW_KEY_D])
+			return glm::ivec2(1, 1);
 		else
-			return DOWN;
+			return glm::ivec2(0, 1);;
 	}
 	else if(keys[GLFW_KEY_LEFT] || keys[GLFW_KEY_A])
-		return LEFT;
+		return glm::ivec2(-1,0);
 	else if(keys[GLFW_KEY_RIGHT] || keys[GLFW_KEY_D])
-		return RIGHT;
+		return glm::ivec2(1, 0);
 	else
-		return NONE;
+		return glm::ivec2(0, 0);
 }
 
 bool Game::IsShooting() const

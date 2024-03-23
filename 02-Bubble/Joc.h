@@ -13,10 +13,13 @@ class Joc :
 	Joc();
 	~Joc();
 
+	void clearMem();
+
 	void init(int nivell);
 	void update(int deltaTime) override;
 	void render() override;
-	void teleportPlayer(int x, int y);		
+	void teleportPlayer(int x, int y);	
+	void toggleDebugBoxes() override;
 
 	private:
 		TileMap* map;

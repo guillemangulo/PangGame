@@ -22,6 +22,8 @@ void Animated::update(int deltaTime)
 void Animated::render()
 {
 	sprite->render();
+	if (debugColision)
+		drawColisionBox(&pos, size, sizeoff);
 }
 
 void Animated::setTileMap(TileMap* tileMap)
@@ -32,6 +34,11 @@ void Animated::setTileMap(TileMap* tileMap)
 void Animated::setPosition(const glm::vec2& _pos)
 {
 	pos = _pos;
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
+}
+
+void Animated::updatePosition()
+{
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 }
 
@@ -47,6 +54,43 @@ bool Animated::doGravity(bool gravity)
 	return doGrav;
 }
 
+void Animated::drawColisionBox(glm::ivec2* pos, const glm::ivec2& size, const glm::ivec2& sizeoff, const glm::ivec2 dir) const
+{
+	if (debugColision)
+	{
+		// guardem la matriu actual
+		glPushMatrix();
+
+		// dibuixem la capsa de direccio si cal
+		if (dir.x != 0 || dir.y != 0)
+		{
+			glBegin(GL_LINES);
+			glColor3f(1.0f, 1.0f, 0.0f);
+			glVertex2i(pos->x, pos->y);
+			glVertex2i(pos->x + dir.x*4, pos->y + dir.y*4);
+			glEnd();
+		}
+
+		// dibuixem la capsa de colisio
+		glBegin(GL_LINE_LOOP);
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex2i(pos->x+sizeoff.x , pos->y+sizeoff.y );
+		glVertex2i(pos->x + size.x + sizeoff.x, pos->y + sizeoff.y);
+		glVertex2i(pos->x + size.x + sizeoff.x, pos->y + size.y + sizeoff.y);
+		glVertex2i(pos->x + sizeoff.x, pos->y + size.y + sizeoff.y);
+		glEnd();
+
+		// restaurem la matriu
+		glPopMatrix();
+	}
+}
+
+
+void Animated::debugColisionBoxToggle()
+{
+	debugColision = !debugColision;
+}
+
 
 /// <summary>
 /// Animació sencilla de com ha de caure un objecte basada en una lookup table
@@ -56,7 +100,9 @@ void Animated::fall(int deltaTime)
 {
 	if (doGrav)
 	{
-		if (map->collisionMove(&pos, glm::ivec2(1, 1), glm::ivec2(0,-1)) & 0b0001)
+		short col = map->collisionMove(&pos, size,sizeoff, glm::ivec2(0, fallTable[fallFrame]));
+		//TODO: Implementar size offset
+		if (col & 0b0001)
 		{
 			if (falling)
 			{
@@ -75,8 +121,6 @@ void Animated::fall(int deltaTime)
 			{
 				fallFrame = fallTableSize-1;
 			}
-			pos.y -= fallTable[fallFrame];
-			sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 		}
 	}
 }
