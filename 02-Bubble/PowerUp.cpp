@@ -26,13 +26,6 @@ void PowerUp::desactivate() {
     activated = false;
 }
 
-
-void PowerUp::update() {
-
-    fall(0);
-
-}
-
 bool PowerUp::collidesWithFloor(const TileMap& tileMap) const {
     int tileX = posX / tileMap.getTileSize();
     int tileY = (posY + powerUpHeight) / tileMap.getTileSize();

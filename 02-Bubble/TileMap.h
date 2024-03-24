@@ -50,7 +50,6 @@ private:
 
 	bool loadLevel(const string& levelFile);//, const string& tilesetFile = "images/pangTileset.json");
 	void prepareArrays(const glm::vec2& minCoords, ShaderProgram& program);
-	bool is_ladder(int idstair);
 
 private:
 	GLuint vao;
@@ -64,11 +63,10 @@ private:
 
 	int* interactive;
 	int* foreground;
-	int* background;
-	int* ladders;
+	int* stairs;
 
 	bool* colisions;
-	bool* stairscase;
+	bool* stairsmap;
 
 };
 

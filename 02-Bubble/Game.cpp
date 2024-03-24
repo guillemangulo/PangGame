@@ -13,8 +13,8 @@ void Game::init()
 
 bool Game::update(int deltaTime)
 {
-	activeScene->update(deltaTime);
-
+	if(!paused)
+		activeScene->update(deltaTime);
 	return bPlay;
 }
 
@@ -26,22 +26,55 @@ void Game::render()
 
 void Game::keyPressed(int key)
 {
-	if (key == GLFW_KEY_ESCAPE) // Escape code
-		bPlay = false;
-	if (key == GLFW_KEY_1) // Escape code
-	{
-		level = 1;
-		loadScreen(GAME);
-	}
-	if (key == GLFW_KEY_2) // Escape code
-	{
-		level = 2;
-		loadScreen(GAME);
-	}
 
-	if (key == GLFW_KEY_C)
+	switch (key)
 	{
-		activeScene->toggleDebugBoxes();
+		case GLFW_KEY_ESCAPE:
+		{
+			bPlay = false;
+			break;
+		}
+		case GLFW_KEY_1: 
+		{
+			level = 1;
+			loadScreen(GAME);
+			break;
+		}
+		case GLFW_KEY_2:
+		{
+			level = 2;
+			loadScreen(GAME);
+			break;
+		}
+		case GLFW_KEY_3: 
+		{
+			level = 15;
+			loadScreen(GAME);
+			break;
+		}
+		case GLFW_KEY_4:
+		{
+			level = 4;
+			loadScreen(GAME);
+			break;
+		}
+
+		case GLFW_KEY_P:
+		{
+			paused = !paused;
+			break;
+		}
+
+		case GLFW_KEY_C:
+		{
+			activeScene->toggleDebugBoxes();
+			break;
+		}
+		default:
+		{
+			break;
+		}
+			
 	}
 
 	keys[key] = true;
@@ -87,8 +120,6 @@ void Game::loadScreen(pantalles p)
 		break;
 	case Game::GAME:
 	{
-		if (activeScene != NULL)
-			delete activeScene;
 		nivell = Joc();
 		activeScene = &nivell;
 		nivell.init(level);

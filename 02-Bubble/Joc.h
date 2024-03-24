@@ -23,8 +23,6 @@ class Joc :
 
 	private:
 		TileMap* map;
-		TileMap* foreground;
-		TileMap* background;
 		Player* player;
 };
 

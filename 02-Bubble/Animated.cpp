@@ -15,7 +15,11 @@ void Animated::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, 
 
 void Animated::update(int deltaTime)
 {
-	fall(deltaTime);
+	if (doGrav)
+	{
+		short col = map->collisionMove(&pos, size, sizeoff, glm::ivec2(0, fallTable[fallFrame]));
+		fallStateUpdate(col, deltaTime);
+	}
 	sprite->update(deltaTime);
 }
 
@@ -96,11 +100,10 @@ void Animated::debugColisionBoxToggle()
 /// Animació sencilla de com ha de caure un objecte basada en una lookup table
 /// </summary>
 /// <param name="deltaTime">En desus actualment, el mantinc per posibles optimitzacions.</param>
-void Animated::fall(int deltaTime)
+void Animated::fallStateUpdate(short col, int deltaTime)
 {
 	if (doGrav)
 	{
-		short col = map->collisionMove(&pos, size,sizeoff, glm::ivec2(0, fallTable[fallFrame]));
 		//TODO: Implementar size offset
 		if (col & 0b0001)
 		{

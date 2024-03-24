@@ -27,12 +27,16 @@ TileMap::TileMap(const string& levelFile, const glm::vec2& minCoords, ShaderProg
 TileMap::~TileMap()
 {
 	free();
-	if (background != NULL)
-		delete background;
+	if (stairs != NULL)
+		delete stairs;
 	if (foreground != NULL)
 		delete foreground;
 	if (interactive != NULL)
 		delete interactive;
+	if(colisions != NULL)
+		delete colisions;
+	if (stairsmap != NULL)
+		delete stairsmap;
 }
 
 
@@ -87,13 +91,11 @@ bool TileMap::loadLevel(const string& levelFile)
 
 	int size = mapSize.x * mapSize.y;
 	interactive = new int[size];
-	background = new int[size];
 	foreground = new int[size];
-
-	ladders = new int[size];
+	stairs = new int[size];
 
 	colisions = new bool[size];
-	stairscase = new bool[size];
+	stairsmap = new bool[size];
 
 	getline(fin, line);
 	if (line.compare(0, 4, "CAPA") != 0)
@@ -107,8 +109,7 @@ bool TileMap::loadLevel(const string& levelFile)
 				std::getline(fin, token);
 			else
 				std::getline(fin, token, ',');
-
-
+			foreground[i] = std::stoi(token);
 		}
 	}
 	getline(fin, line);
@@ -125,10 +126,10 @@ bool TileMap::loadLevel(const string& levelFile)
 				std::getline(fin, token, ',');
 
 			interactive[i] = std::stoi(token);
-
-
-
-
+			if (interactive[i] != 0)
+				colisions[i] = true;
+			else
+				colisions[i] = false;
 		}
 	}
 	getline(fin, line);
@@ -144,49 +145,17 @@ bool TileMap::loadLevel(const string& levelFile)
 			else
 				std::getline(fin, token, ',');
 
-			foreground[i] = std::stoi(token);
-
-		}
-	}
-
-
-	// tractament de colisions
-
-	for (int i = 0; i < size; ++i) {
-		//totes les colisions estan en capa interactive
-		if (interactive[i] != 0) colisions[i] = true;
-		else colisions[i] = false;
-
-		// si hi ha algo en capa scale mirar si es escala
-		if (is_ladder(ladders[i])) stairscase[i] = true;
-		else stairscase[i] = false;
-	}
-
-	/*
-	for(int j=0; j<mapSize.y; j++)
-	{
-		for(int i=0; i<mapSize.x; i++)
-		{
-			fin.get(tile);
-			if(tile == ' ')
-				map[j*mapSize.x+i] = 0;
+			stairs[i] = std::stoi(token);
+			if (stairs[i] != 0)
+				stairsmap[i] = true;
 			else
-				map[j*mapSize.x+i] = tile - int('0');
+				stairsmap[i] = false;
 		}
-		fin.get(tile);
-#ifndef _WIN32
-		fin.get(tile);
-#endif
 	}
-	fin.close();//*/
 
 	return true;
 }//*/
 
-
-bool TileMap::is_ladder(int idstair) {
-	return ((idstair == 16) || (idstair == 17) || (idstair == 18));
-}
 
 void TileMap::prepareArrays(const glm::vec2& minCoords, ShaderProgram& program)
 {
@@ -201,6 +170,56 @@ void TileMap::prepareArrays(const glm::vec2& minCoords, ShaderProgram& program)
 		for (int i = 0; i < mapSize.x; i++)
 		{
 			tile = interactive[j * mapSize.x + i];
+			if (tile != 0)
+			{
+				// Non-empty tile
+				nTiles++;
+				posTile = glm::vec2(minCoords.x + i * tileSize, minCoords.y + j * tileSize);
+				texCoordTile[0] = glm::vec2(float((tile - 1) % tilesheetSize.x) / tilesheetSize.x, float((tile - 1) / tilesheetSize.x) / tilesheetSize.y);
+				texCoordTile[1] = texCoordTile[0] + tileTexSize;
+				//texCoordTile[0] += halfTexel;
+				texCoordTile[1] -= halfTexel;
+				// First triangle
+				vertices.push_back(posTile.x); vertices.push_back(posTile.y);
+				vertices.push_back(texCoordTile[0].x); vertices.push_back(texCoordTile[0].y);
+				vertices.push_back(posTile.x + blockSize); vertices.push_back(posTile.y);
+				vertices.push_back(texCoordTile[1].x); vertices.push_back(texCoordTile[0].y);
+				vertices.push_back(posTile.x + blockSize); vertices.push_back(posTile.y + blockSize);
+				vertices.push_back(texCoordTile[1].x); vertices.push_back(texCoordTile[1].y);
+				// Second triangle
+				vertices.push_back(posTile.x); vertices.push_back(posTile.y);
+				vertices.push_back(texCoordTile[0].x); vertices.push_back(texCoordTile[0].y);
+				vertices.push_back(posTile.x + blockSize); vertices.push_back(posTile.y + blockSize);
+				vertices.push_back(texCoordTile[1].x); vertices.push_back(texCoordTile[1].y);
+				vertices.push_back(posTile.x); vertices.push_back(posTile.y + blockSize);
+				vertices.push_back(texCoordTile[0].x); vertices.push_back(texCoordTile[1].y);
+			}
+			tile = stairs[j * mapSize.x + i];
+			if (tile != 0)
+			{
+				// Non-empty tile
+				nTiles++;
+				posTile = glm::vec2(minCoords.x + i * tileSize, minCoords.y + j * tileSize);
+				texCoordTile[0] = glm::vec2(float((tile - 1) % tilesheetSize.x) / tilesheetSize.x, float((tile - 1) / tilesheetSize.x) / tilesheetSize.y);
+				texCoordTile[1] = texCoordTile[0] + tileTexSize;
+				//texCoordTile[0] += halfTexel;
+				texCoordTile[1] -= halfTexel;
+				// First triangle
+				vertices.push_back(posTile.x); vertices.push_back(posTile.y);
+				vertices.push_back(texCoordTile[0].x); vertices.push_back(texCoordTile[0].y);
+				vertices.push_back(posTile.x + blockSize); vertices.push_back(posTile.y);
+				vertices.push_back(texCoordTile[1].x); vertices.push_back(texCoordTile[0].y);
+				vertices.push_back(posTile.x + blockSize); vertices.push_back(posTile.y + blockSize);
+				vertices.push_back(texCoordTile[1].x); vertices.push_back(texCoordTile[1].y);
+				// Second triangle
+				vertices.push_back(posTile.x); vertices.push_back(posTile.y);
+				vertices.push_back(texCoordTile[0].x); vertices.push_back(texCoordTile[0].y);
+				vertices.push_back(posTile.x + blockSize); vertices.push_back(posTile.y + blockSize);
+				vertices.push_back(texCoordTile[1].x); vertices.push_back(texCoordTile[1].y);
+				vertices.push_back(posTile.x); vertices.push_back(posTile.y + blockSize);
+				vertices.push_back(texCoordTile[0].x); vertices.push_back(texCoordTile[1].y);
+			}
+			tile = foreground[j * mapSize.x + i];
 			if (tile != 0)
 			{
 				// Non-empty tile
@@ -261,7 +280,7 @@ short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm:
 		{
 			for (int _x = x; _x <= x1; _x++)
 			{
-				cout << "(" << _x << "," << _y << ")" << interactive[_y * mapSize.x + _x] << " ";
+				cout << "(" << _x << "," << _y << ")" << colisions[_y * mapSize.x + _x] << " ";
 			}
 			cout << endl;
 		}
@@ -271,10 +290,10 @@ short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm:
 		{
 			for (int _y = y; !(col&0b1000) && _y <= y1-1; _y++)
 			{
-				if (interactive[_y * mapSize.x + x1] != 0)
+				if (colisions[_y * mapSize.x + x1] != 0)
 				{
 					col |= 0b1000;
-					//TODO: aplicar correccio de colisio per que quedi just a la vora del bloc
+					//TODO: aplicar correccio de colisio per que quedi just a la vora del bloc?
 				}
 
 			}
@@ -288,10 +307,10 @@ short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm:
 		{
 			for (int _y = y; !(col & 0b0100) && _y <= y1-1; _y++)
 			{
-				if (interactive[_y * mapSize.x + x] != 0)
+				if (colisions[_y * mapSize.x + x] != 0)
 				{
 					col |= 0b0100;
-					//TODO: aplicar correccio de colisio per que quedi just a la vora del bloc
+					//TODO: aplicar correccio de colisio per que quedi just a la vora del bloc?
 				}
 			}
 			if (!(col & 0b0100))
@@ -303,11 +322,10 @@ short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm:
 		{
 			for (int _x = x; !(col & 0b0001) && _x <= x1; _x++)
 			{
-				if (interactive[y1 * mapSize.x + _x] != 0)
+				if (colisions[y1 * mapSize.x + _x] != 0)
 				{
 					col |= 0b0001;
-					pos->y = (y-1) * tileSize;
-					//TODO: aplicar correccio de colisio per que quedi just a la vora del terra
+					pos->y = (y1) * tileSize - size.y;
 				}
 			}
 			if (!(col & 0b0001))

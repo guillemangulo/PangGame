@@ -29,7 +29,7 @@ class Animated
 
 	protected:
 
-		void fall(int deltaTime);
+		void fallStateUpdate(short col, int deltaTime = 0);
 		glm::ivec2 tileMapDispl, pos;
 		glm::ivec2 size = glm::ivec2(1,1);
 		glm::ivec2 sizeoff = glm::ivec2(0, 0);

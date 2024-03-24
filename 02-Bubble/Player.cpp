@@ -73,12 +73,24 @@ void Player::update(int deltaTime)
 	sprite->update(deltaTime);
 
 	//Direcció que indica el jugador
-	glm::ivec2 dir = Game::instance().getDirection();
-	dir.x *= speed;
-	dir.y *= 0;
+	glm::ivec2 joy = Game::instance().getDirection();
 
+	if (joy.y != 0)
+	{
+		//TODO:: Implementar escales
+		cout << "do stairs" << endl;
+	}
+	glm::ivec2 dir;
+
+	if (doGrav)
+		dir = glm::ivec2(joy.x * speed, fallTable[fallFrame]);
+	else
+		dir = glm::ivec2(joy.x * speed, 0);
 
 	short col = map->collisionMove(&pos, size,sizeoff, dir);
+	if(doGrav)
+		fallStateUpdate(col,deltaTime);
+
 	//Actualitzem les animacions en funció de la direcció i les colisions
 	if (dir.x < 0)
 	{
@@ -106,7 +118,6 @@ void Player::update(int deltaTime)
 			sprite->changeAnimation(STAND_RIGHT);
 	}
 
-	fall(deltaTime);
 
 	//Renderitzem el que cal
 	updatePosition();	

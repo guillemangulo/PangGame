@@ -53,6 +53,7 @@ private:
 
 	int mouseX, mouseY;
 	bool mouse_down = false;
+	bool paused = false;
 
 	int level = 1;
 
