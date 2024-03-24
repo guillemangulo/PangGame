@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iostream>
 #include <GL/glew.h>
+
 #include "Player.h"
 #include "Game.h"
 
@@ -10,16 +11,12 @@
 #define FALL_STEP 4
 
 
-enum PlayerAnims
-{
-	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, SHOOT, CLIMB_UP, CLIMB_DOWN,TAKE_DAMAGE, END_CLIMB
-};
 
-
-void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
+void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const char* sprtsht)
 {
-	bJumping = false;
-	spritesheet.loadFromFile("images/PlayerDefault.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	size = glm::ivec2(16, 32);
+	sizeoff = glm::ivec2(8, 0);
+	spritesheet.loadFromFile(sprtsht, TEXTURE_PIXEL_FORMAT_RGBA);
 	#define SPRITE_BLOCK 0.125f
 	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(SPRITE_BLOCK, SPRITE_BLOCK), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(9);
@@ -67,108 +64,63 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 		
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 	
 }
 
 void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
-	Game::directions dir = Game::instance().getDirection();
-	switch (dir)
+
+	//Direcció que indica el jugador
+	glm::ivec2 joy = Game::instance().getDirection();
+
+	if (joy.y != 0)
 	{
-	case Game::UP:
-		break;
-	case Game::DOWN:
-		break;
-	case Game::LEFT:
+		//TODO:: Implementar escales
+		cout << "do stairs" << endl;
+	}
+	glm::ivec2 dir;
+
+	if (doGrav)
+		dir = glm::ivec2(joy.x * speed, fallTable[fallFrame]);
+	else
+		dir = glm::ivec2(joy.x * speed, 0);
+
+	short col = map->collisionMove(&pos, size,sizeoff, dir);
+	if(doGrav)
+		fallStateUpdate(col,deltaTime);
+
+	//Actualitzem les animacions en funció de la direcció i les colisions
+	if (dir.x < 0)
+	{
 		if (sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
-		posPlayer.x -= 2;
-		if (map->collisionMoveLeft(posPlayer, glm::ivec2(32, 32)))
+		if (col & 0b1000)
 		{
-			posPlayer.x += 2;
 			sprite->changeAnimation(STAND_LEFT);
 		}
-		break;
-	case Game::RIGHT:
+	}
+	else if (dir.x > 0)
+	{
 		if (sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
-		posPlayer.x += 2;
-		if (map->collisionMoveRight(posPlayer, glm::ivec2(32, 32)))
+		if (col & 0b0100 )
 		{
-			posPlayer.x -= 2;
 			sprite->changeAnimation(STAND_RIGHT);
-		}
-		break;
-	case Game::UPLEFT:
-		break;
-	case Game::UPRIGHT:
-		break;
-	case Game::DOWNLEFT:
-		break;
-	case Game::DOWNRIGHT:
-		break;
-	case Game::NONE:
-		if (sprite->animation() == MOVE_LEFT)
-			sprite->changeAnimation(STAND_LEFT);
-		else if (sprite->animation() == MOVE_RIGHT)
-			sprite->changeAnimation(STAND_RIGHT);
-		break;
-	default:
-		if (sprite->animation() == MOVE_LEFT)
-			sprite->changeAnimation(STAND_LEFT);
-		else if (sprite->animation() == MOVE_RIGHT)
-			sprite->changeAnimation(STAND_RIGHT);
-		break;	
-	}
-	
-	if(bJumping)
-	{
-		jumpAngle += JUMP_ANGLE_STEP;
-		if(jumpAngle == 180)
-		{
-			bJumping = false;
-			posPlayer.y = startY;
-		}
-		else
-		{
-			posPlayer.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
-			if(jumpAngle > 90)
-				bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y);
 		}
 	}
 	else
 	{
-		posPlayer.y += FALL_STEP;
-		if(map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
-		{
-			if(Game::instance().getKey(GLFW_KEY_UP))
-			{
-				bJumping = true;
-				jumpAngle = 0;
-				startY = posPlayer.y;
-			}
-		}
+		if (sprite->animation() == MOVE_LEFT)
+			sprite->changeAnimation(STAND_LEFT);
+		else if (sprite->animation() == MOVE_RIGHT)
+			sprite->changeAnimation(STAND_RIGHT);
 	}
-	
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
-}
 
-void Player::render()
-{
-	sprite->render();
-}
 
-void Player::setTileMap(TileMap *tileMap)
-{
-	map = tileMap;
-}
-
-void Player::setPosition(const glm::vec2 &pos)
-{
-	posPlayer = pos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+	//Renderitzem el que cal
+	updatePosition();	
 }
 
 

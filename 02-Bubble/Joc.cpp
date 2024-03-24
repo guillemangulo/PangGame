@@ -1,8 +1,8 @@
 #include "Joc.h"
 
 
-#define SCREEN_X 32
-#define SCREEN_Y 16
+#define SCREEN_X 0
+#define SCREEN_Y 0
 
 #define INIT_PLAYER_X_TILES 4
 #define INIT_PLAYER_Y_TILES 25
@@ -21,6 +21,16 @@ Joc::~Joc()
 		delete map;
 	if (player != NULL)
 		delete player;
+}
+
+void Joc::clearMem()
+{
+	
+	if (map != NULL)
+		delete map;
+	if (player != NULL)
+		delete player;
+
 }
 
 void Joc::init(int nivell)
@@ -60,5 +70,11 @@ void Joc::render()
 
 void Joc::teleportPlayer(int x, int y)
 {
-	player->setPosition(glm::vec2(x, y));
+	player->setPosition(glm::vec2(x/SCALING, y / SCALING));
+}
+
+void Joc::toggleDebugBoxes()
+{
+	player->debugColisionBoxToggle();
+	//TODO:map->toggleDebugBoxes();
 }

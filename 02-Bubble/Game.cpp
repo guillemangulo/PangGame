@@ -13,8 +13,8 @@ void Game::init()
 
 bool Game::update(int deltaTime)
 {
-	activeScene->update(deltaTime);
-
+	if(!paused)
+		activeScene->update(deltaTime);
 	return bPlay;
 }
 
@@ -26,8 +26,57 @@ void Game::render()
 
 void Game::keyPressed(int key)
 {
-	if(key == GLFW_KEY_ESCAPE) // Escape code
-		bPlay = false;
+
+	switch (key)
+	{
+		case GLFW_KEY_ESCAPE:
+		{
+			bPlay = false;
+			break;
+		}
+		case GLFW_KEY_1: 
+		{
+			level = 1;
+			loadScreen(GAME);
+			break;
+		}
+		case GLFW_KEY_2:
+		{
+			level = 2;
+			loadScreen(GAME);
+			break;
+		}
+		case GLFW_KEY_3: 
+		{
+			level = 15;
+			loadScreen(GAME);
+			break;
+		}
+		case GLFW_KEY_4:
+		{
+			level = 4;
+			loadScreen(GAME);
+			break;
+		}
+
+		case GLFW_KEY_P:
+		{
+			paused = !paused;
+			break;
+		}
+
+		case GLFW_KEY_C:
+		{
+			activeScene->toggleDebugBoxes();
+			break;
+		}
+		default:
+		{
+			break;
+		}
+			
+	}
+
 	keys[key] = true;
 }
 
@@ -41,7 +90,7 @@ void Game::mouseMove(int x, int y)
 	if (mouse_down)
 	{
 		if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
-			nivellpa->teleportPlayer(mouseX - 35, mouseY - 15);
+			nivellpa->teleportPlayer(mouseX, mouseY);
 		}
 	}
 	mouseX = x;
@@ -52,7 +101,7 @@ void Game::mousePress(int button)
 {
 
 	if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
-		nivellpa->teleportPlayer(mouseX - 35, mouseY - 15);
+		nivellpa->teleportPlayer(mouseX, mouseY);
 	}
 	mouse_down = true;
 }
@@ -93,33 +142,33 @@ void Game::loadScreen(pantalles p)
 	}
 }
 
-Game::directions Game::getDirection() const
+glm::ivec2 Game::getDirection() const
 {
 	//Aixó es pot ampliar per donar suport a més tecles i controladors
 	if (keys[GLFW_KEY_UP] || keys[GLFW_KEY_W])
 	{
 		if(keys[GLFW_KEY_LEFT] || keys[GLFW_KEY_A])
-			return UPLEFT;
+			return glm::ivec2(-1,-1);
 		else if(keys[GLFW_KEY_RIGHT] || keys[GLFW_KEY_D])
-			return UPRIGHT;
+			return glm::ivec2(1, -1);
 		else
-			return UP;
+			return glm::ivec2(0, -1);;
 	}
 	else if (keys[GLFW_KEY_DOWN] || keys[GLFW_KEY_S])
 	{
-		if(keys[GLFW_KEY_LEFT] || keys[GLFW_KEY_A])
-			return DOWNLEFT;
-		else if(keys[GLFW_KEY_RIGHT] || keys[GLFW_KEY_D])
-			return DOWNRIGHT;
+		if (keys[GLFW_KEY_LEFT] || keys[GLFW_KEY_A])
+			return glm::ivec2(-1, 1);
+		else if (keys[GLFW_KEY_RIGHT] || keys[GLFW_KEY_D])
+			return glm::ivec2(1, 1);
 		else
-			return DOWN;
+			return glm::ivec2(0, 1);;
 	}
 	else if(keys[GLFW_KEY_LEFT] || keys[GLFW_KEY_A])
-		return LEFT;
+		return glm::ivec2(-1,0);
 	else if(keys[GLFW_KEY_RIGHT] || keys[GLFW_KEY_D])
-		return RIGHT;
+		return glm::ivec2(1, 0);
 	else
-		return NONE;
+		return glm::ivec2(0, 0);
 }
 
 bool Game::IsShooting() const

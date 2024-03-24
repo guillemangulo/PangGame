@@ -33,9 +33,8 @@ for tmx_file in tmx_files:
 
     interactive_layer_2d = [['0' for _ in range(int(new_layer_width))] for _ in range(int(new_layer_height))]
 
-    # Iterate through each layer
     for layer in root.findall('layer'):
-        if layer.get('name') == 'Background' or layer.get('name') == 'Interactive':
+        if layer.get('name') == 'Interactive':
             # Iterate through each tile in the layer
             for data in layer.findall('data'):
                 tile_ids = data.text.split(',')
@@ -47,6 +46,22 @@ for tmx_file in tmx_files:
                     col = i % int(new_layer_width)
                     if tile_id and (interactive_layer_2d[row][col] == '0' or interactive_layer_2d[row][col] == '\n0'):
                         interactive_layer_2d[row][col] = tile_id
+
+    # Iterate through each layer
+    for layer in root.findall('layer'):
+        if layer.get('name') == 'Background':
+            # Iterate through each tile in the layer
+            for data in layer.findall('data'):
+                tile_ids = data.text.split(',')
+                # Update the interactive_layer_2d
+
+                for i, tile_id in enumerate(tile_ids):
+                    tile_id = tile_id.strip()  # Strip newline character from tile_id
+                    row = i // int(new_layer_width)
+                    col = i % int(new_layer_width)
+                    if tile_id and (interactive_layer_2d[row][col] == '0' or interactive_layer_2d[row][col] == '\n0'):
+                        interactive_layer_2d[row][col] = tile_id
+
 
     # Update the interactive_layer_data text
     interactive_layer_data.text = '\n'+ ',\n'.join([','.join(row) for row in interactive_layer_2d])

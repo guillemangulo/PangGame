@@ -2,11 +2,9 @@
 #include "Pantalla.h"
 
 #include "TileMap.h"
+#include "Animated.h"
 #include "Player.h"
 
-#include <iostream>
-#include <cmath>
-#include <glm/gtc/matrix_transform.hpp>
 
 class Joc :
     public Pantalla
@@ -15,15 +13,16 @@ class Joc :
 	Joc();
 	~Joc();
 
+	void clearMem();
+
 	void init(int nivell);
 	void update(int deltaTime) override;
 	void render() override;
-	void teleportPlayer(int x, int y);		
+	void teleportPlayer(int x, int y);	
+	void toggleDebugBoxes() override;
 
 	private:
 		TileMap* map;
-		TileMap* foreground;
-		TileMap* background;
 		Player* player;
 };
 

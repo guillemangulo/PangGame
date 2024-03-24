@@ -26,19 +26,6 @@ void PowerUp::desactivate() {
     activated = false;
 }
 
-
-void PowerUp::update() {
-
-    for (auto& powerUp : powerUps) {
-
-        if (collidesWithFloor || collidesWithPlayer) {
-
-        }
-        else powerUp.moveDown(6.5);
-    }
-
-}
-
 bool PowerUp::collidesWithFloor(const TileMap& tileMap) const {
     int tileX = posX / tileMap.getTileSize();
     int tileY = (posY + powerUpHeight) / tileMap.getTileSize();
@@ -46,9 +33,9 @@ bool PowerUp::collidesWithFloor(const TileMap& tileMap) const {
     return tileMap.isFloorTile(tileX, tileY);
 }
 
-void PowerUp::moveDown(float gravity) {
-    posY += velocity.y;
-    velocity.y = gravity;
+bool PowerUp::collidesWithPlayer() const
+{
+    return false;
 }
 
 

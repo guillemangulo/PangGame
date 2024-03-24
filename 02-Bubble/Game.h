@@ -12,7 +12,6 @@
 
 class Game
 {
-
 private:
 	Game() {}
 	
@@ -20,20 +19,12 @@ public:
 	static Game &instance()
 	{
 		static Game G;
-	
 		return G;
 	}
-
-	enum directions
-	{
-		UP,DOWN,LEFT,RIGHT,UPLEFT,UPRIGHT,DOWNLEFT,DOWNRIGHT,NONE
-	};
 	enum pantalles
 	{
 		MAINMENU, GAME, GAMEOVER, TIMEOVER, WIN, CREDITS, CONTROLS, MAPA
 	};
-	
-
 
 	void init();
 	bool update(int deltaTime);
@@ -50,7 +41,7 @@ public:
 
 	bool getKey(int key) const;
 
-	directions getDirection() const;
+	glm::ivec2 getDirection() const;
 
 	bool IsShooting() const;
 
@@ -62,11 +53,12 @@ private:
 
 	int mouseX, mouseY;
 	bool mouse_down = false;
+	bool paused = false;
 
 	int level = 1;
 
 	
-	Pantalla* scene;
+	Pantalla* activeScene = NULL;
 
 	Joc nivell; 
 
