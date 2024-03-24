@@ -2,40 +2,30 @@
 
 PowerUp::PowerUp(Type type, int x, int y) : type(type), posX(x), posY(y) {}
 
-PowerUp::Type PowerUp::getType() const {
-    return type;
-}
-
-int PowerUp::getX() const {
-    return posX;
-}
-
-int PowerUp::getY() const {
-    return posY;
-}
-
-bool PowerUp::isActivated() const {
-    return activated;
-}
-
-void PowerUp::activate() {
-    activated = true;
-}
-
-void PowerUp::desactivate() {
-    activated = false;
-}
-
-bool PowerUp::collidesWithFloor(const TileMap& tileMap) const {
+bool PowerUp::collidesWithFloor(const TileMap& tileMap, int nextY) const {
     int tileX = posX / tileMap.getTileSize();
-    int tileY = (posY + powerUpHeight) / tileMap.getTileSize();
+    int tileY = (posY + nextY) / tileMap.getTileSize();
     
     return tileMap.isFloorTile(tileX, tileY);
 }
 
-bool PowerUp::collidesWithPlayer() const
-{
-    return false;
+
+void PowerUp::update(int deltaTime) {
+
+    moveDown();
+    
+
+    //TODO: Collisions with player
+
+    
+    if (collidesWithFloor(tileMap, nextY) || currentTime >= TIMEOUT) collected = true;
+
+}
+
+void PowerUp::moveDown() {
+
 }
 
 
+// en el update de Joc pasarli TileMap per fer collideswithfloor??
+// how to implement movedown

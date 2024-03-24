@@ -353,6 +353,7 @@ bool TileMap::isFloorTile(int x, int y) const {
 	if (x < 0 || x >= mapSize.x || y < 0 || y >= mapSize.y) return true; // out of bounds
 	
 	int tileIndex = interactive[y * mapSize.x + x];
+	return (tileIndex == 1 || tileIndex == 2 || tileIndex == 3);
 
 }
 
