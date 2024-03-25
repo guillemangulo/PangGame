@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object name="Bombolla" type="Bombolla.h">
+  <properties>
+   <property name="tamany" type="int" value="0"/>
+  </properties>
+  <ellipse/>
+ </object>
+</template>

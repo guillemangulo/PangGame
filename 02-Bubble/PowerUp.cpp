@@ -18,7 +18,7 @@ void PowerUp::update(int deltaTime) {
     //TODO: Collisions with player
 
     
-    if (collidesWithFloor(tileMap, nextY) || currentTime >= TIMEOUT) collected = true;
+    //if (collidesWithFloor(tileMap, nextY) || currentTime >= TIMEOUT) collected = true;
 
 }
 
