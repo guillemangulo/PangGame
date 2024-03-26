@@ -14,6 +14,16 @@ class Animated
 	public:
 		virtual void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, const char* sprtsht);
 		virtual void update(int deltaTime);
+
+		/// <summary>
+		/// Indica que l'objecte ha col·lisionat. Les flags funcionen tal que:
+		/// 0b0001 -> Colisio amb el terra inferior.
+		/// 0b0010 -> Colisio amb el tilemap.
+		/// 0b0100 -> Colisio amb els dispars.
+		/// 0b1000 -> Colisio amb el jugador.
+		/// </summary>
+		/// <param name="flags">Tipus de colisió</param>
+		virtual void onCollision(short flags);
 		void render();
 
 		void setTileMap(TileMap* tileMap);
@@ -51,9 +61,13 @@ class Animated
 		bool shouldCollideWithPlayer() const { return colisionFlags & 0b1000; } 
 		bool shouldCollideWithDispars() const { return colisionFlags & 0b0100; } 
 
-
+		glm::ivec2 getPosition() const { return pos; }
+		glm::ivec2 getSize() const { return size; }
+		bool isCleanable() const { return cleanable; }
+		/*
 		void drawColisionBox(glm::ivec2* pos, const glm::ivec2& size, const glm::ivec2& sizeoff = glm::ivec2(1, 1), const glm::ivec2 dir = glm::ivec2(0,0)) const;
-		void debugColisionBoxToggle();
+		void debugColisionBoxToggle();//*/
+
 
 
 	protected:
@@ -79,6 +93,8 @@ class Animated
 		/// <param name="deltaTime">Deprecated</param>
 		void fallStateUpdate(short col, int deltaTime = 0);
 		glm::ivec2 tileMapDispl, pos;
+
+		bool cleanable = false;
 		bool falling = false;
 		bool debugColision = false;
 		int fallFrame = 0;

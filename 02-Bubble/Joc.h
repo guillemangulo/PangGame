@@ -24,6 +24,9 @@ class Joc :
 	void teleportPlayer(int x, int y);	
 	void toggleDebugBoxes() override;
 
+	void calculateCollisions();
+	void cleanUsedSprites();
+
 	private:
 		TileMap* map;
 		Animated* player;

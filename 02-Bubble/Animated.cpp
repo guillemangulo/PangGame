@@ -46,11 +46,25 @@ void Animated::update(int deltaTime)
 	}
 }
 
+void Animated::onCollision(short flags)
+{
+	if ((flags & 0b1000) == 0b1000)
+	{
+	}
+	if ((flags & 0b0100) == 0b0100)
+	{
+	}
+	if ((flags & 0b0001) == 0b0001)
+	{
+	}
+	else if ((flags & 0b0010) == 0b0010)
+	{
+	}
+}
+
 void Animated::render()
 {
 	sprite->render();
-	if (debugColision)
-		drawColisionBox(&pos, size, sizeoff);
 }
 
 void Animated::setTileMap(TileMap* tileMap)
@@ -104,6 +118,7 @@ bool Animated::doGravity(bool gravity)
 	return doGrav;
 }
 
+/*
 void Animated::drawColisionBox(glm::ivec2* pos, const glm::ivec2& size, const glm::ivec2& sizeoff, const glm::ivec2 dir) const
 {
 	if (debugColision)
@@ -138,8 +153,7 @@ void Animated::drawColisionBox(glm::ivec2* pos, const glm::ivec2& size, const gl
 void Animated::debugColisionBoxToggle()
 {
 	debugColision = !debugColision;
-}
-
+}*/
 void Animated::fallStateUpdate(short col, int deltaTime)
 {
 	if (doGrav)

@@ -11,6 +11,37 @@ void PowerUp::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, T
 	setType(tip);
 }
 
+void PowerUp::update(int deltaTime)
+{
+	Animated::update(deltaTime);
+	if (!cleanable)
+	{
+		currTime += deltaTime;
+		if (currTime >= timeOut)
+		{
+			cleanable = true;
+		}
+	}
+}
+
+void PowerUp::onCollision(short flags)
+{
+	if ((flags & 0b1000) == 0b1000)
+	{
+		collected = true;
+		cleanable = true;
+	}
+	if ((flags & 0b0100) == 0b0100)
+	{
+	}
+	if ((flags & 0b0001) == 0b0001)
+	{
+	}
+	else if ((flags & 0b0010) == 0b0010)
+	{
+	}
+}
+
 void PowerUp::setType(Type tip)
 {
 	type = tip;
@@ -19,10 +50,8 @@ void PowerUp::setType(Type tip)
 	case PowerUp::Type::FREEZE_TIME:
 	{
 		sprite->setNumberAnimations(1);
-		sprite->setAnimationSpeed(0, 1);
-
+			sprite->setAnimationSpeed(0, 1);
 			sprite->addKeyframe(0, glm::vec2(2, 1));
-
 		sprite->changeAnimation(0);
 		updatePosition();
 		break;

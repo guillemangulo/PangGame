@@ -16,7 +16,11 @@ public:
 	};
 	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, Type tip, const char* sprtsht = "images/varied.png");
 
-	bool isCollected() const;
+	void update(int deltaTime);
+
+	bool isCollected() const { return collected;}
+
+	void onCollision(short flags) override;
 
 	void setType(Type tip);
 
@@ -24,7 +28,7 @@ public:
 
 private:
 	Type type;
-	bool collected;
+	bool collected = false;
 
 	int currTime = 0;
 	int timeOut = 3000.0f;

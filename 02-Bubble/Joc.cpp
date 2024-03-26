@@ -1,13 +1,10 @@
 #include "Joc.h"
 
-
-
 #define SCREEN_X 0
 #define SCREEN_Y 0
 
 #define INIT_PLAYER_X_TILES 4
 #define INIT_PLAYER_Y_TILES 18
-
 
 
 Joc::Joc()
@@ -26,12 +23,10 @@ Joc::~Joc()
 
 void Joc::clearMem()
 {
-	
 	if (map != NULL)
 		delete map;
 	if (player != NULL)
 		delete player;
-
 }
 
 void Joc::init(int nivell)
@@ -52,6 +47,8 @@ void Joc::update(int deltaTime)
 {
 	currentTime += deltaTime;
 	player->update(deltaTime);
+	calculateCollisions();
+	cleanUsedSprites();
 	for(int i = 0; i < powerUps.size(); i++)
 		powerUps[i]->update(deltaTime);
 }
@@ -68,9 +65,9 @@ void Joc::render()
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 
 	map->render();
-	player->render();
 	for (int i = 0; i < powerUps.size(); i++)
 		powerUps[i]->render();
+	player->render();
 
 }
 
@@ -88,6 +85,36 @@ void Joc::teleportPlayer(int x, int y)
 
 void Joc::toggleDebugBoxes()
 {
-	player->debugColisionBoxToggle();
+	//player->debugColisionBoxToggle();
 	//TODO:map->toggleDebugBoxes();
+}
+
+void Joc::calculateCollisions()
+{
+	glm::ivec2 playerPos = player->getPosition();
+	for each (auto var in powerUps)
+	{
+		if (var->shouldCollideWithPlayer())
+		{
+			glm::ivec2 PUpos = var->getPosition();
+			if (playerPos.x < PUpos.x + var->getSize().x &&
+				playerPos.x + player->getSize().x > PUpos.x &&
+				playerPos.y < PUpos.y + var->getSize().y &&
+				playerPos.y + player->getSize().y > PUpos.y)
+			{
+				var->onCollision(0b1000);
+			}
+		}
+	}
+}
+
+void Joc::cleanUsedSprites()
+{
+	for (int i = 0; i < powerUps.size(); i++)
+	{
+		if (powerUps[i]->isCleanable())
+		{
+			powerUps.erase(powerUps.begin() + i);
+		}
+	}
 }
