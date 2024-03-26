@@ -9,18 +9,41 @@ void Animated::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, 
 	spritesheet.loadFromFile(sprtsht, TEXTURE_PIXEL_FORMAT_RGBA);
     #define SPRITE_BLOCK 0.125f
 	tileMapDispl = tileMapPos;
+	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(SPRITE_BLOCK, SPRITE_BLOCK), &spritesheet, &shaderProgram);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
-
 }
 
 void Animated::update(int deltaTime)
 {
-	if (doGrav)
+	if (!paused)
 	{
-		short col = map->collisionMove(&pos, size, sizeoff, glm::ivec2(0, fallTable[fallFrame]));
-		fallStateUpdate(col, deltaTime);
+		if (doGrav)
+		{
+			if((colisionFlags & 0b0001) == 0b0001)
+			{
+				int posy = pos.y+size.y;
+				int posfloor = map->getTileSize() * (map->getMapSize().y-5);
+				if (posy < posfloor)
+				{
+					pos.y += fallTable[fallFrame];
+					updatePosition();
+					fallStateUpdate(0b0000, deltaTime);
+				}
+				else
+				{
+					pos.y = posfloor;
+					updatePosition();
+					fallStateUpdate(0b0001, deltaTime);
+				}
+			}
+			if ((colisionFlags & 0b0010) == 0b0010)
+			{
+				short col = map->collisionMove(&pos, size, sizeoff, glm::ivec2(0, fallTable[fallFrame]));
+				fallStateUpdate(col, deltaTime);
+			}
+		}
+		sprite->update(deltaTime);
 	}
-	sprite->update(deltaTime);
 }
 
 void Animated::render()
@@ -46,15 +69,38 @@ void Animated::updatePosition()
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 }
 
+bool Animated::pausa(bool pausa)
+{
+	if(pausa == NULL)
+		paused = !paused;
+	else
+		paused = pausa;
+	return paused;
+}
 
-/// <summary>
-/// Defineix si l'objecte ha d'estar afectat per la gravetat o no
-/// </summary>
-/// <param name="gravity">Boolea de si está afectat</param>
-/// <returns>Retorna si l'objecte te gravetat</returns>
+void Animated::setColisionFlags(short flags)
+{
+	if((flags & 0b0011) == 0b0011)
+	{
+		colisionFlags = flags & 0b1110;
+	}
+	else
+	{
+		colisionFlags = flags;
+	}
+	
+}
+
 bool Animated::doGravity(bool gravity)
 {
-	doGrav = gravity;
+	if(gravity == NULL)
+	{
+		doGrav = !doGrav;
+	}
+	else
+	{
+		doGrav = gravity;
+	}
 	return doGrav;
 }
 
@@ -89,17 +135,11 @@ void Animated::drawColisionBox(glm::ivec2* pos, const glm::ivec2& size, const gl
 	}
 }
 
-
 void Animated::debugColisionBoxToggle()
 {
 	debugColision = !debugColision;
 }
 
-
-/// <summary>
-/// Animació sencilla de com ha de caure un objecte basada en una lookup table
-/// </summary>
-/// <param name="deltaTime">En desus actualment, el mantinc per posibles optimitzacions.</param>
 void Animated::fallStateUpdate(short col, int deltaTime)
 {
 	if (doGrav)

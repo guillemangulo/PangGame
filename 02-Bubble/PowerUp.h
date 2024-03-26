@@ -14,27 +14,20 @@ public:
 		INVINCIBILITY,
 		SLOW_TIME
 	};
-
-	PowerUp(Type type, int x, int y);
-
+	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, Type tip, const char* sprtsht = "images/varied.png");
 
 	bool isCollected() const;
-	void update(int deltaTime);
-	bool collidesWithFloor(const TileMap& tileMap, int nextY) const;
 
-	void moveDown();
+	void setType(Type tip);
+
 
 
 private:
 	Type type;
-	int posX;
-	int posY;
 	bool collected;
-	float currentTime;
 
-	glm::vec2 velocity;
-
-	float TIMEOUT = 3000.0f;
+	int currTime = 0;
+	int timeOut = 3000.0f;
 };
 
 

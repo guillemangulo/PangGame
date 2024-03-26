@@ -6,17 +6,12 @@
 #include "Game.h"
 
 
-#define JUMP_ANGLE_STEP 4
-#define JUMP_HEIGHT 96
-#define FALL_STEP 4
-
-
-
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const char* sprtsht)
 {
 	size = glm::ivec2(16, 32);
 	sizeoff = glm::ivec2(8, 0);
 	spritesheet.loadFromFile(sprtsht, TEXTURE_PIXEL_FORMAT_RGBA);
+	setColisionFlags(0b0010);
 	#define SPRITE_BLOCK 0.125f
 	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(SPRITE_BLOCK, SPRITE_BLOCK), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(9);
@@ -122,6 +117,7 @@ void Player::update(int deltaTime)
 	//Renderitzem el que cal
 	updatePosition();	
 }
+//*/
 
 
 

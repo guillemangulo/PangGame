@@ -4,6 +4,9 @@
 #include "TileMap.h"
 #include "Animated.h"
 #include "Player.h"
+#include "PowerUp.h"
+#include <memory>
+#include <vector>
 
 
 class Joc :
@@ -23,7 +26,9 @@ class Joc :
 
 	private:
 		TileMap* map;
-		Player* player;
+		Animated* player;
+
+		std::vector<std::shared_ptr<Animated>> powerUps;
 };
 
 

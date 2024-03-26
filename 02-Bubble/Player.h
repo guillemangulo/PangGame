@@ -9,7 +9,7 @@ class Player :
 	public:
 		void init(const glm::ivec2 &tileMapPos, ShaderProgram& shaderProgram,const char* sprtsht = "images/PlayerDefault.png");
 		void update(int deltaTime);
-
+		//*/
 	private:
 		float speed = 2.0f;
 		enum PlayerAnims

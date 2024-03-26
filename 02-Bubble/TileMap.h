@@ -30,6 +30,7 @@ public:
 	void free();
 
 	int getTileSize() const { return tileSize; }
+	glm::ivec2 getMapSize() const { return mapSize; }
 
 	bool isFloorTile(int x, int y) const;
 
