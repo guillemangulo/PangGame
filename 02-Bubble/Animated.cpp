@@ -2,6 +2,7 @@
 #include <cmath>
 #include <iostream>
 #include <GL/glew.h>
+#include "Joc.h"
 
 
 void Animated::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, const char* sprtsht)

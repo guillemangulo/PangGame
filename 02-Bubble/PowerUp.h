@@ -31,7 +31,7 @@ private:
 	bool collected = false;
 
 	int currTime = 0;
-	int timeOut = 3000.0f;
+	int timeOut = 30000;
 };
 
 

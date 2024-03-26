@@ -1,4 +1,5 @@
 #include "PowerUp.h"
+#include "Joc.h"
 
 
 void PowerUp::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, Type tip, const char* sprtsht)
@@ -14,13 +15,10 @@ void PowerUp::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, T
 void PowerUp::update(int deltaTime)
 {
 	Animated::update(deltaTime);
-	if (!cleanable)
+	currTime += deltaTime;
+	if (currTime >= timeOut)
 	{
-		currTime += deltaTime;
-		if (currTime >= timeOut)
-		{
-			cleanable = true;
-		}
+		joc->removePowerUP(index);
 	}
 }
 
@@ -29,7 +27,7 @@ void PowerUp::onCollision(short flags)
 	if ((flags & 0b1000) == 0b1000)
 	{
 		collected = true;
-		cleanable = true;
+		joc->removePowerUP(index);
 	}
 	if ((flags & 0b0100) == 0b0100)
 	{

@@ -25,7 +25,7 @@ class Joc :
 	void toggleDebugBoxes() override;
 
 	void calculateCollisions();
-	void cleanUsedSprites();
+	void removePowerUP(int obj);
 
 	private:
 		TileMap* map;

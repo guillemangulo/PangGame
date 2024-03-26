@@ -48,8 +48,7 @@ void Joc::update(int deltaTime)
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	calculateCollisions();
-	cleanUsedSprites();
-	for(int i = 0; i < powerUps.size(); i++)
+	for(unsigned int i = 0; i < powerUps.size(); i++)
 		powerUps[i]->update(deltaTime);
 }
 
@@ -65,7 +64,7 @@ void Joc::render()
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 
 	map->render();
-	for (int i = 0; i < powerUps.size(); i++)
+	for (unsigned int i = 0; i < powerUps.size(); i++)
 		powerUps[i]->render();
 	player->render();
 
@@ -78,6 +77,8 @@ void Joc::teleportPlayer(int x, int y)
 		PU->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, PowerUp::Type::FREEZE_TIME);// "images/PowerUp.png");
 		PU->setPosition(glm::vec2(x / SCALING, y / SCALING));
 		PU->setTileMap(map);
+		PU->setIndex(powerUps.size());
+		PU->setParent(this);
 	}
 	powerUps.push_back(newPU);
 	//player->setPosition(glm::vec2(x/SCALING, y / SCALING));
@@ -92,29 +93,25 @@ void Joc::toggleDebugBoxes()
 void Joc::calculateCollisions()
 {
 	glm::ivec2 playerPos = player->getPosition();
-	for each (auto var in powerUps)
+	for(unsigned int i = 0; i < powerUps.size(); i++)
 	{
-		if (var->shouldCollideWithPlayer())
+		if (powerUps[i]->shouldCollideWithPlayer())
 		{
-			glm::ivec2 PUpos = var->getPosition();
-			if (playerPos.x < PUpos.x + var->getSize().x &&
+			glm::ivec2 PUpos = powerUps[i]->getPosition();
+			if (playerPos.x < PUpos.x + powerUps[i]->getSize().x &&
 				playerPos.x + player->getSize().x > PUpos.x &&
-				playerPos.y < PUpos.y + var->getSize().y &&
+				playerPos.y < PUpos.y + powerUps[i]->getSize().y &&
 				playerPos.y + player->getSize().y > PUpos.y)
 			{
-				var->onCollision(0b1000);
+				powerUps[i]->onCollision(0b1000);
 			}
 		}
 	}
 }
 
-void Joc::cleanUsedSprites()
+void Joc::removePowerUP(int obj)
 {
-	for (int i = 0; i < powerUps.size(); i++)
-	{
-		if (powerUps[i]->isCleanable())
-		{
-			powerUps.erase(powerUps.begin() + i);
-		}
-	}
+	powerUps.erase(powerUps.begin() + obj);
+	for (unsigned int i = 0; i < powerUps.size(); i++)
+		powerUps[i]->setIndex(i);
 }
