@@ -6,7 +6,7 @@ class Bubble :
 {
 public:
     //TODO: Afegir sprite de bubble.
-    void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, const char* sprtsht = "images/varied.png") override;
+    void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, const char* sprtsht = "images/varied.png");
 
     void update(int deltaTime) override;
 

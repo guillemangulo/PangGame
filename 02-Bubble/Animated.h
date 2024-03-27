@@ -14,7 +14,7 @@ class Joc;
 class Animated
 {
 public:
-	virtual void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, const char* sprtsht);
+	virtual void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, const std::string sprtsht = "images/varied.png", const glm::ivec2 tamany = glm::ivec2(32, 32));
 	virtual void update(int deltaTime);
 
 	/// <summary>
@@ -69,6 +69,7 @@ public:
 
 	glm::ivec2 getPosition() const { return pos; }
 	glm::ivec2 getSize() const { return size; }
+	void setColSize(const glm::ivec2& _size) { size = _size; }
 		/*
 		void drawColisionBox(glm::ivec2* pos, const glm::ivec2& size, const glm::ivec2& sizeoff = glm::ivec2(1, 1), const glm::ivec2 dir = glm::ivec2(0,0)) const;
 		void debugColisionBoxToggle();//*/

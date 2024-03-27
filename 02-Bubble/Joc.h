@@ -33,6 +33,7 @@ public:
 private:
 	TileMap* map;
 	Animated* player;
+	Animated* background;
 
 	std::vector<std::shared_ptr<Animated>> powerUps;
 	std::vector<std::shared_ptr<Animated>> bubbles;

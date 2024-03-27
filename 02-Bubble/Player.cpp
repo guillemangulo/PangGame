@@ -6,7 +6,7 @@
 #include "Game.h"
 
 
-void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const char* sprtsht)
+void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const std::string sprtsht, const glm::ivec2 tamany)
 {
 	size = glm::ivec2(16, 32);
 	sizeoff = glm::ivec2(8, 0);

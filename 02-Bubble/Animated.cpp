@@ -5,12 +5,12 @@
 #include "Joc.h"
 
 
-void Animated::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, const char* sprtsht)
+void Animated::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, const std::string sprtsht, const glm::ivec2 tamany)
 {
 	spritesheet.loadFromFile(sprtsht, TEXTURE_PIXEL_FORMAT_RGBA);
-    #define SPRITE_BLOCK 0.125f
+    #define SPRITE_BLOCK 1.0f
 	tileMapDispl = tileMapPos;
-	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(SPRITE_BLOCK, SPRITE_BLOCK), &spritesheet, &shaderProgram);
+	sprite = Sprite::createSprite(tamany, glm::vec2(SPRITE_BLOCK, SPRITE_BLOCK), &spritesheet, &shaderProgram);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 }
 

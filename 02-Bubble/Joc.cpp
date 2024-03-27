@@ -50,6 +50,11 @@ void Joc::init(int nivell)
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
 
+	background = new Animated();
+	background->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "images/BackgroundLvls/L" + std::to_string(nivell) + ".png", glm::ivec2(SCREEN_WIDTH/SCALING, SCREEN_HEIGHT/SCALING - 32));
+	background->doGravity(false);
+
+
 	soundEngine = irrklang::createIrrKlangDevice();
 	playLevelSong(nivell);
 	
@@ -79,6 +84,7 @@ void Joc::render()
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 
+	background->render();
 	map->render();
 	for (unsigned int i = 0; i < powerUps.size(); i++)
 		powerUps[i]->render();
@@ -173,7 +179,7 @@ void Joc::playLevelSong(const int level)
 
 	else if(level==28||level==29||level==30||level==49||level==50||level==51)
 	{
-		playSound("audio/11Stage28-30_49-51.wav");
+		playSound("audio/11Stage28-30_49-50.wav");
 	}
 }
 

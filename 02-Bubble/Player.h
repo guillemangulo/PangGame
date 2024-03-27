@@ -7,7 +7,7 @@ class Player :
 	public Animated
 {
 	public:
-		void init(const glm::ivec2 &tileMapPos, ShaderProgram& shaderProgram,const char* sprtsht = "images/PlayerDefault.png");
+		void init(const glm::ivec2 &tileMapPos, ShaderProgram& shaderProgram,const std::string sprtsht = "images/PlayerDefault.png", const glm::ivec2 tamany = glm::ivec2(32, 32)) override;
 		void update(int deltaTime);
 		//*/
 	private:
