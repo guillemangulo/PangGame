@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="48" height="26" tilewidth="8" tileheight="8" infinite="0" nextlayerid="6" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="48" height="26" tilewidth="8" tileheight="8" infinite="0" nextlayerid="7" nextobjectid="14">
  <tileset firstgid="1" source="../images/Pang.tsx"/>
  <imagelayer id="5" name="Capa de Imagen 1">
-  <image source="../../../../../L42.png" width="384" height="208"/>
+  <image source="../images/BackgroundLvls/L42.png" width="384" height="208"/>
  </imagelayer>
  <layer id="3" name="Foreground" width="48" height="26">
   <data encoding="csv">
@@ -94,4 +94,57 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="6" name="Capa de Objetos 1">
+  <object id="1" template="Bombolla.tx" x="53.3863" y="68.6395">
+   <properties>
+    <property name="size" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="2" template="Bombolla.tx" x="311.42" y="70.2284">
+   <properties>
+    <property name="size" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="4" template="Bombolla.tx" x="129.695" y="192.614" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="5" template="Bombolla.tx" x="155.752" y="182.763" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="6" template="Bombolla.tx" x="174.819" y="145.583" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="7" template="Bombolla.tx" x="188.801" y="170.052" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="8" template="Bombolla.tx" x="196.428" y="186.894" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="9" template="Bombolla.tx" x="224.074" y="179.268" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="10" template="Bombolla.tx" x="235.832" y="150.986" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="11" template="Bombolla.tx" x="234.243" y="192.932" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="13" x="162.328" y="14.8242" width="16" height="32"/>
+ </objectgroup>
 </map>

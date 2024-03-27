@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="48" height="26" tilewidth="8" tileheight="8" infinite="0" nextlayerid="6" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="48" height="26" tilewidth="8" tileheight="8" infinite="0" nextlayerid="7" nextobjectid="9">
  <tileset firstgid="1" source="../images/Pang.tsx"/>
  <imagelayer id="5" name="Capa de Imagen 1">
-  <image source="../../../../../L16.png" width="384" height="208"/>
+  <image source="../images/BackgroundLvls/L16.png" width="384" height="208"/>
  </imagelayer>
  <layer id="1" name="Foreground" width="48" height="26">
   <data encoding="csv">
@@ -94,4 +94,14 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="6" name="Capa de Objetos 1">
+  <object id="5" template="Bombolla.tx" x="109.667" y="18">
+   <properties>
+    <property name="size" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="6" template="Bombolla.tx" x="183.333" y="58"/>
+  <object id="7" template="Bombolla.tx" x="50.6667" y="55.6667"/>
+  <object id="8" x="148.547" y="7.99826" width="16" height="32"/>
+ </objectgroup>
 </map>

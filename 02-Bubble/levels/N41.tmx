@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="48" height="26" tilewidth="8" tileheight="8" infinite="0" nextlayerid="6" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="48" height="26" tilewidth="8" tileheight="8" infinite="0" nextlayerid="7" nextobjectid="18">
  <tileset firstgid="1" source="../images/Pang.tsx"/>
  <imagelayer id="5" name="Capa de Imagen 1">
-  <image source="../../../../../L41.png" width="384" height="208"/>
+  <image source="../images/BackgroundLvls/L41.png" width="384" height="208"/>
  </imagelayer>
  <layer id="2" name="Foreground" width="48" height="26">
   <data encoding="csv">
@@ -94,4 +94,91 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="6" name="Capa de Objetos 1">
+  <object id="1" template="Bombolla.tx" x="41.3108" y="21.9265" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="2" template="Bombolla.tx" x="41.0353" y="50.8863" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="3" template="Bombolla.tx" x="93.1504" y="36.5864" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="4" template="Bombolla.tx" x="85.5238" y="46.4374" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="5" template="Bombolla.tx" x="119.844" y="41.353" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="6" template="Bombolla.tx" x="146.219" y="50.2507" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="7" template="Bombolla.tx" x="170.052" y="28.0065" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="8" template="Bombolla.tx" x="202.783" y="52.1574" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="9" template="Bombolla.tx" x="259.347" y="29.9131" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="10" template="Bombolla.tx" x="280.002" y="17.8376" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="11" template="Bombolla.tx" x="282.227" y="44.5308" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="12" template="Bombolla.tx" x="290.171" y="48.0263" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="13" template="Bombolla.tx" x="307.331" y="35.9508" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="14" template="Bombolla.tx" x="321.949" y="52.1574" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="15" template="Bombolla.tx" x="336.884" y="34.6797" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="16" template="Bombolla.tx" x="345.146" y="45.1663" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="17" template="Bombolla.tx" x="358.811" y="40.7175" width="5" height="5">
+   <properties>
+    <property name="size" type="int" value="3"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

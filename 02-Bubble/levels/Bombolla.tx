@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template>
- <object name="Bombolla" type="Bombolla.h">
+ <object name="Bubble" type="Bombolla.h" width="20" height="20">
   <properties>
-   <property name="tamany" type="int" value="0"/>
+   <property name="size" type="int" value="0"/>
   </properties>
   <ellipse/>
  </object>

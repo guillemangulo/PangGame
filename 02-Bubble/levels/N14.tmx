@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="48" height="26" tilewidth="8" tileheight="8" infinite="0" nextlayerid="6" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="48" height="26" tilewidth="8" tileheight="8" infinite="0" nextlayerid="7" nextobjectid="4">
  <tileset firstgid="1" source="../images/Pang.tsx"/>
  <imagelayer id="5" name="Capa de Imagen 1">
-  <image source="../../../../../L14.png" width="384" height="208"/>
+  <image source="../images/BackgroundLvls/L14.png" width="384" height="208"/>
  </imagelayer>
  <layer id="2" name="Foreground" width="48" height="26">
   <data encoding="csv">
@@ -94,4 +94,19 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="6" name="Capa de Objetos 1">
+  <object id="1" name="Bubble" type="Bombolla.h" x="252.314" y="34.6375">
+   <properties>
+    <property name="size" type="int" value="0"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="2" name="Bubble" type="Bombolla.h" x="110.586" y="37.4975">
+   <properties>
+    <property name="size" type="int" value="0"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="3" x="166.141" y="20.5442" width="16" height="32"/>
+ </objectgroup>
 </map>
