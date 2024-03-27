@@ -48,8 +48,11 @@ void Joc::update(int deltaTime)
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	calculateCollisions();
-	for(unsigned int i = 0; i < powerUps.size(); i++)
+	for (unsigned int i = 0; i < powerUps.size(); i++)
 		powerUps[i]->update(deltaTime);
+
+	for (unsigned int i = 0; i < bubbles.size(); i++)
+		bubbles[i]->update(deltaTime);
 }
 
 void Joc::render()
@@ -66,12 +69,29 @@ void Joc::render()
 	map->render();
 	for (unsigned int i = 0; i < powerUps.size(); i++)
 		powerUps[i]->render();
+
+	for (unsigned int i = 0; i < bubbles.size(); i++)
+		bubbles[i]->render();
+
 	player->render();
 
 }
 
 void Joc::teleportPlayer(int x, int y)
 {
+
+	std::shared_ptr<Animated> newBubble = std::make_shared<Bubble>();
+
+	if (auto bubble = std::dynamic_pointer_cast<Bubble>(newBubble)) 
+	{
+		bubble->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram); // "images/PowerUp.png");
+		bubble->setPosition(glm::vec2(x / SCALING, y / SCALING));
+		bubble->setTileMap(map);
+		bubble->setIndex(bubbles.size());
+		bubble->setParent(this);
+	}
+	bubbles.push_back(newBubble);
+	/*
 	std::shared_ptr<Animated> newPU = std::make_shared<PowerUp>();
 	if (auto PU = std::dynamic_pointer_cast<PowerUp>(newPU)) {
 		PU->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, PowerUp::Type::FREEZE_TIME);// "images/PowerUp.png");
@@ -80,7 +100,8 @@ void Joc::teleportPlayer(int x, int y)
 		PU->setIndex(powerUps.size());
 		PU->setParent(this);
 	}
-	powerUps.push_back(newPU);
+	powerUps.push_back(newPU);//*/
+
 	//player->setPosition(glm::vec2(x/SCALING, y / SCALING));
 }
 

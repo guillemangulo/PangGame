@@ -56,13 +56,11 @@ void TileMap::free()
 	glDeleteBuffers(1, &vbo);
 }
 
-
 bool TileMap::loadLevel(const string& levelFile)
 {
 	ifstream fin;
 	string line, tilesheetFile;
 	stringstream sstream;
-	char tile;
 
 	fin.open(levelFile.c_str());
 	if (!fin.is_open())
@@ -155,7 +153,6 @@ bool TileMap::loadLevel(const string& levelFile)
 
 	return true;
 }//*/
-
 
 void TileMap::prepareArrays(const glm::vec2& minCoords, ShaderProgram& program)
 {
@@ -256,11 +253,6 @@ void TileMap::prepareArrays(const glm::vec2& minCoords, ShaderProgram& program)
 	texCoordLocation = program.bindVertexAttribute("texCoord", 2, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 }
 
-// Collision tests for axis aligned bounding boxes.
-// Method collisionMoveDown also corrects Y coordinate if the box is
-// already intersecting a tile below.
-
-
 short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm::ivec2& sizeoff, const glm::ivec2 dir) const
 {
 	if (dir.x != 0 || dir.y != 0)
@@ -338,23 +330,41 @@ short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm:
 	return 0b10000;
 }
 
-
-bool TileMap::advCollisionMoveBox(const glm::ivec2& pos, const glm::ivec2& size, const glm::ivec2& dir) const
+glm::ivec2 TileMap::collisionBubble(const int bubbleRadius, const glm::ivec2 bubblePosition) const
 {
-	return false;
-}
+	int bubbleGridX = bubblePosition.x / tileSize;
+	int bubbleGridY = bubblePosition.y / tileSize;
 
-bool TileMap::advCollisionMoveSphere(const glm::ivec2& pos, const float radius, const glm::ivec2& dir) const
-{
-	return false;
-}
+	int bubbleRadiusSquared = bubbleRadius * bubbleRadius;
 
-bool TileMap::isFloorTile(int x, int y) const {
-	if (x < 0 || x >= mapSize.x || y < 0 || y >= mapSize.y) return true; // out of bounds
-	
-	int tileIndex = interactive[y * mapSize.x + x];
-	return (tileIndex == 1 || tileIndex == 2 || tileIndex == 3);
+	for (int yOffset = -1; yOffset <= 1; ++yOffset) {
+		for (int xOffset = -1; xOffset <= 1; ++xOffset) {
+			int checkX = bubbleGridX + xOffset;
+			int checkY = bubbleGridY + yOffset;
 
+			if (colisions[checkY * mapSize.x + checkX] == 1 && checkX >= 0 && checkX < mapSize.x && checkY >= 0 && checkY < mapSize.y) {
+				int cellCenterX = (checkX + 0.5) * tileSize;
+				int cellCenterY = (checkY + 0.5) * tileSize;
+
+				int dx = cellCenterX - bubblePosition.x;
+				int dy = cellCenterY - bubblePosition.y;
+				int distanceSquared = dx * dx + dy * dy;
+
+				if (distanceSquared <= bubbleRadiusSquared) {
+
+					if (std::abs(dx) > std::abs(dy)) {
+						return glm::ivec2(dx > 0 ? 1 : -1, 0);
+					}
+					else if(std::abs(dx) < std::abs(dy)) {
+						return glm::ivec2(0, dy > 0 ? 1 : -1);
+					}
+					else
+						return glm::ivec2(dx > 0 ? 1 : -1, dy > 0 ? 1 : -1);
+				}
+			}
+		}
+	}
+	return glm::ivec2(0,0);
 }
 
 

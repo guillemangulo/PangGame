@@ -32,8 +32,6 @@ public:
 	int getTileSize() const { return tileSize; }
 	glm::ivec2 getMapSize() const { return mapSize; }
 
-	bool isFloorTile(int x, int y) const;
-
 	/// <summary>
 	/// collisionMove mira si hi ha colisio amb la pos més la dir per una capsa de size i aplica aquest moviment al vector pos.
 	/// Les colisions no son elastiques i deixarán l'objecte just a la vora del bloc.
@@ -44,8 +42,13 @@ public:
 	/// <returns>Retorna el short de colisions com a un bitmap de +x -x +y -y en els bits menys significatius.</returns>
 	short collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm::ivec2& sizeoff = glm::ivec2(0, 0) , const glm::ivec2 dir = glm::ivec2(0,0)) const;
 
-	bool advCollisionMoveBox(const glm::ivec2& pos, const glm::ivec2& size, const glm::ivec2& dir) const;
-	bool advCollisionMoveSphere(const glm::ivec2& pos, const float radius, const glm::ivec2& dir) const;
+	/// <summary>
+	/// Calcula les colisions amb una esfera de radi bubbleRadius i posicio bubblePosition amb el tilemap.
+	/// </summary>
+	/// <param name="bubbleRadius">Radi en pixels de la bombolla</param>
+	/// <param name="bubblePosition">Posició en pixels del centre de la bombolla.</param>
+	/// <returns>Normal de la col·lisió amb la cel·la.</returns>
+	glm::ivec2 collisionBubble(const int bubbleRadius, const glm::ivec2 bubblePosition) const;
 
 private:
 

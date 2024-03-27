@@ -14,11 +14,14 @@ void PowerUp::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, T
 
 void PowerUp::update(int deltaTime)
 {
-	Animated::update(deltaTime);
-	currTime += deltaTime;
-	if (currTime >= timeOut)
+	if (!paused)
 	{
-		joc->removePowerUP(index);
+		Animated::update(deltaTime);
+		currTime += deltaTime;
+		if (currTime >= timeOut)
+		{
+			joc->removePowerUP(index);
+		}
 	}
 }
 

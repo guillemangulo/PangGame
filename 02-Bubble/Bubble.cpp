@@ -1,0 +1,25 @@
+#include "Bubble.h"
+
+void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, const char* sprtsht)
+{
+	Animated::init(tileMapPos, shaderProgram, sprtsht);
+	setColisionFlags(0b1110);
+	doGravity(false);
+	size = glm::ivec2(16, 16);
+	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.5f, 0.5f), &spritesheet, &shaderProgram);
+}
+
+void Bubble::update(int deltaTime)
+{
+	if (!paused)
+	{
+		Animated::update(deltaTime);
+		glm::ivec2 normal = map->collisionBubble(size.y, pos + velocity + size/2);
+		if (velocity.x != 0 && normal.x != 0)
+			velocity.x *= -1;
+		if (velocity.y != 0 && normal.y != 0)
+			velocity.y *= -1;
+		pos += velocity;
+		updatePosition();
+	}
+}
