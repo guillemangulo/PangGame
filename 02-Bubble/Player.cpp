@@ -8,8 +8,8 @@
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const std::string sprtsht, const glm::ivec2 tamany)
 {
-	size = glm::ivec2(16, 32);
-	sizeoff = glm::ivec2(8, 0);
+	size = glm::ivec2(18, 32);
+	sizeoff = glm::ivec2(7, 0);
 	spritesheet.loadFromFile(sprtsht, TEXTURE_PIXEL_FORMAT_RGBA);
 	setColisionFlags(0b0010);
 	#define SPRITE_BLOCK 0.125f
@@ -69,15 +69,58 @@ void Player::update(int deltaTime)
 
 	//Direcció que indica el jugador
 	glm::ivec2 joy = Game::instance().getDirection();
-
+	glm::ivec2 dir;
+	escalant = false;
 	if (joy.y != 0)
 	{
-		//TODO:: Implementar escales
-		cout << "do stairs" << endl;
+		glm::ivec4 stair = map->checkStairs(pos, size, sizeoff);
+		if (stair != glm::ivec4(-1, -1,-1,-1))
+		{
+			escalant = true;
+			pos.x = stair.x;
+			if (joy.y < 0)
+			{
+				if (pos.y - size.y/2 > stair.y - size.y)
+				{
+					pos.y--;
+					if (sprite->animation() != CLIMB_UP)
+						sprite->changeAnimation(CLIMB_UP);
+				}
+				else if (pos.y - 3 > stair.y - size.y)
+				{
+					pos.y--;
+					if (sprite->animation() != END_CLIMB)
+							sprite->changeAnimation(END_CLIMB);
+				}
+				else
+				{
+					pos.y = stair.y - size.y;
+					if(sprite->animation()!= STAND_RIGHT)
+						sprite->changeAnimation(STAND_RIGHT);
+				}
+			}
+			else
+			{
+				if (pos.y + 1 > stair.z)
+				{
+					escalant = false;
+					if (sprite->animation() == CLIMB_DOWN)
+						sprite->changeAnimation(STAND_RIGHT);
+				}
+				else
+				{
+					if (sprite->animation() != CLIMB_DOWN)
+						sprite->changeAnimation(CLIMB_DOWN);
+				}
+				if (map->groundWithStairsBelow(pos, size, sizeoff))
+					pos.y++;
+				else
+					map->collisionMove(&pos, size, sizeoff, glm::ivec2(0, 1));
+			}
+		}
 	}
-	glm::ivec2 dir;
 
-	if (doGrav)
+	if (doGrav && !map->checkStairsBelow(pos, size, sizeoff))
 		dir = glm::ivec2(joy.x * speed, fallTable[fallFrame]);
 	else
 		dir = glm::ivec2(joy.x * speed, 0);
@@ -87,7 +130,7 @@ void Player::update(int deltaTime)
 		fallStateUpdate(col,deltaTime);
 
 	//Actualitzem les animacions en funció de la direcció i les colisions
-	if (dir.x < 0)
+	if (dir.x < 0 && !escalant)
 	{
 		if (sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
@@ -96,7 +139,7 @@ void Player::update(int deltaTime)
 			sprite->changeAnimation(STAND_LEFT);
 		}
 	}
-	else if (dir.x > 0)
+	else if (dir.x > 0 && !escalant)
 	{
 		if (sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
@@ -105,11 +148,11 @@ void Player::update(int deltaTime)
 			sprite->changeAnimation(STAND_RIGHT);
 		}
 	}
-	else
+	else if(!escalant)
 	{
 		if (sprite->animation() == MOVE_LEFT)
 			sprite->changeAnimation(STAND_LEFT);
-		else if (sprite->animation() == MOVE_RIGHT)
+		else if (sprite->animation() == MOVE_RIGHT )
 			sprite->changeAnimation(STAND_RIGHT);
 	}
 

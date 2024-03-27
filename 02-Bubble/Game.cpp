@@ -58,6 +58,18 @@ void Game::keyPressed(int key)
 			loadScreen(GAME);
 			break;
 		}
+		case GLFW_KEY_KP_ADD:
+		{
+			level += 1;
+			loadScreen(GAME);
+			break;
+		}
+		case GLFW_KEY_KP_SUBTRACT:
+		{
+			level -= 1;
+			loadScreen(GAME);
+			break;
+		}
 
 		case GLFW_KEY_P:
 		{

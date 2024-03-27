@@ -98,7 +98,7 @@ void Joc::render()
 
 void Joc::teleportPlayer(int x, int y)
 {
-
+	/*
 	std::shared_ptr<Animated> newBubble = std::make_shared<Bubble>();
 
 	if (auto bubble = std::dynamic_pointer_cast<Bubble>(newBubble)) 
@@ -110,6 +110,7 @@ void Joc::teleportPlayer(int x, int y)
 		bubble->setParent(this);
 	}
 	bubbles.push_back(newBubble);
+	//*/
 	/*
 	std::shared_ptr<Animated> newPU = std::make_shared<PowerUp>();
 	if (auto PU = std::dynamic_pointer_cast<PowerUp>(newPU)) {
@@ -121,7 +122,7 @@ void Joc::teleportPlayer(int x, int y)
 	}
 	powerUps.push_back(newPU);//*/
 
-	//player->setPosition(glm::vec2(x/SCALING, y / SCALING));
+	player->setPosition(glm::vec2(x/SCALING, y / SCALING));
 }
 
 void Joc::toggleDebugBoxes()

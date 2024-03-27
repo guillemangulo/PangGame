@@ -253,6 +253,94 @@ void TileMap::prepareArrays(const glm::vec2& minCoords, ShaderProgram& program)
 	texCoordLocation = program.bindVertexAttribute("texCoord", 2, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 }
 
+glm::ivec4 TileMap::checkStairs(glm::ivec2& posi, const glm::ivec2& size, const glm::ivec2& sizeoff)
+{
+	int x, y, y1, x1;
+
+	x = (posi.x + sizeoff.x) / tileSize;
+	x1 = (posi.x + sizeoff.x + size.x - 1) / tileSize;
+
+	y = (posi.y + sizeoff.y) / tileSize;
+	y1 = (posi.y + sizeoff.y + size.y) / tileSize;
+
+	glm::ivec4 stair = glm::ivec4(-1, -1, -1, -1);
+
+	for (int _y = y1; _y >= y; _y--)
+	{
+		for (int _x = x; _x <= x1; _x++)
+		{
+			if (stairsmap[_y * mapSize.x + _x])
+			{
+				//Busco la primera escala, la 16
+				int i = 0;
+				if (stairs[_y * mapSize.x + _x] == 17)
+					i = -1;
+				else if (stairs[_y * mapSize.x + _x] == 18)
+					i = -2;
+				if (stairs[_y * mapSize.x + _x + i] == 16)
+					stair.x = (_x + i) * tileSize -tileSize/2;
+
+				//Ara busco la part superior de l'escala
+				int j = 0;
+				while (stairsmap[(_y - j) * mapSize.x + x])
+					j++;
+				stair.y = (_y - (j-1)) * tileSize;
+				//I ara la part inferior
+				j = 0;
+				while (stairsmap[(_y + j) * mapSize.x + x])
+					j++;
+				stair.z = (_y + (j-1)) * tileSize;
+
+				stair.w = stair.x + 3 * tileSize;
+				_y = y;
+			}
+		}
+	}
+	return stair;
+}
+
+bool TileMap::checkStairsBelow(glm::ivec2& posi, const glm::ivec2& size, const glm::ivec2& sizeoff)
+{
+	int x, y, y1, x1;
+
+	x = (posi.x + sizeoff.x) / tileSize;
+	y = (posi.y + sizeoff.y ) / tileSize +2;
+	x1 = (posi.x + sizeoff.x + size.x) / tileSize;
+
+	y1 = (posi.y + sizeoff.y + size.y ) / tileSize;
+
+	for (int _x = x; _x <= x1; _x++)
+	{
+		for (int _y = y; _y <= y1; _y++)
+		{
+			if (stairsmap[_y * mapSize.x + _x])
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool TileMap::groundWithStairsBelow(glm::ivec2& posi, const glm::ivec2& size, const glm::ivec2& sizeoff)
+{
+	int x, y, y1, x1;
+
+	x = (posi.x + sizeoff.x) / tileSize;
+	x1 = (posi.x + sizeoff.x + size.x) / tileSize;
+
+	y1 = (posi.y + sizeoff.y + size.y) / tileSize;
+
+	for (int _x = x; _x <= x1; _x++)
+	{
+		if (stairsmap[y1 * mapSize.x + _x])
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm::ivec2& sizeoff, const glm::ivec2 dir) const
 {
 	if (dir.x != 0 || dir.y != 0)
@@ -262,17 +350,17 @@ short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm:
 		short col = 0b0000;
 
 		//Nova posicio de la capsa en tilespace
-		x =  (posi.x + sizeoff.y + dir.x -1) / tileSize;
+		x =  (posi.x + sizeoff.x + dir.x ) / tileSize;
 		x1 = (posi.x + sizeoff.x + size.x + dir.x) / tileSize;
 
-		y =  (posi.y + sizeoff.x + dir.y) / tileSize;
+		y =  (posi.y + sizeoff.y + dir.y) / tileSize;
 		y1 = (posi.y + sizeoff.y + size.y + dir.y) / tileSize;
 
 		for (int _y = y; _y <= y1; _y++)
 		{
 			for (int _x = x; _x <= x1; _x++)
 			{
-				cout << "(" << _x << "," << _y << ")" << colisions[_y * mapSize.x + _x] << " ";
+				cout << "(" << _x << "," << _y << ")" << stairs[_y * mapSize.x + _x] << " ";
 			}
 			cout << endl;
 		}
@@ -282,7 +370,7 @@ short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm:
 		{
 			for (int _y = y; !(col&0b1000) && _y <= y1-1; _y++)
 			{
-				if (colisions[_y * mapSize.x + x1] != 0)
+				if (colisions[_y * mapSize.x + x1])
 				{
 					col |= 0b1000;
 					//TODO: aplicar correccio de colisio per que quedi just a la vora del bloc?
@@ -299,7 +387,7 @@ short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm:
 		{
 			for (int _y = y; !(col & 0b0100) && _y <= y1-1; _y++)
 			{
-				if (colisions[_y * mapSize.x + x] != 0)
+				if (colisions[_y * mapSize.x + x])
 				{
 					col |= 0b0100;
 					//TODO: aplicar correccio de colisio per que quedi just a la vora del bloc?
@@ -314,7 +402,7 @@ short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm:
 		{
 			for (int _x = x; !(col & 0b0001) && _x <= x1; _x++)
 			{
-				if (colisions[y1 * mapSize.x + _x] != 0)
+				if (colisions[y1 * mapSize.x + _x])
 				{
 					col |= 0b0001;
 					pos->y = (y1) * tileSize - size.y;
@@ -342,7 +430,7 @@ glm::ivec2 TileMap::collisionBubble(const int bubbleRadius, const glm::vec2 bubb
 			int checkX = bubbleGridX + xOffset;
 			int checkY = bubbleGridY + yOffset;
 
-			if (colisions[checkY * mapSize.x + checkX] == 1 && checkX >= 0 && checkX < mapSize.x && checkY >= 0 && checkY < mapSize.y) {
+			if (colisions[checkY * mapSize.x + checkX] && checkX >= 0 && checkX < mapSize.x && checkY >= 0 && checkY < mapSize.y) {
 				int cellCenterX = (checkX + 0.5) * tileSize;
 				int cellCenterY = (checkY + 0.5) * tileSize;
 

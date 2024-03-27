@@ -50,11 +50,17 @@ public:
 	/// <returns>Normal de la col·lisió amb la cel·la.</returns>
 	glm::ivec2 collisionBubble(const int bubbleRadius, const glm::vec2 bubblePosition) const;
 
+	glm::ivec4 checkStairs(glm::ivec2& pos, const glm::ivec2& size, const glm::ivec2& sizeoff);
+
+	bool checkStairsBelow(glm::ivec2& pos, const glm::ivec2& size, const glm::ivec2& sizeoff);
+	bool groundWithStairsBelow(glm::ivec2& pos, const glm::ivec2& size, const glm::ivec2& sizeoff);
+
 private:
 
 	bool loadLevel(const string& levelFile);//, const string& tilesetFile = "images/pangTileset.json");
 	void prepareArrays(const glm::vec2& minCoords, ShaderProgram& program);
 
+	
 private:
 	GLuint vao;
 	GLuint vbo;
