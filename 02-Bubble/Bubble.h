@@ -13,7 +13,7 @@ public:
     void setVelocity(const glm::ivec2& vel) { velocity = vel; }
 
 private:
-    glm::ivec2 velocity = glm::ivec2(1, 1);
+    glm::vec2 velocity = glm::vec2(1, 1);
 
 };
 

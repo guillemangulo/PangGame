@@ -58,7 +58,7 @@ private:
 	int level = 1;
 
 	
-	Pantalla* activeScene = NULL;
+	Pantalla* activeScene = nullptr;
 
 	Joc nivell; 
 

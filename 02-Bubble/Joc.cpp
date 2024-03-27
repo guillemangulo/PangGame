@@ -19,6 +19,11 @@ Joc::~Joc()
 		delete map;
 	if (player != NULL)
 		delete player;
+	if (soundEngine != nullptr)
+	{
+		soundEngine->drop();
+		soundEngine = nullptr;
+	}
 }
 
 void Joc::clearMem()
@@ -27,6 +32,11 @@ void Joc::clearMem()
 		delete map;
 	if (player != NULL)
 		delete player;
+	if (soundEngine != nullptr)
+	{
+		soundEngine->drop();
+		soundEngine = nullptr;
+	}
 }
 
 void Joc::init(int nivell)
@@ -39,6 +49,9 @@ void Joc::init(int nivell)
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "images/PlayerDefault.png");
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
+
+	soundEngine = irrklang::createIrrKlangDevice();
+	playLevelSong(nivell);
 	
 	currentTime = 0.0f;
 }
@@ -109,6 +122,59 @@ void Joc::toggleDebugBoxes()
 {
 	//player->debugColisionBoxToggle();
 	//TODO:map->toggleDebugBoxes();
+}
+
+void Joc::playLevelSong(const int level)
+{
+	if(level==1||level==2||level==3)
+	{
+		playSound("audio/02Stage01-03.wav");
+	}
+
+	else if(level==4||level==5||level==6)
+	{
+		playSound("audio/03Stage04-06.wav");
+	}
+
+	else if(level==7||level==8||level==9||level==40||level==41||level==42)
+	{
+		playSound("audio/04Stage07-09_40-42.wav");
+	}
+
+	else if(level==10||level==11||level==12||level==31||level==32||level==33)
+	{
+		playSound("audio/05Stage10-12_31-33.wav");
+	}
+
+	else if(level==13||level==14||level==15||level==37||level==38||level==39)
+	{
+		playSound("audio/06Stage13-15_37-39.wav");
+	}
+
+	else if(level==16||level==17||level==18||level==34||level==35||level==36)
+	{
+		playSound("audio/07Stage16-18_34-36.wav");
+	}
+
+	else if(level==19||level==20||level==21||level==46||level==47||level==48)
+	{
+		playSound("audio/08Stage19-21_46-48.wav");
+	}
+
+	else if(level==22||level==23||level==24)
+	{
+		playSound("audio/09Stage22-24.wav");
+	}
+
+	else if(level==25||level==26||level==27||level==43||level==44||level==45)
+	{
+		playSound("audio/10Stage25-27_43-45.wav");
+	}
+
+	else if(level==28||level==29||level==30||level==49||level==50||level==51)
+	{
+		playSound("audio/11Stage28-30_49-51.wav");
+	}
 }
 
 void Joc::calculateCollisions()

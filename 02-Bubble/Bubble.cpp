@@ -14,11 +14,12 @@ void Bubble::update(int deltaTime)
 	if (!paused)
 	{
 		Animated::update(deltaTime);
-		glm::ivec2 normal = map->collisionBubble(size.y, pos + velocity + size/2);
+		glm::ivec2 normal = map->collisionBubble(size.y, glm::vec2(pos.x + velocity.x + size.x / 2, pos.y+velocity.y + size.y / 2));
 		if (velocity.x != 0 && normal.x != 0)
 			velocity.x *= -1;
 		if (velocity.y != 0 && normal.y != 0)
 			velocity.y *= -1;
+		velocity.y += (deltaTime/200);
 		pos += velocity;
 		updatePosition();
 	}

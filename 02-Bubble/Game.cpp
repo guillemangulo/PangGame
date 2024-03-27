@@ -62,6 +62,8 @@ void Game::keyPressed(int key)
 		case GLFW_KEY_P:
 		{
 			paused = !paused;
+			if(activeScene != nullptr)
+				activeScene->pauseSound(paused);
 			break;
 		}
 
@@ -120,9 +122,15 @@ void Game::loadScreen(pantalles p)
 		break;
 	case Game::GAME:
 	{
+
+		if (activeScene != nullptr)
+		{
+			activeScene->clearMem();
+			activeScene = nullptr;
+		}
 		nivell = Joc();
-		activeScene = &nivell;
 		nivell.init(level);
+		activeScene = &nivell;
 		break;
 	}
 	case Game::GAMEOVER:

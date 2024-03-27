@@ -48,7 +48,7 @@ public:
 	/// <param name="bubbleRadius">Radi en pixels de la bombolla</param>
 	/// <param name="bubblePosition">Posició en pixels del centre de la bombolla.</param>
 	/// <returns>Normal de la col·lisió amb la cel·la.</returns>
-	glm::ivec2 collisionBubble(const int bubbleRadius, const glm::ivec2 bubblePosition) const;
+	glm::ivec2 collisionBubble(const int bubbleRadius, const glm::vec2 bubblePosition) const;
 
 private:
 

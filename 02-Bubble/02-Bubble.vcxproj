@@ -86,14 +86,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\libs\;..\libs\Simple OpenGL Image Library\src;..\libs\glew-1.13.0\include;..\libs\glm;..\libs\glfw-3.3.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\libs\irrKlang\include;..\libs\;..\libs\Simple OpenGL Image Library\src;..\libs\glew-1.13.0\include;..\libs\glew-1.13.0;..\libs\glm;..\libs\glfw-3.3.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\libs\Simple OpenGL Image Library\projects\VC9\Debug;..\libs\glew-1.13.0\lib\Release\Win32;..\libs\glfw-3.3.8\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SOIL.lib;glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/LIBPATH:"..\libs\Simple OpenGL Image Library\projects\VC9\Debug" /LIBPATH:"..\libs\glew-1.13.0\lib\Release\Win32" /LIBPATH:"..\libs\glfw-3.3.8\lib-vc2015" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>SOIL.lib;glew32.lib;glfw3.lib;opengl32.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/LIBPATH:"..\libs\Simple OpenGL Image Library\projects\VC9\Debug" /LIBPATH:"..\libs\glew-1.13.0\lib\Release\Win32" /LIBPATH:"..\libs\glfw-3.3.8\lib-vc2015" /LIBPATH:"..\libs\irrKlang" %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

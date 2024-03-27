@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cmath>
 #include <glm/gtc/matrix_transform.hpp>
+#include <irrKlang.h>
 
 #include <glm/glm.hpp>
 #include "ShaderProgram.h"
@@ -12,6 +13,8 @@
 
 #define SCREEN_WIDTH (384)*SCALING
 #define SCREEN_HEIGHT (208+32)*SCALING
+
+
 
 class Pantalla
 {
@@ -24,9 +27,15 @@ public:
 	virtual void update(int deltaTime);
 	virtual void render();
 	virtual void toggleDebugBoxes();
+	virtual void clearMem() = 0;
+
+	void playSound(const char* sound);
+	void pauseSound(bool pause);
 
 protected:
 	void initShaders();
+
+	irrklang::ISoundEngine* soundEngine = nullptr;
 
 	bool debugBoxes = false;
 	ShaderProgram texProgram;

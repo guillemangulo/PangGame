@@ -5,12 +5,18 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
+
 Pantalla::Pantalla()
 {
 }
 
 Pantalla::~Pantalla()
 {
+	if (soundEngine != nullptr)
+	{
+		soundEngine->drop();
+		soundEngine = nullptr;
+	}
 }
 
 
@@ -19,6 +25,7 @@ void Pantalla::init()
 	initShaders();
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH / SCALING), float(SCREEN_HEIGHT / SCALING), 0.f);
 	currentTime = 0.0f;
+	soundEngine = irrklang::createIrrKlangDevice();
 }
 
 void Pantalla::update(int deltaTime)
@@ -41,6 +48,19 @@ void Pantalla::render()
 void Pantalla::toggleDebugBoxes()
 {
 	debugBoxes = !debugBoxes;
+}
+
+void Pantalla::playSound(const char* sound)
+{
+	soundEngine->play2D(sound);
+}
+
+void Pantalla::pauseSound(bool pause)
+{
+	if (pause)
+		soundEngine->setAllSoundsPaused(true);
+	else
+		soundEngine->setAllSoundsPaused(false);
 }
 
 void Pantalla::initShaders()

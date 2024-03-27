@@ -25,6 +25,8 @@ public:
 	void teleportPlayer(int x, int y);
 	void toggleDebugBoxes() override;
 
+	void playLevelSong(const int nivell);
+
 	void calculateCollisions();
 	void removePowerUP(int obj);
 

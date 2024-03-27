@@ -265,7 +265,7 @@ short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm:
 		x =  (posi.x + sizeoff.y + dir.x -1) / tileSize;
 		x1 = (posi.x + sizeoff.x + size.x + dir.x) / tileSize;
 
-		y =  (posi.y + sizeoff.x + dir.y-1) / tileSize;
+		y =  (posi.y + sizeoff.x + dir.y) / tileSize;
 		y1 = (posi.y + sizeoff.y + size.y + dir.y) / tileSize;
 
 		for (int _y = y; _y <= y1; _y++)
@@ -330,7 +330,7 @@ short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm:
 	return 0b10000;
 }
 
-glm::ivec2 TileMap::collisionBubble(const int bubbleRadius, const glm::ivec2 bubblePosition) const
+glm::ivec2 TileMap::collisionBubble(const int bubbleRadius, const glm::vec2 bubblePosition) const
 {
 	int bubbleGridX = bubblePosition.x / tileSize;
 	int bubbleGridY = bubblePosition.y / tileSize;
