@@ -32,6 +32,7 @@ public:
 	void addKeyframe(int animId, const glm::vec2 &frame);
 	void changeAnimation(int animId);
 	int animation() const;
+	void setParpadeig(bool parpadeig) { this->parpadeig = parpadeig; };
 	
 	void setPosition(const glm::vec2 &pos);
 
@@ -46,6 +47,8 @@ private:
 	float timeAnimation;
 	glm::vec2 texCoordDispl;
 	vector<AnimKeyframes> animations;
+	bool parpadeig = false;
+	int parpadeigTime = 0;
 
 };
 

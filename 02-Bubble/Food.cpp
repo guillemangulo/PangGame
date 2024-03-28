@@ -7,6 +7,10 @@ void Food::update(int deltaTime)
 	{
 		Animated::update(deltaTime);
 		currTime += deltaTime;
+		if (currTime >= timeOut * 0.85f)
+		{
+			sprite->setParpadeig(true);
+		}
 		if (currTime >= timeOut)
 		{
 			joc->removeFood(index);

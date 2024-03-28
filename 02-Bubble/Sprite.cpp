@@ -36,6 +36,10 @@ Sprite::Sprite(const glm::vec2 &quadSize, const glm::vec2 &sizeInSpritesheet, Te
 
 void Sprite::update(int deltaTime)
 {
+	if (parpadeig)
+	{
+		parpadeigTime++;
+	}
 	if(currentAnimation >= 0)
 	{
 		timeAnimation += deltaTime;
@@ -51,6 +55,11 @@ void Sprite::update(int deltaTime)
 void Sprite::render() const
 {
 	glm::mat4 modelview = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.f));
+	if (parpadeig)
+	{
+		if(parpadeigTime%2 == 0)
+			modelview = glm::translate(glm::mat4(1.0f), glm::vec3(-100.f, -100.f, 0.f));
+	}
 	shaderProgram->setUniformMatrix4f("modelview", modelview);
 	shaderProgram->setUniform2f("texCoordDispl", texCoordDispl.x, texCoordDispl.y);
 	glEnable(GL_TEXTURE_2D);
