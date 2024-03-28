@@ -77,8 +77,6 @@ void Player::update(int deltaTime)
 	if (joy.y != 0)
 	{
 		glm::ivec4 stair = map->checkStairs(pos, size, sizeoff);
-		cout << stair.x << " " << stair.y << " " << stair.z << " " << stair.w << endl;
-		cout << pos.x << " " << pos.y << " " << pos.y + size.y << endl;
 		if (stair != glm::ivec4(-1, -1,-1,-1))
 		{
 			joy.x = 0;

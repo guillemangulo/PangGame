@@ -12,8 +12,11 @@ class Player :
 			const glm::ivec2 tamany = glm::ivec2(32, 32),
 			const glm::vec2 spriteBlock = glm::vec2(1.0f, 1.0f)) override;
 		void update(int deltaTime); 
+		void addPoints(int p) { points += p; };
 		//*/
 	private:
+
+		int points = 0;
 		float speed = 2.0f;
 		bool escalant = false;
 		enum PlayerAnims

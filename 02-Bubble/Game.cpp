@@ -108,6 +108,13 @@ void Game::keyPressed(int key)
 			}
 			break;
 		}
+		case GLFW_KEY_I:
+		{
+			if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
+				nivellpa->createPowerUp(mouseX, mouseY,6);
+			}
+			break;
+		}
 		case GLFW_KEY_T:
 		{
 			if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
@@ -115,13 +122,18 @@ void Game::keyPressed(int key)
 			}
 			break;
 		}
+		case GLFW_KEY_X:
+		{
+			if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
+				nivellpa->createFood(mouseX, mouseY, (level-1 < 29) ? level-1 : 28);
+			}
+			break;
+		}
 		default:
 		{
 			break;
 		}
-			
 	}
-
 	keys[key] = true;
 }
 

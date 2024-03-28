@@ -356,16 +356,6 @@ short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm:
 		y =  (posi.y + sizeoff.y + dir.y) / tileSize;
 		y1 = (posi.y + sizeoff.y + size.y + dir.y) / tileSize;
 
-		for (int _y = y; _y <= y1; _y++)
-		{
-			for (int _x = x; _x <= x1; _x++)
-			{
-				cout << "(" << _x << "," << _y << ")" << stairs[_y * mapSize.x + _x] << " ";
-			}
-			cout << endl;
-		}
-		cout << endl;
-
 		if (dir.x > 0)
 		{
 			for (int _y = y; !(col&0b1000) && _y <= y1-1; _y++)

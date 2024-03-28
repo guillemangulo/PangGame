@@ -91,6 +91,9 @@ void Joc::update(int deltaTime)
 
 				for (unsigned int i = 0; i < bubbles.size(); i++)
 					bubbles[i]->update(tickRate);
+
+				for (unsigned int i = 0; i < menjar.size(); i++)
+					menjar[i]->update(tickRate);
 			}
 		}
 	}
@@ -108,8 +111,18 @@ void Joc::render()
 	for (unsigned int i = 0; i < bubbles.size(); i++)
 		bubbles[i]->render();
 
+	for (unsigned int i = 0; i < menjar.size(); i++)
+		menjar[i]->render();
+
 	player->render();
 
+}
+
+void Joc::addPointsJ1(int points)
+{
+	if (auto nivellpa = dynamic_cast<Player*>(player)) {
+		nivellpa->addPoints(points);
+	}
 }
 
 void Joc::createBubble(int x, int y, int tamany)
@@ -138,6 +151,21 @@ void Joc::createPowerUp(int x, int y, int type)
 		PU->setParent(this);
 	}
 	powerUps.push_back(newPU);
+}
+
+void Joc::createFood(int x, int y, int type)
+{
+	std::shared_ptr<Animated> newPU = std::make_shared<Food>();
+	if (auto PU = std::dynamic_pointer_cast<Food>(newPU)) {
+		PU->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, type, "images/foods.png");
+		PU->setPosition(glm::vec2(x / SCALING, y / SCALING));
+		PU->setColisionFlags(0b1101);
+		PU->setColSize(glm::ivec2(16, 16));
+		PU->setTileMap(map);
+		PU->setIndex(menjar.size());
+		PU->setParent(this);
+	}
+	menjar.push_back(newPU);
 }
 
 void Joc::teleportPlayer(int x, int y)
@@ -207,7 +235,7 @@ void Joc::playLevelSong(const int level)
 void Joc::calculateCollisions()
 {
 	glm::ivec2 playerPos = player->getPosition();
-	for(unsigned int i = 0; i < powerUps.size(); i++)
+	for (unsigned int i = 0; i < powerUps.size(); i++)
 	{
 		if (powerUps[i]->shouldCollideWithPlayer())
 		{
@@ -221,6 +249,20 @@ void Joc::calculateCollisions()
 			}
 		}
 	}
+	for (unsigned int i = 0; i < menjar.size(); i++)
+	{
+		if (menjar[i]->shouldCollideWithPlayer())
+		{
+			glm::ivec2 PUpos = menjar[i]->getPosition();
+			if (playerPos.x < PUpos.x + menjar[i]->getSize().x &&
+				playerPos.x + player->getSize().x > PUpos.x &&
+				playerPos.y < PUpos.y + menjar[i]->getSize().y &&
+				playerPos.y + player->getSize().y > PUpos.y)
+			{
+				menjar[i]->onCollision(0b1000);
+			}
+		}
+	}
 }
 
 void Joc::removePowerUP(int obj)
@@ -228,4 +270,11 @@ void Joc::removePowerUP(int obj)
 	powerUps.erase(powerUps.begin() + obj);
 	for (unsigned int i = 0; i < powerUps.size(); i++)
 		powerUps[i]->setIndex(i);
+}
+
+void Joc::removeFood(int obj)
+{
+	menjar.erase(menjar.begin() + obj);
+	for (unsigned int i = 0; i < menjar.size(); i++)
+		menjar[i]->setIndex(i);
 }

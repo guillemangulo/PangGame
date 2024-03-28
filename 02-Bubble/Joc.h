@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "PowerUp.h"
 #include "Bubble.h"
+#include "Food.h"
 #include <memory>
 #include <vector>
 
@@ -22,7 +23,9 @@ public:
 	void init(int nivell);
 	void update(int deltaTime) override;
 	void render() override;
+	void addPointsJ1(int points);
 	void createBubble(int x, int y, int tamany = 0);
+	void createFood(int x, int y, int type);
 	void createPowerUp(int x, int y, int type);
 	void teleportPlayer(int x, int y);
 	void toggleDebugBoxes() override;
@@ -34,6 +37,8 @@ public:
 
 	void calculateCollisions();
 	void removePowerUP(int obj);
+
+	void removeFood(int obj);
 
 private:
 	TileMap* map;
@@ -49,5 +54,6 @@ private:
 
 	std::vector<std::shared_ptr<Animated>> powerUps;
 	std::vector<std::shared_ptr<Animated>> bubbles;
+	std::vector<std::shared_ptr<Animated>> menjar;
 
 };
