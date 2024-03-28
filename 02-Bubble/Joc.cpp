@@ -63,14 +63,37 @@ void Joc::init(int nivell)
 
 void Joc::update(int deltaTime)
 {
+#define tickRate 1000/50
 	currentTime += deltaTime;
-	player->update(deltaTime);
-	calculateCollisions();
-	for (unsigned int i = 0; i < powerUps.size(); i++)
-		powerUps[i]->update(deltaTime);
+	cumulatedTime += deltaTime;
+	//Aixó garanteix un tickrate de no més de tickRate hz evitant que es moguin massa ràpid sent una alternativa al deltaTime tradicional
+	//que funciona millor amb jocs basats en integers on no podem fer servir decimals.
+	while (cumulatedTime > tickRate)
+	{
+		currentTick++;
+		cumulatedTime -= tickRate;
+		player->update(tickRate);
+		calculateCollisions();
+		if (freezeTime > 0)
+		{
+			freezeTime -= tickRate;
+		}
+		else
+		{
+			if (slowTime > 0 && currentTick % 2 == 0)
+			{
+				slowTime -= tickRate*2;
+			}
+			else
+			{
+				for (unsigned int i = 0; i < powerUps.size(); i++)
+					powerUps[i]->update(tickRate);
 
-	for (unsigned int i = 0; i < bubbles.size(); i++)
-		bubbles[i]->update(deltaTime);
+				for (unsigned int i = 0; i < bubbles.size(); i++)
+					bubbles[i]->update(tickRate);
+			}
+		}
+	}
 }
 
 void Joc::render()
@@ -89,12 +112,11 @@ void Joc::render()
 
 }
 
-void Joc::teleportPlayer(int x, int y)
+void Joc::createBubble(int x, int y, int tamany)
 {
-	/*
 	std::shared_ptr<Animated> newBubble = std::make_shared<Bubble>();
 
-	if (auto bubble = std::dynamic_pointer_cast<Bubble>(newBubble)) 
+	if (auto bubble = std::dynamic_pointer_cast<Bubble>(newBubble))
 	{
 		bubble->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram); // "images/PowerUp.png");
 		bubble->setPosition(glm::vec2(x / SCALING, y / SCALING));
@@ -103,18 +125,23 @@ void Joc::teleportPlayer(int x, int y)
 		bubble->setParent(this);
 	}
 	bubbles.push_back(newBubble);
-	//*/
-	/*
+}
+
+void Joc::createPowerUp(int x, int y, int type)
+{
 	std::shared_ptr<Animated> newPU = std::make_shared<PowerUp>();
 	if (auto PU = std::dynamic_pointer_cast<PowerUp>(newPU)) {
-		PU->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, PowerUp::Type::FREEZE_TIME);// "images/PowerUp.png");
+		PU->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, type);// "images/PowerUp.png");
 		PU->setPosition(glm::vec2(x / SCALING, y / SCALING));
 		PU->setTileMap(map);
 		PU->setIndex(powerUps.size());
 		PU->setParent(this);
 	}
-	powerUps.push_back(newPU);//*/
+	powerUps.push_back(newPU);
+}
 
+void Joc::teleportPlayer(int x, int y)
+{
 	player->setPosition(glm::vec2(x/SCALING, y / SCALING));
 }
 

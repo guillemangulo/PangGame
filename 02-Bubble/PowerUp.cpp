@@ -2,7 +2,7 @@
 #include "Joc.h"
 
 
-void PowerUp::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, Type tip, const char* sprtsht)
+void PowerUp::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int tip, const char* sprtsht)
 {
 	spritesheet.loadFromFile(sprtsht, TEXTURE_PIXEL_FORMAT_RGBA);
 	tileMapDispl = tileMapPos;
@@ -30,6 +30,7 @@ void PowerUp::onCollision(short flags)
 	if ((flags & 0b1000) == 0b1000)
 	{
 		collected = true;
+		actPowerUp();
 		joc->removePowerUP(index);
 	}
 	if ((flags & 0b0100) == 0b0100)
@@ -43,12 +44,56 @@ void PowerUp::onCollision(short flags)
 	}
 }
 
-void PowerUp::setType(Type tip)
+void PowerUp::actPowerUp()
+{
+	switch (type)
+	{
+	case FREEZE_TIME:
+	{
+		joc->freezeTimePowerUp(3000);
+		break;
+	}
+	case DYNAMITE:
+	{
+		//joc->dynamite();
+		break;
+	}
+	case DOUBLE_WIRE:
+	{
+		//joc->doubleWire();
+		break;
+	}
+	case POWER_WIRE:
+	{
+		//joc->powerWire();
+		break;
+	}
+	case VULCAN_MISSILE:
+	{
+		//joc->vulcanMissile();
+		break;
+	}
+	case INVINCIBILITY:
+	{
+		//joc->invincibility();
+		break;
+	}
+	case SLOW_TIME:
+	{
+		joc->slowTimePowerUp(3000);
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void PowerUp::setType(int tip)
 {
 	type = tip;
 	switch (tip)
 	{
-	case PowerUp::Type::FREEZE_TIME:
+	case FREEZE_TIME:
 	{
 		sprite->setNumberAnimations(1);
 			sprite->setAnimationSpeed(0, 1);
@@ -57,17 +102,17 @@ void PowerUp::setType(Type tip)
 		updatePosition();
 		break;
 	}
-	case PowerUp::Type::DYNAMITE:
+	case DYNAMITE:
 		break;
-	case PowerUp::Type::DOUBLE_WIRE:
+	case DOUBLE_WIRE:
 		break;
-	case PowerUp::Type::POWER_WIRE:
+	case POWER_WIRE:
 		break;
-	case PowerUp::Type::VULCAN_MISSILE:
+	case VULCAN_MISSILE:
 		break;
-	case PowerUp::Type::INVINCIBILITY:
+	case INVINCIBILITY:
 		break;
-	case PowerUp::Type::SLOW_TIME:
+	case SLOW_TIME:
 		break;
 	default:
 		break;

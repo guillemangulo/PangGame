@@ -14,7 +14,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, co
 	setColisionFlags(0b0010);
 	#define SPRITE_BLOCK 0.125f
 	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(SPRITE_BLOCK, SPRITE_BLOCK), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(9);
+	sprite->setNumberAnimations(10);
 	
 		sprite->setAnimationSpeed(STAND_LEFT, 8);
 		sprite->addKeyframe(STAND_LEFT, glm::vec2(SPRITE_BLOCK * 7, SPRITE_BLOCK * 0));
@@ -48,14 +48,17 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, co
 
 		sprite->setAnimationSpeed(CLIMB_DOWN, 8);
 		sprite->addKeyframe(CLIMB_DOWN, glm::vec2(SPRITE_BLOCK * 0, SPRITE_BLOCK * 2));
-		sprite->addKeyframe(CLIMB_DOWN, glm::vec2(SPRITE_BLOCK * 0, SPRITE_BLOCK * 2));
-		sprite->addKeyframe(CLIMB_DOWN, glm::vec2(SPRITE_BLOCK * 0, SPRITE_BLOCK * 2));
+		sprite->addKeyframe(CLIMB_DOWN, glm::vec2(SPRITE_BLOCK * 1, SPRITE_BLOCK * 2));
+		sprite->addKeyframe(CLIMB_DOWN, glm::vec2(SPRITE_BLOCK * 2, SPRITE_BLOCK * 2));
 
 		sprite->setAnimationSpeed(TAKE_DAMAGE, 8);
 		sprite->addKeyframe(TAKE_DAMAGE, glm::vec2(SPRITE_BLOCK * 4, SPRITE_BLOCK * 2));
 
 		sprite->setAnimationSpeed(END_CLIMB, 8);
 		sprite->addKeyframe(END_CLIMB, glm::vec2(SPRITE_BLOCK * 3, SPRITE_BLOCK * 2));
+
+		sprite->setAnimationSpeed(9, 8);
+		sprite->addKeyframe(9, glm::vec2(SPRITE_BLOCK * 1, SPRITE_BLOCK * 2));
 		
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;
@@ -74,10 +77,14 @@ void Player::update(int deltaTime)
 	if (joy.y != 0)
 	{
 		glm::ivec4 stair = map->checkStairs(pos, size, sizeoff);
+		cout << stair.x << " " << stair.y << " " << stair.z << " " << stair.w << endl;
+		cout << pos.x << " " << pos.y << " " << pos.y + size.y << endl;
 		if (stair != glm::ivec4(-1, -1,-1,-1))
 		{
+			joy.x = 0;
 			if (joy.y < 0)
 			{
+				//Si estem a la posició de la escala
 				if (pos.y - size.y/2 >= stair.y - size.y)
 				{
 					escalant = true;
@@ -86,6 +93,7 @@ void Player::update(int deltaTime)
 					if (sprite->animation() != CLIMB_UP)
 						sprite->changeAnimation(CLIMB_UP);
 				}
+				//Si estem casi al final de la escala
 				else if (pos.y - 3 > stair.y - size.y)
 				{
 					escalant = true;
@@ -94,17 +102,17 @@ void Player::update(int deltaTime)
 					if (sprite->animation() != END_CLIMB)
 							sprite->changeAnimation(END_CLIMB);
 				}
-				else
+				//Si estem al final de la escala
+				else if(pos.y > stair.y - size.y)
 				{
-
 					pos.y = stair.y - size.y;
 					if(sprite->animation()!= STAND_RIGHT)
 						sprite->changeAnimation(STAND_RIGHT);
 				}
 			}
-			else
+			else if (joy.y > 0)
 			{
-				pos.x = stair.x;
+				
 				if (pos.y + 1 > stair.z)
 				{
 					escalant = false;
@@ -118,12 +126,23 @@ void Player::update(int deltaTime)
 				}
 				if (map->groundWithStairsBelow(pos, size, sizeoff))
 				{
+					pos.x = stair.x;
 					pos.y++;
 				}
 				else
+				{
+					pos.x = stair.x;
 					map->collisionMove(&pos, size, sizeoff, glm::ivec2(0, 1));
+				}
 			}
 		}
+	}
+	else
+	{
+		if (sprite->animation() == CLIMB_DOWN)
+			sprite->changeAnimation(9);
+		if (sprite->animation() == CLIMB_UP)
+			sprite->changeAnimation(9);
 	}
 
 	if (doGrav && !map->checkStairsBelow(pos, size, sizeoff))
@@ -158,6 +177,7 @@ void Player::update(int deltaTime)
 	{
 		if (sprite->animation() == MOVE_LEFT)
 			sprite->changeAnimation(STAND_LEFT);
+
 		else if (sprite->animation() == MOVE_RIGHT )
 			sprite->changeAnimation(STAND_RIGHT);
 	}

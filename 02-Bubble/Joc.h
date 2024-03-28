@@ -22,10 +22,15 @@ public:
 	void init(int nivell);
 	void update(int deltaTime) override;
 	void render() override;
+	void createBubble(int x, int y, int tamany = 0);
+	void createPowerUp(int x, int y, int type);
 	void teleportPlayer(int x, int y);
 	void toggleDebugBoxes() override;
 
 	void playLevelSong(const int nivell);
+
+	void slowTimePowerUp(int time) { slowTime = time; }
+	void freezeTimePowerUp(int time) { freezeTime = time; }
 
 	void calculateCollisions();
 	void removePowerUP(int obj);
@@ -34,6 +39,13 @@ private:
 	TileMap* map;
 	Animated* player;
 	Animated* background;
+
+	int cumulatedTime = 0;
+	unsigned int currentTick = 0;
+
+	int slowTime = 0;
+	int freezeTime = 0;
+
 
 	std::vector<std::shared_ptr<Animated>> powerUps;
 	std::vector<std::shared_ptr<Animated>> bubbles;

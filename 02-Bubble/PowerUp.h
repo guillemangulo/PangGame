@@ -5,7 +5,7 @@ class PowerUp :
 	public Animated
 {
 public: 
-	enum class Type {
+	enum type {
 		FREEZE_TIME, 
 		DYNAMITE,
 		DOUBLE_WIRE, 
@@ -14,20 +14,22 @@ public:
 		INVINCIBILITY,
 		SLOW_TIME
 	};
-	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, Type tip, const char* sprtsht = "images/varied.png");
+	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int tip, const char* sprtsht = "images/varied.png");
 
 	void update(int deltaTime);
+
+	void PowerUp::actPowerUp();
 
 	bool isCollected() const { return collected;}
 
 	void onCollision(short flags) override;
 
-	void setType(Type tip);
+	void setType(int tip);
 
 
 
 private:
-	Type type;
+	int type;
 	bool collected = false;
 
 	int currTime = 0;

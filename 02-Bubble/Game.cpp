@@ -60,12 +60,16 @@ void Game::keyPressed(int key)
 		case GLFW_KEY_KP_ADD:
 		{
 			level += 1;
+			if(level > 50)
+				level = 50;
 			loadScreen(GAME);
 			break;
 		}
 		case GLFW_KEY_KP_SUBTRACT:
 		{
 			level -= 1;
+			if(level < 1)
+				level = 1;
 			loadScreen(GAME);
 			break;
 		}
@@ -81,6 +85,34 @@ void Game::keyPressed(int key)
 		case GLFW_KEY_C:
 		{
 			activeScene->toggleDebugBoxes();
+			break;
+		}
+
+		case GLFW_KEY_M:
+		{
+			loadScreen(MAPA);
+			break;
+		}
+
+		case GLFW_KEY_B:
+		{
+			if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
+				nivellpa->createBubble(mouseX, mouseY);
+			}
+			break;
+		}
+		case GLFW_KEY_U:
+		{
+			if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
+				nivellpa->createPowerUp(mouseX, mouseY,0);
+			}
+			break;
+		}
+		case GLFW_KEY_T:
+		{
+			if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
+				nivellpa->teleportPlayer(mouseX, mouseY);
+			}
 			break;
 		}
 		default:
@@ -100,26 +132,12 @@ void Game::keyReleased(int key)
 
 void Game::mouseMove(int x, int y)
 {
-	if (mouse_down)
-	{
-		if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
-			nivellpa->teleportPlayer(mouseX, mouseY);
-		}
-	}
 	mouseX = x;
 	mouseY = y;
 }
 
 void Game::mousePress(int button)
 {
-
-	if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
-		nivellpa->teleportPlayer(mouseX, mouseY);
-	}
-	if (Mapa* nivellpa = dynamic_cast<Mapa*>(activeScene)) {
-		debug.append(std::to_string(mouseX) + "," + std::to_string(mouseY) + ",");
-	}
-	cout << "{"<< debug << "}" << endl;
 	mouse_down = true;
 }
 
