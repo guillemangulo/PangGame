@@ -27,7 +27,7 @@ public:
 	virtual void update(int deltaTime);
 	virtual void render();
 	virtual void toggleDebugBoxes();
-	virtual void clearMem() {};
+	virtual void clearMem();
 
 	void playSound(const char* sound);
 	void pauseSound(bool pause);

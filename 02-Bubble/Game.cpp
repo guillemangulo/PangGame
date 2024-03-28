@@ -137,7 +137,6 @@ void Game::loadScreen(pantalles p)
 		break;
 	case Game::GAME:
 	{
-
 		if (activeScene != nullptr)
 		{
 			activeScene->clearMem();

@@ -50,6 +50,15 @@ void Pantalla::toggleDebugBoxes()
 	debugBoxes = !debugBoxes;
 }
 
+void Pantalla::clearMem()
+{
+	if (soundEngine != nullptr)
+	{
+		soundEngine->drop();
+		soundEngine = nullptr;
+	}
+}
+
 void Pantalla::playSound(const char* sound)
 {
 	soundEngine->play2D(sound);

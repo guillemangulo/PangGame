@@ -324,7 +324,7 @@ bool TileMap::checkStairsBelow(glm::ivec2& posi, const glm::ivec2& size, const g
 
 bool TileMap::groundWithStairsBelow(glm::ivec2& posi, const glm::ivec2& size, const glm::ivec2& sizeoff)
 {
-	int x, y, y1, x1;
+	int x, y1, x1;
 
 	x = (posi.x + sizeoff.x) / tileSize;
 	x1 = (posi.x + sizeoff.x + size.x) / tileSize;

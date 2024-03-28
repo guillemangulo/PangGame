@@ -14,6 +14,7 @@ public:
 
 private:
     glm::vec2 velocity = glm::vec2(1, 1);
+    int cumulatedTime = 0;
 
 };
 
