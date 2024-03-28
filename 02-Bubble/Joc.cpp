@@ -51,7 +51,7 @@ void Joc::init(int nivell)
 	player->setTileMap(map);
 
 	background = new Animated();
-	background->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "images/BackgroundLvls/L" + std::to_string(nivell) + ".png", glm::ivec2(SCREEN_WIDTH/SCALING, SCREEN_HEIGHT/SCALING - 32));
+	background->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "images/BackgroundLvls/L" + std::to_string(nivell) + ".png", glm::ivec2(SCREEN_WIDTH/SCALING, SCREEN_HEIGHT/SCALING - 32), glm::vec2(1.f,1.f));
 	background->doGravity(false);
 
 
@@ -75,14 +75,7 @@ void Joc::update(int deltaTime)
 
 void Joc::render()
 {
-	glm::mat4 modelview;
-
-	texProgram.use();
-	texProgram.setUniformMatrix4f("projection", projection);
-	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-	modelview = glm::mat4(1.0f);
-	texProgram.setUniformMatrix4f("modelview", modelview);
-	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
+	Pantalla::render();
 
 	background->render();
 	map->render();

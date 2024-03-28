@@ -7,8 +7,11 @@ class Player :
 	public Animated
 {
 	public:
-		void init(const glm::ivec2 &tileMapPos, ShaderProgram& shaderProgram,const std::string sprtsht = "images/PlayerDefault.png", const glm::ivec2 tamany = glm::ivec2(32, 32)) override;
-		void update(int deltaTime);
+		void init(const glm::ivec2 &tileMapPos, ShaderProgram& shaderProgram,
+			const std::string sprtsht = "images/PlayerDefault.png",
+			const glm::ivec2 tamany = glm::ivec2(32, 32),
+			const glm::vec2 spriteBlock = glm::vec2(1.0f, 1.0f)) override;
+		void update(int deltaTime); 
 		//*/
 	private:
 		float speed = 2.0f;

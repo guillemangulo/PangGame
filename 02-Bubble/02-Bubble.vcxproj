@@ -16,6 +16,7 @@
     <ClInclude Include="Bubble.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Joc.h" />
+    <ClInclude Include="Mapa.h" />
     <ClInclude Include="Pantalla.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />
@@ -32,6 +33,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Joc.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mapa.cpp" />
     <ClCompile Include="Pantalla.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shader.cpp" />

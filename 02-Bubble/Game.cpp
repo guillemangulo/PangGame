@@ -6,8 +6,7 @@
 void Game::init()
 {
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-	level = 30;
-	loadScreen(GAME);
+	loadScreen(MAPA);
 	bPlay = true;
 }
 
@@ -117,6 +116,10 @@ void Game::mousePress(int button)
 	if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
 		nivellpa->teleportPlayer(mouseX, mouseY);
 	}
+	if (Mapa* nivellpa = dynamic_cast<Mapa*>(activeScene)) {
+		debug.append(std::to_string(mouseX) + "," + std::to_string(mouseY) + ",");
+	}
+	cout << "{"<< debug << "}" << endl;
 	mouse_down = true;
 }
 
@@ -156,6 +159,14 @@ void Game::loadScreen(pantalles p)
 	case Game::CONTROLS:
 		break;
 	case Game::MAPA:
+		if (activeScene != nullptr)
+		{
+			activeScene->clearMem();
+			activeScene = nullptr;
+		}
+		mapa = Mapa();
+		mapa.init();
+		activeScene = &mapa;
 		break;
 	default:
 		break;

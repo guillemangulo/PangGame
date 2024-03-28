@@ -6,7 +6,7 @@
 #include "Game.h"
 
 
-void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const std::string sprtsht, const glm::ivec2 tamany)
+void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const std::string sprtsht, const glm::ivec2 tamany, const glm::vec2 blah)
 {
 	size = glm::ivec2(18, 32);
 	sizeoff = glm::ivec2(7, 0);
@@ -76,24 +76,27 @@ void Player::update(int deltaTime)
 		glm::ivec4 stair = map->checkStairs(pos, size, sizeoff);
 		if (stair != glm::ivec4(-1, -1,-1,-1))
 		{
-			escalant = true;
-			pos.x = stair.x;
 			if (joy.y < 0)
 			{
-				if (pos.y - size.y/2 > stair.y - size.y)
+				if (pos.y - size.y/2 >= stair.y - size.y)
 				{
+					escalant = true;
+					pos.x = stair.x;
 					pos.y--;
 					if (sprite->animation() != CLIMB_UP)
 						sprite->changeAnimation(CLIMB_UP);
 				}
 				else if (pos.y - 3 > stair.y - size.y)
 				{
+					escalant = true;
+					pos.x = stair.x;
 					pos.y--;
 					if (sprite->animation() != END_CLIMB)
 							sprite->changeAnimation(END_CLIMB);
 				}
 				else
 				{
+
 					pos.y = stair.y - size.y;
 					if(sprite->animation()!= STAND_RIGHT)
 						sprite->changeAnimation(STAND_RIGHT);
@@ -101,6 +104,7 @@ void Player::update(int deltaTime)
 			}
 			else
 			{
+				pos.x = stair.x;
 				if (pos.y + 1 > stair.z)
 				{
 					escalant = false;
@@ -113,7 +117,9 @@ void Player::update(int deltaTime)
 						sprite->changeAnimation(CLIMB_DOWN);
 				}
 				if (map->groundWithStairsBelow(pos, size, sizeoff))
+				{
 					pos.y++;
+				}
 				else
 					map->collisionMove(&pos, size, sizeoff, glm::ivec2(0, 1));
 			}

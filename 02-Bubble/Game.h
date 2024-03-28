@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include "Pantalla.h"
 #include "Joc.h"
+#include "Mapa.h"
 
 
 // Game is a singleton (a class with a single instance) that represents our whole application
@@ -45,6 +46,7 @@ public:
 
 	bool IsShooting() const;
 
+	void setLevel(int l){level = l;}
 
 private:
 	bool bPlay; // Continue to play game?
@@ -57,10 +59,12 @@ private:
 
 	int level = 1;
 
+	string debug = "";
 	
 	Pantalla* activeScene = nullptr;
 
 	Joc nivell; 
+	Mapa mapa;
 
 };
 

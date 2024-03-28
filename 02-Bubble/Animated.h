@@ -14,7 +14,10 @@ class Joc;
 class Animated
 {
 public:
-	virtual void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, const std::string sprtsht = "images/varied.png", const glm::ivec2 tamany = glm::ivec2(32, 32));
+	virtual void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram,
+		const std::string sprtsht = "images/varied.png",
+		const glm::ivec2 tamany = glm::ivec2(32, 32),
+		const glm::vec2 spriteBlock = glm::vec2(1.0f,1.0f));
 	virtual void update(int deltaTime);
 
 	/// <summary>
@@ -70,9 +73,11 @@ public:
 	glm::ivec2 getPosition() const { return pos; }
 	glm::ivec2 getSize() const { return size; }
 	void setColSize(const glm::ivec2& _size) { size = _size; }
-		/*
-		void drawColisionBox(glm::ivec2* pos, const glm::ivec2& size, const glm::ivec2& sizeoff = glm::ivec2(1, 1), const glm::ivec2 dir = glm::ivec2(0,0)) const;
-		void debugColisionBoxToggle();//*/
+
+	void setNumAnims(int numAnims) { sprite->setNumberAnimations(numAnims); }
+	void setAnimSpeed(int anim, int speed) { sprite->setAnimationSpeed(anim, speed);}
+	void addKeyframe(int anim, glm::vec2 keyframe) { sprite->addKeyframe(anim, keyframe); }
+	void setAnimation(int anim) { if (sprite->animation() != anim) { sprite->changeAnimation(anim); } }
 
 
 
