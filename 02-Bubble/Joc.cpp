@@ -66,6 +66,8 @@ void Joc::init(int nivell)
 	nomNivell->writeText(getLevelName(nivell), glm::vec2(24 * 8, 26 * 8), texProgram);
 	nomNivell->centerText();
 
+	estatics->writeText("lives: "+to_string(game->getLives()), glm::vec2(2 * 8, 28 * 8), texProgram);
+
 	puntsDisplay = new TextWritter();
 	if (auto pla = dynamic_cast<Player*>(player)) 
 		puntsDisplay->writeText(to_string(pla->getPoints()), glm::vec2(4 * 8, 27 * 8), texProgram);
@@ -79,10 +81,10 @@ void Joc::init(int nivell)
 
 	currentTime = 0.0f;
 	
-	createBubble(20, 20, 20);
-	createBubble(60, 30, 20);
-	createBubble(40, 80, 20);
-	createBubble(90, 50, 20);
+	createBubble(20, 20, 48);
+	createBubble(60, 30, 48);
+	createBubble(40, 80, 48);
+	createBubble(90, 50, 48);
 }
 
 void Joc::update(int deltaTime)
@@ -145,9 +147,11 @@ void Joc::update(int deltaTime)
 		}
 	}
 	// ja no queden bombolles
-	if (bubbles.size() == 0) game->seguentNivell();
-
-
+	if (bubbles.size() == 0)
+	{
+		game->addPunts(oldPunts);
+		game->seguentNivell();
+	}
 }
 
 void Joc::render()
@@ -191,7 +195,7 @@ void Joc::createBubble(int x, int y, int tamany)
 
 	if (auto bubble = std::dynamic_pointer_cast<Bubble>(newBubble))
 	{
-		bubble->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "images/bubble.png",48); //48,32,16 o 8
+		bubble->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "images/bubble.png",tamany); //48,32,16 o 8
 		bubble->setPosition(glm::vec2(x / SCALING, y / SCALING));
 		bubble->setTileMap(map);
 		bubble->setIndex(bubbles.size());
@@ -211,6 +215,13 @@ void Joc::createPowerUp(int x, int y, int type)
 		PU->setParent(this);
 	}
 	powerUps.push_back(newPU);
+}
+
+void Joc::removeBubble(int obj)
+{
+	bubbles.erase(bubbles.begin() + obj);
+	for (unsigned int i = 0; i < bubbles.size(); i++)
+		bubbles[i]->setIndex(i);
 }
 
 void Joc::createFood(int x, int y, int type)
@@ -312,12 +323,48 @@ void Joc::calculateCollisions()
 
 	for (unsigned int i = 0; i < bubbles.size(); i++)
 	{
+		if (auto PU = std::dynamic_pointer_cast<Bubble>(bubbles[i])) {
+			if (PU->circleRect(playerPos.x, playerPos.y, player->getSize().x, player->getSize().y))
+			{
+				if (game->getLives() > 0)
+				{
+					playSound("audio/16Missed.wav");
+					game->addLives(-1);
+					game->reloadNivell();
+				}
+				else
+				{
+					game->setGameOver();
+				}
+			}
+		}
+	}
+
+	for (unsigned int i = 0; i < cadena.size(); i++)
+	{
 		if (auto PU = std::dynamic_pointer_cast<Cadena>(cadena[i])) {
 			for (int j = 0; j < bubbles.size(); ++j) {
 				bool hihacol =
 					PU->circleRect(bubbles[j]->getPosition().x, bubbles[j]->getPosition().y, bubbles[j]->getSize().x);
 				if (hihacol) {
 					bubbles[j]->onCollision(0b0100);
+					if (bubbles[j]->getSize().x == 48)
+					{
+						createBubble(bubbles[j]->getPosition().x, bubbles[j]->getPosition().y, 32);
+						createBubble(bubbles[j]->getPosition().x, bubbles[j]->getPosition().y, 32);
+					}
+					else if (bubbles[j]->getSize().x == 32)
+					{
+						createBubble(bubbles[j]->getPosition().x, bubbles[j]->getPosition().y, 16);
+						createBubble(bubbles[j]->getPosition().x, bubbles[j]->getPosition().y, 16);
+					}
+					else if (bubbles[j]->getSize().x == 16)
+					{
+						createBubble(bubbles[j]->getPosition().x, bubbles[j]->getPosition().y, 8);
+						createBubble(bubbles[j]->getPosition().x, bubbles[j]->getPosition().y, 8);
+					}
+
+					removeBubble(j);
 					removeCadena(i);
 				}
 			}

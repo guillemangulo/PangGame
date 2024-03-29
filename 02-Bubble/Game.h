@@ -56,9 +56,25 @@ public:
 	void seguentNivell() {
 		level += 1;
 		if (level > 50)
-			level = 50;
+			loadScreen(WIN);
 		loadScreen(GAME);
-	}
+	};
+
+	void reloadNivell() {
+		loadScreen(GAME);
+	};
+
+	void setGameOver() {
+		loadScreen(GAMEOVER);
+	};
+
+	int getLives() {
+		return lives;
+	};
+
+	void addLives(int l) {
+		lives += l;
+	};
 
 private:
 	bool bPlay; // Continue to play game?
@@ -72,6 +88,7 @@ private:
 	int puntsTot = 0;
 
 	int level = 1;
+	int lives = 3;
 
 	string debug = "";
 	

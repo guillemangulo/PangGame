@@ -43,6 +43,8 @@ void Pantalla::render()
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
+	if(fons != nullptr)
+		fons->render();
 }
 
 void Pantalla::toggleDebugBoxes()
@@ -57,6 +59,15 @@ void Pantalla::clearMem()
 		soundEngine->drop();
 		soundEngine = nullptr;
 	}
+}
+
+void Pantalla::loadImage(const char* filename)
+{
+	if (fons != nullptr)
+		delete fons;
+	fons = new Animated();
+	fons->init(glm::ivec2(0, 0), texProgram, filename, glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT), glm::vec2(1.0f, 1.0f));
+	fons->doGravity(false);
 }
 
 void Pantalla::playSound(const char* sound)

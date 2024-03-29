@@ -9,6 +9,8 @@
 #include <glm/glm.hpp>
 #include "ShaderProgram.h"
 
+#include "Animated.h"
+
 #define SCALING 2
 
 #define SCREEN_WIDTH (384)*SCALING
@@ -28,6 +30,7 @@ public:
 	virtual void render();
 	virtual void toggleDebugBoxes();
 	virtual void clearMem();
+	void loadImage(const char* filename);
 
 	void playSound(const char* sound);
 	void pauseSound(bool pause);
@@ -36,6 +39,8 @@ protected:
 	void initShaders();
 
 	irrklang::ISoundEngine* soundEngine = nullptr;
+
+	Animated* fons  = nullptr;
 
 	bool debugBoxes = false;
 	ShaderProgram texProgram;

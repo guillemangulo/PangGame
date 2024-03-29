@@ -17,6 +17,8 @@ bool Game::update(int deltaTime)
 	return bPlay;
 }
 
+
+
 void Game::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -201,10 +203,28 @@ void Game::loadScreen(pantalles p)
 		break;
 	}
 	case Game::GAMEOVER:
+		if (activeScene != nullptr)
+		{
+			activeScene->clearMem();
+			activeScene = nullptr;
+		}
+		activeScene = new Pantalla();
+		activeScene->init();
+		activeScene->loadImage("images/gameover.png");
+		activeScene->playSound("audio/19GameOver.wav");
 		break;
 	case Game::TIMEOVER:
 		break;
 	case Game::WIN:
+		if (activeScene != nullptr)
+		{
+			activeScene->clearMem();
+			activeScene = nullptr;
+		}
+		activeScene = new Pantalla();
+		activeScene->init();
+		activeScene->loadImage("images/win.png");
+		activeScene->playSound("audio/13Ending.wav");
 		break;
 	case Game::CREDITS:
 		if (activeScene != nullptr)

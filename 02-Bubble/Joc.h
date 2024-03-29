@@ -31,6 +31,7 @@ public:
 	void createBubble(int x, int y, int tamany = 0);
 	void createFood(int x, int y, int type);
 	void createPowerUp(int x, int y, int type);
+	void removeBubble(int obj);
 
 	void createCadena(int x, int y);
 	void teleportPlayer(int x, int y);
@@ -79,4 +80,5 @@ private:
 	std::vector<std::shared_ptr<Animated>> cadena;
 
 	int maxcadenas = 1;
+
 };
