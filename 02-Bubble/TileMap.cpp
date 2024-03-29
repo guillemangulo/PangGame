@@ -408,41 +408,62 @@ short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm:
 	return 0b10000;
 }
 
-glm::ivec2 TileMap::collisionBubble(const int bubbleRadius, const glm::vec2 bubblePosition) const
+glm::ivec2 TileMap::collisionBubble(const int bubbleRadius, const glm::ivec2 bubblePosition, const glm::ivec2 velocity) const
 {
-	int bubbleGridX = bubblePosition.x / tileSize;
-	int bubbleGridY = bubblePosition.y / tileSize;
+	int x, y, y1, x1;
 
-	int bubbleRadiusSquared = bubbleRadius * bubbleRadius;
+	x = (int)glm::floor(( bubblePosition.x - bubbleRadius) / tileSize);
+	x1 = (int)glm::ceil(( bubblePosition.x + bubbleRadius) / tileSize);
 
-	for (int yOffset = -1; yOffset <= 1; ++yOffset) {
-		for (int xOffset = -1; xOffset <= 1; ++xOffset) {
-			int checkX = bubbleGridX + xOffset;
-			int checkY = bubbleGridY + yOffset;
+	y = (int)glm::floor(( bubblePosition.y - bubbleRadius) / tileSize);
+	y1 = (int)glm::ceil(( bubblePosition.y + bubbleRadius) / tileSize);
 
-			if (colisions[checkY * mapSize.x + checkX] && checkX >= 0 && checkX < mapSize.x && checkY >= 0 && checkY < mapSize.y) {
-				int cellCenterX = (checkX + 0.5) * tileSize;
-				int cellCenterY = (checkY + 0.5) * tileSize;
+	int bubbleRadiusSquared = bubbleRadius * bubbleRadius; +abs(velocity.y) * abs(velocity.x);
 
-				int dx = cellCenterX - bubblePosition.x;
-				int dy = cellCenterY - bubblePosition.y;
-				int distanceSquared = dx * dx + dy * dy;
+	float smallestDistanceSquared = bubbleRadiusSquared;
 
-				if (distanceSquared <= bubbleRadiusSquared) {
+	glm::ivec2 normal = glm::ivec2(0, 0);
 
+	for (int _y = y; _y <= y1 && _y <= mapSize.y && _y >= 0; _y++)
+	{
+		for (int _x = x; _x <= x1 && _x <= mapSize.x && x >= 0; _x++)
+		{
+			if (colisions[_y * mapSize.x + _x])
+			{
+				int cellCenterX = (_x + 0.5f) * tileSize;
+				if (velocity.x > 0)
+					cellCenterX = (_x) * tileSize;
+				else if(velocity.x < 0)
+					cellCenterX = (_x + 1) * tileSize;//*/
+
+
+				int cellCenterY = (_y + 0.5f) * tileSize;
+				if (velocity.y > 0)
+					cellCenterY = (_y) * tileSize;
+				else if(velocity.y < 0)
+					cellCenterY = (_y + 1) * tileSize;//*/
+
+				float dx = cellCenterX - bubblePosition.x;
+				float dy = cellCenterY - bubblePosition.y;
+				float distanceSquared = dx * dx + dy * dy;
+
+
+				if (distanceSquared <= smallestDistanceSquared)
+				{
+					smallestDistanceSquared = distanceSquared;
 					if (std::abs(dx) > std::abs(dy)) {
-						return glm::ivec2(dx > 0 ? 1 : -1, 0);
+						normal = glm::ivec2(dx , 0);
 					}
-					else if(std::abs(dx) < std::abs(dy)) {
-						return glm::ivec2(0, dy > 0 ? 1 : -1);
+					else if (std::abs(dx) < std::abs(dy)) {
+						normal = glm::ivec2(0, dy);
 					}
 					else
-						return glm::ivec2(dx > 0 ? 1 : -1, dy > 0 ? 1 : -1);
+						normal = glm::ivec2(dx , dy);
 				}
 			}
 		}
 	}
-	return glm::ivec2(0,0);
+	return normal;
 }
 
 

@@ -6,9 +6,10 @@ class Bubble :
 {
 public:
     //TODO: Afegir sprite de bubble.
-    void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, const char* sprtsht = "images/bubble.png");
+    void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, const char* sprtsht = "images/bubble.png", int diam = 48);
 
     void update(int deltaTime) override;
+
 
     void setVelocity(const glm::ivec2& vel) { velocity = vel; }
 

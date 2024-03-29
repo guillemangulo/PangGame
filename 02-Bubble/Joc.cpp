@@ -164,7 +164,7 @@ void Joc::createBubble(int x, int y, int tamany)
 
 	if (auto bubble = std::dynamic_pointer_cast<Bubble>(newBubble))
 	{
-		bubble->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "images/bubble.png");
+		bubble->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "images/bubble.png",48); //48,32,16 o 8
 		bubble->setPosition(glm::vec2(x / SCALING, y / SCALING));
 		bubble->setTileMap(map);
 		bubble->setIndex(bubbles.size());
