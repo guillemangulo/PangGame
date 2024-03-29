@@ -84,15 +84,15 @@ void Joc::init(int nivell)
 
 void Joc::update(int deltaTime)
 {
-	#define tickRate 1000/50
+	#define tickRate 1000/60
 	currentTime += deltaTime;
 	cumulatedTime += deltaTime;
-	//Aixó garanteix un tickrate de no més de tickRate hz evitant que es moguin massa ràpid sent una alternativa al deltaTime tradicional
+	//Aixó garanteix un tickrate de no més de 60 hz evitant que es moguin massa ràpid sent una alternativa al deltaTime tradicional
 	//que funciona millor amb jocs basats en integers on no podem fer servir decimals.
-	while (cumulatedTime > tickRate)
+	if (cumulatedTime > tickRate)
 	{
 		currentTick++;
-		cumulatedTime -= tickRate;
+		cumulatedTime = 0;
 		player->update(tickRate);
 		if (auto pla = dynamic_cast<Player*>(player))
 		{
@@ -279,6 +279,7 @@ void Joc::calculateCollisions()
 				playerPos.y < PUpos.y + powerUps[i]->getSize().y &&
 				playerPos.y + player->getSize().y > PUpos.y)
 			{
+				playSound("audio/powerup.wav");
 				powerUps[i]->onCollision(0b1000);
 			}
 		}
@@ -293,6 +294,7 @@ void Joc::calculateCollisions()
 				playerPos.y < PUpos.y + menjar[i]->getSize().y &&
 				playerPos.y + player->getSize().y > PUpos.y)
 			{
+				playSound("audio/pickup.wav");
 				menjar[i]->onCollision(0b1000);
 			}
 		}
