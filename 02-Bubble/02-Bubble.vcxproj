@@ -14,10 +14,13 @@
     <ClInclude Include="Animated.h" />
     <ClInclude Include="AnimKeyframes.h" />
     <ClInclude Include="Bubble.h" />
+    <ClInclude Include="Credits.h" />
     <ClInclude Include="Food.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Instruccions.h" />
     <ClInclude Include="Joc.h" />
     <ClInclude Include="Mapa.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Pantalla.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />
@@ -31,11 +34,14 @@
   <ItemGroup>
     <ClCompile Include="Animated.cpp" />
     <ClCompile Include="Bubble.cpp" />
+    <ClCompile Include="Credits.cpp" />
     <ClCompile Include="Food.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Instruccions.cpp" />
     <ClCompile Include="Joc.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mapa.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Pantalla.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shader.cpp" />

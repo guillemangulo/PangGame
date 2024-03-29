@@ -6,7 +6,7 @@
 void Game::init()
 {
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-	loadScreen(MAPA);
+	loadScreen(MAINMENU);
 	bPlay = true;
 }
 
@@ -163,7 +163,14 @@ void Game::loadScreen(pantalles p)
 	switch(p)
 	{
 	case Game::MAINMENU:
-
+		if (activeScene != nullptr)
+		{
+			activeScene->clearMem();
+			activeScene = nullptr;
+		}
+		menu = Menu();
+		menu.init();
+		activeScene = &menu;
 		break;
 	case Game::GAME:
 	{
@@ -184,6 +191,14 @@ void Game::loadScreen(pantalles p)
 	case Game::WIN:
 		break;
 	case Game::CREDITS:
+		if (activeScene != nullptr)
+		{
+			activeScene->clearMem();
+			activeScene = nullptr;
+		}
+		credits = Credits();
+		credits.init();
+		activeScene = &credits;
 		break;
 	case Game::CONTROLS:
 		break;
@@ -197,6 +212,17 @@ void Game::loadScreen(pantalles p)
 		mapa.init();
 		activeScene = &mapa;
 		break;
+	case Game::INSTRUCTIONS:
+		if (activeScene != nullptr)
+		{
+			activeScene->clearMem();
+			activeScene = nullptr;
+		}
+		instruccions = Instruccions();
+		instruccions.init();
+		activeScene = &instruccions;
+		break;
+
 	default:
 		break;
 	}

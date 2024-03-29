@@ -6,7 +6,9 @@
 #include "Pantalla.h"
 #include "Joc.h"
 #include "Mapa.h"
-
+#include "Menu.h"
+#include "Credits.h"
+#include "Instruccions.h"
 
 // Game is a singleton (a class with a single instance) that represents our whole application
 
@@ -24,7 +26,7 @@ public:
 	}
 	enum pantalles
 	{
-		MAINMENU, GAME, GAMEOVER, TIMEOVER, WIN, CREDITS, CONTROLS, MAPA
+		MAINMENU, GAME, GAMEOVER, TIMEOVER, WIN, CREDITS, CONTROLS, MAPA, INSTRUCTIONS
 	};
 
 	void init();
@@ -65,7 +67,9 @@ private:
 
 	Joc nivell; 
 	Mapa mapa;
-
+	Menu menu;
+	Credits credits;
+	Instruccions instruccions;
 };
 
 
