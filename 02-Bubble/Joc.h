@@ -7,6 +7,7 @@
 #include "PowerUp.h"
 #include "Bubble.h"
 #include "Food.h"
+#include "TextWritter.h"
 #include <memory>
 #include <vector>
 
@@ -38,6 +39,8 @@ public:
 	void calculateCollisions();
 	void removePowerUP(int obj);
 
+	char* getLevelName(int nivell);
+
 	void removeFood(int obj);
 
 private:
@@ -51,7 +54,9 @@ private:
 	int slowTime = 0;
 	int freezeTime = 0;
 
+	char* mapName;
 
+	std::vector<TextWritter*> texts;
 	std::vector<std::shared_ptr<Animated>> powerUps;
 	std::vector<std::shared_ptr<Animated>> bubbles;
 	std::vector<std::shared_ptr<Animated>> menjar;

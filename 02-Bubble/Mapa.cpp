@@ -103,7 +103,7 @@ void Mapa::update(int deltaTime)
 	countdown->update(deltaTime);
 	if (currentTime > 8500)
 		cursor->setAnimation(2);
-	if(currentTime > 10000 || game->getKey(GLFW_KEY_F) || game->getKey(GLFW_KEY_RIGHT_SHIFT))
+	if(currentTime > 10000 || currentTime > 500 &&  (game->getKey(GLFW_KEY_F) || game->getKey(GLFW_KEY_RIGHT_SHIFT) || game->getKey(GLFW_KEY_ENTER)))
 	{
 		game->setLevel(level*3+1);
 		game->loadScreen(Game::GAME);

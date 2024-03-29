@@ -4,7 +4,7 @@
 #define SCREEN_Y 0
 
 #define INIT_PLAYER_X_TILES 4
-#define INIT_PLAYER_Y_TILES 18
+#define INIT_PLAYER_Y_TILES 20
 
 
 Joc::Joc()
@@ -54,9 +54,17 @@ void Joc::init(int nivell)
 	background->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "images/BackgroundLvls/L" + std::to_string(nivell) + ".png", glm::ivec2(SCREEN_WIDTH/SCALING, SCREEN_HEIGHT/SCALING - 32), glm::vec2(1.f,1.f));
 	background->doGravity(false);
 
+	TextWritter* text = new TextWritter();
+	text->writeText("player-1A", glm::vec2(2 * 8, 26 * 8), texProgram);
+	text->writeText("player-2A", glm::vec2(36* 8, 26 * 8), texProgram);
+	text->writeText(getLevelName(nivell), glm::vec2(19 * 8, 26 * 8), texProgram);
+	texts.push_back(text);
+
 
 	soundEngine = irrklang::createIrrKlangDevice();
 	playLevelSong(nivell);
+
+
 	
 	currentTime = 0.0f;
 }
@@ -114,6 +122,9 @@ void Joc::render()
 	for (unsigned int i = 0; i < menjar.size(); i++)
 		menjar[i]->render();
 
+	for (unsigned int i = 0; i < texts.size(); i++)
+		texts[i]->render();
+
 	player->render();
 
 }
@@ -131,7 +142,7 @@ void Joc::createBubble(int x, int y, int tamany)
 
 	if (auto bubble = std::dynamic_pointer_cast<Bubble>(newBubble))
 	{
-		bubble->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram); // "images/PowerUp.png");
+		bubble->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "images/bubble.png");
 		bubble->setPosition(glm::vec2(x / SCALING, y / SCALING));
 		bubble->setTileMap(map);
 		bubble->setIndex(bubbles.size());
@@ -194,6 +205,7 @@ void Joc::playLevelSong(const int level)
 	else if(level==7||level==8||level==9||level==40||level==41||level==42)
 	{
 		playSound("audio/04Stage07-09_40-42.wav");
+
 	}
 
 	else if(level==10||level==11||level==12||level==31||level==32||level==33)
@@ -270,6 +282,46 @@ void Joc::removePowerUP(int obj)
 	powerUps.erase(powerUps.begin() + obj);
 	for (unsigned int i = 0; i < powerUps.size(); i++)
 		powerUps[i]->setIndex(i);
+}
+
+char* Joc::getLevelName(int nivell)
+{
+	if (nivell == 1 || nivell == 2 || nivell == 3)
+		return "mt.fujiA";
+	else if (nivell == 4 || nivell == 5 || nivell == 6)
+		return "mt.keirinA";
+	else if (nivell == 7 || nivell == 8 || nivell == 9)
+		return "emerald templeA";
+	else if (nivell == 10 || nivell == 11 || nivell == 12)
+		return "ankor wattA";
+	else if (nivell == 13 || nivell == 14 || nivell == 15)
+		return "australiaA";
+	else if (nivell == 16 || nivell == 17 || nivell == 18)
+		return "taj mahalA";
+	else if (nivell == 19 || nivell == 20 || nivell == 21)
+		return "leningradA";
+	else if (nivell == 22 || nivell == 23 || nivell == 24)
+		return "parisA";
+	else if (nivell == 25 || nivell == 26 || nivell == 27)
+		return "londonA";
+	else if (nivell == 28 || nivell == 29 || nivell == 30)
+		return "barcelonaA";
+	else if (nivell == 31 || nivell == 32 || nivell == 33)
+		return "athensA";
+	else if (nivell == 34 || nivell == 35 || nivell == 36)
+		return "egyptA";
+	else if (nivell == 37 || nivell == 38 || nivell == 39)
+		return "kenyaA";
+	else if (nivell == 40 || nivell == 41 || nivell == 42)
+		return "new yorkA";
+	else if (nivell == 43 || nivell == 44 || nivell == 45)
+		return "mayaA";
+	else if (nivell == 46 || nivell == 47 || nivell == 48)
+		return "antarticaA";
+	else if (nivell == 49 || nivell == 50 || nivell == 51)
+		return "easter islandA";
+	else
+		return "errorA";
 }
 
 void Joc::removeFood(int obj)

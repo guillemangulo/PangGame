@@ -283,3 +283,32 @@ glm::vec2 TextWritter::charToPos(char a)
 		break;
 	}
 }
+
+void TextWritter::writeText(const char* text, glm::vec2 pos, ShaderProgram& program)
+{
+	changed = true;
+	glm::ivec2 size = glm::ivec2(10,10);
+	glm::vec2 blockSize = glm::vec2(1.f / 15.f, 1.f / 8.f);
+	position = pos;
+	for (int i = 0; text[i] != 'A'; i++)
+	{
+		Animated* letter = new Animated();
+		letter->init(glm::vec2(0.0f, 0.0f), program, "images/text.png", size ,blockSize);
+		letter->setPosition(pos+glm::vec2(i*(size.x*.9),0));
+		letter->setNumAnims(1);
+		letter->setAnimSpeed(0,1);
+		glm::vec2 charPos = charToPos(text[i]);
+		letter->addKeyframe(0, glm::vec2(charPos.x*blockSize.x, charPos.y * blockSize.y));
+		letter->setAnimation(0);
+		letters.push_back(letter);
+		position.x += charSize.x;
+	}
+}
+
+void TextWritter::render()
+{
+	for each (Animated * var in letters)
+	{
+		var->render();
+	}
+}

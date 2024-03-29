@@ -28,6 +28,7 @@
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="TextWritter.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="PowerUp.h" />
   </ItemGroup>
@@ -48,6 +49,7 @@
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TextWritter.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="PowerUp.cpp" />
   </ItemGroup>
