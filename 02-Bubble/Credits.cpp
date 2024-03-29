@@ -11,6 +11,8 @@ void Credits::init() {
 	background->init(ivec2(0, 0), texProgram, "images/credits.png", ivec2(SCREEN_WIDTH / SCALING, SCREEN_HEIGHT / SCALING));
 	background->doGravity(false);
 
+	playSound("audio/01Credits.wav");
+
 }
 
 void Credits::update(int deltaTime) {

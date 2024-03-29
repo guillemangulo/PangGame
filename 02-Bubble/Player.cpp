@@ -157,7 +157,7 @@ void Player::update(int deltaTime)
 	{
 		if (sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
-		if (col & 0b1000)
+		if ((col & 0b1000) == 0b1000)
 		{
 			sprite->changeAnimation(STAND_LEFT);
 		}
@@ -166,7 +166,7 @@ void Player::update(int deltaTime)
 	{
 		if (sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
-		if (col & 0b0100 )
+		if ((col & 0b0100) == 0b0100)
 		{
 			sprite->changeAnimation(STAND_RIGHT);
 		}

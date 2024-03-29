@@ -1,4 +1,5 @@
 #include "Bubble.h"
+#include <iostream>
 
 void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, const char* sprtsht)
 {
@@ -43,4 +44,9 @@ void Bubble::update(int deltaTime)
 		}
 		updatePosition();
 	}
+}
+
+
+void Bubble::onCollision(short flags) {
+	std::cout << flags << endl;
 }

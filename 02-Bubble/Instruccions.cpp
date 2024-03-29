@@ -11,6 +11,8 @@ void Instruccions::init() {
 	background->init(ivec2(0, 0), texProgram, "images/instr1.png", ivec2(SCREEN_WIDTH / SCALING, SCREEN_HEIGHT / SCALING));
 	background->doGravity(false);
 
+	playSound("audio/18NameEntry.wav");
+
 }
 
 void Instruccions::update(int deltaTime) {

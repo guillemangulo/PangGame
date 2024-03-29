@@ -1,4 +1,5 @@
 #include "Joc.h"
+#include "Game.h"
 
 #define SCREEN_X 0
 #define SCREEN_Y 0
@@ -102,9 +103,26 @@ void Joc::update(int deltaTime)
 
 				for (unsigned int i = 0; i < menjar.size(); i++)
 					menjar[i]->update(tickRate);
+
 			}
 		}
 	}
+
+	for (unsigned int i = 0; i < cadena.size(); i++)
+		cadena[i]->update(tickRate);
+
+	timerCadena += deltaTime;
+	if (Game::instance().getKey(GLFW_KEY_F)) {
+		glm::ivec2 pos = player->getPosition();
+		if (cadena.size() < maxcadenas) {
+			if (timerCadena > 100) {
+				createCadena(pos.x* SCALING, pos.y* SCALING);
+				timerCadena = 0;
+			}
+		}
+	}
+
+
 }
 
 void Joc::render()
@@ -113,6 +131,12 @@ void Joc::render()
 
 	background->render();
 	map->render();
+
+	for (unsigned int i = 0; i < cadena.size(); i++) {
+		cadena[i]->render();
+	}
+
+	
 	for (unsigned int i = 0; i < powerUps.size(); i++)
 		powerUps[i]->render();
 
@@ -125,6 +149,7 @@ void Joc::render()
 	for (unsigned int i = 0; i < texts.size(); i++)
 		texts[i]->render();
 
+	
 	player->render();
 
 }
@@ -177,6 +202,20 @@ void Joc::createFood(int x, int y, int type)
 		PU->setParent(this);
 	}
 	menjar.push_back(newPU);
+}
+
+void Joc::createCadena(int x, int y) {
+	std::shared_ptr<Animated> newPU = std::make_shared<Cadena>();
+	if (auto PU = std::dynamic_pointer_cast<Cadena>(newPU)) {
+		PU->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "images/cadena.png");
+		PU->setPosition(glm::vec2(x / SCALING, y / SCALING));
+		PU->setColisionFlags(0b1101);
+		PU->setColSize(glm::ivec2(16, 16));
+		PU->setTileMap(map);
+		PU->setIndex(cadena.size());
+		PU->setParent(this);
+	}
+	cadena.push_back(newPU);
 }
 
 void Joc::teleportPlayer(int x, int y)
@@ -275,6 +314,22 @@ void Joc::calculateCollisions()
 			}
 		}
 	}
+
+	for (unsigned int i = 0; i < cadena.size(); i++)
+	{
+		if (auto PU = std::dynamic_pointer_cast<Cadena>(cadena[i])) {
+			for (int j = 0; j < bubbles.size(); ++j) {
+				bool hihacol = 
+					PU->circleRect(bubbles[j]->getPosition().x, bubbles[j]->getPosition().y, bubbles[j]->getSize().x);
+				if (hihacol) {
+					bubbles[j]->onCollision(0b0100);
+					removeCadena(i);
+				}
+			}
+
+		}
+	}
+
 }
 
 void Joc::removePowerUP(int obj)
@@ -329,4 +384,10 @@ void Joc::removeFood(int obj)
 	menjar.erase(menjar.begin() + obj);
 	for (unsigned int i = 0; i < menjar.size(); i++)
 		menjar[i]->setIndex(i);
+}
+
+void Joc::removeCadena(int obj) {
+	cadena.erase(cadena.begin() + obj);
+	for (unsigned int i = 0; i < cadena.size(); i++)
+		cadena[i]->setIndex(i);
 }

@@ -60,7 +60,7 @@ void PowerUp::actPowerUp()
 	}
 	case DOUBLE_WIRE:
 	{
-		//joc->doubleWire();
+		joc->double_wire_powerup();
 		break;
 	}
 	case POWER_WIRE:
