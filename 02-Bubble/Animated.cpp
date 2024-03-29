@@ -28,7 +28,7 @@ void Animated::update(int deltaTime)
 			if((colisionFlags & 0b0001) == 0b0001)
 			{
 				int posy = pos.y+size.y;
-				int posfloor = map->getTileSize() * (map->getMapSize().y-5);
+				int posfloor = map->getTileSize() * (map->getMapSize().y-1);
 				if (posy < posfloor)
 				{
 					pos.y += fallTable[fallFrame];
@@ -37,7 +37,7 @@ void Animated::update(int deltaTime)
 				}
 				else
 				{
-					pos.y = posfloor;
+					pos.y = posfloor - size.y;
 					updatePosition();
 					fallStateUpdate(0b0001, deltaTime);
 				}

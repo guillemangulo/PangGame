@@ -403,6 +403,22 @@ short TileMap::collisionMove(glm::ivec2* pos, const glm::ivec2& size, const glm:
 				pos->y += dir.y;
 			}
 		}
+
+		if (dir.y < 0)
+		{
+			for (int _x = x; !(col & 0b0001) && _x <= x1; _x++)
+			{
+				if (colisions[y * mapSize.x + _x])
+				{
+					col |= 0b0001;
+					pos->y = (y)*tileSize + size.y;
+				}
+			}
+			if (!(col & 0b0001))
+			{
+				pos->y += dir.y;
+			}
+		}
 		return col;
 	}
 	return 0b10000;

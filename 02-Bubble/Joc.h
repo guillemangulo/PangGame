@@ -7,6 +7,7 @@
 #include "PowerUp.h"
 #include "Bubble.h"
 #include "Food.h"
+#include "Cadena.h"
 #include "TextWritter.h"
 #include <memory>
 #include <vector>
@@ -30,6 +31,8 @@ public:
 	void createBubble(int x, int y, int tamany = 0);
 	void createFood(int x, int y, int type);
 	void createPowerUp(int x, int y, int type);
+
+	void createCadena(int x, int y);
 	void teleportPlayer(int x, int y);
 	void toggleDebugBoxes() override;
 
@@ -44,6 +47,9 @@ public:
 	char* getLevelName(int nivell);
 
 	void removeFood(int obj);
+	void removeCadena(int obj);
+
+	void double_wire_powerup() { maxcadenas = 2; };
 
 private:
 	TileMap* map;
@@ -52,6 +58,7 @@ private:
 
 	int cumulatedTime = 0;
 	unsigned int currentTick = 0;
+	int timerCadena = 0;
 
 	int slowTime = 0;
 	int freezeTime = 0;
@@ -69,4 +76,7 @@ private:
 	std::vector<std::shared_ptr<Animated>> bubbles;
 	std::vector<std::shared_ptr<Animated>> menjar;
 
+	std::vector<std::shared_ptr<Animated>> cadena;
+
+	int maxcadenas = 1;
 };

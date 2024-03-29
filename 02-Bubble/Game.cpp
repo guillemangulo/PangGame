@@ -115,6 +115,14 @@ void Game::keyPressed(int key)
 			}
 			break;
 		}
+
+		case GLFW_KEY_O:
+		{
+			if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
+				nivellpa->createPowerUp(mouseX, mouseY, 2);
+			}
+			break;
+		}
 		case GLFW_KEY_T:
 		{
 			if (Joc* nivellpa = dynamic_cast<Joc*>(activeScene)) {
@@ -129,6 +137,14 @@ void Game::keyPressed(int key)
 			}
 			break;
 		}
+		case GLFW_KEY_S:
+			activeScene->pauseSound(true);
+			break;
+
+		case GLFW_KEY_A:
+			activeScene->pauseSound(false);
+			break;
+
 		default:
 		{
 			break;

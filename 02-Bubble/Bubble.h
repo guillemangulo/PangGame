@@ -13,6 +13,8 @@ public:
 
     void setVelocity(const glm::ivec2& vel) { velocity = vel; }
 
+    void onCollision(short flags);
+
 private:
     glm::vec2 velocity = glm::vec2(1, 1);
     int cumulatedTime = 0;

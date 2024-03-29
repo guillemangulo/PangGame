@@ -6,10 +6,11 @@ void PowerUp::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, i
 {
 	spritesheet.loadFromFile(sprtsht, TEXTURE_PIXEL_FORMAT_RGBA);
 	tileMapDispl = tileMapPos;
-	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.5f, 0.5f), &spritesheet, &shaderProgram);
+	sprite = Sprite::createSprite(glm::ivec2(20, 20), glm::vec2(0.25f, 0.25f), &spritesheet, &shaderProgram);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 	setColisionFlags(0b1001);
 	setType(tip);
+	size = glm::ivec2(10 * SCALING, 10 * SCALING);
 }
 
 void PowerUp::update(int deltaTime)
@@ -18,6 +19,11 @@ void PowerUp::update(int deltaTime)
 	{
 		Animated::update(deltaTime);
 		currTime += deltaTime;
+
+		if (currTime >= timeOut *  0.85f)
+		{
+			sprite->setParpadeig(true);
+		}
 		if (currTime >= timeOut)
 		{
 			joc->removePowerUP(index);
@@ -60,7 +66,8 @@ void PowerUp::actPowerUp()
 	}
 	case DOUBLE_WIRE:
 	{
-		//joc->doubleWire();
+		
+		joc->double_wire_powerup();
 		break;
 	}
 	case POWER_WIRE:
@@ -96,8 +103,8 @@ void PowerUp::setType(int tip)
 	case FREEZE_TIME:
 	{
 		sprite->setNumberAnimations(1);
-			sprite->setAnimationSpeed(0, 1);
-			sprite->addKeyframe(0, glm::vec2(2, 1));
+		sprite->setAnimationSpeed(0, 1);
+		sprite->addKeyframe(0, glm::vec2(3.f/ 4.f, 0));
 		sprite->changeAnimation(0);
 		updatePosition();
 		break;
@@ -105,6 +112,11 @@ void PowerUp::setType(int tip)
 	case DYNAMITE:
 		break;
 	case DOUBLE_WIRE:
+		sprite->setNumberAnimations(1);
+		sprite->setAnimationSpeed(0, 8);
+		sprite->addKeyframe(0, glm::vec2(2.f / 4.f, 3.f / 4.f));
+		sprite->changeAnimation(0);
+		updatePosition();
 		break;
 	case POWER_WIRE:
 		break;
@@ -113,6 +125,11 @@ void PowerUp::setType(int tip)
 	case INVINCIBILITY:
 		break;
 	case SLOW_TIME:
+		sprite->setNumberAnimations(1);
+		sprite->setAnimationSpeed(0, 1);
+		sprite->addKeyframe(0, glm::vec2(0.f, 1.f / 4.f));
+		sprite->changeAnimation(0);
+		updatePosition();
 		break;
 	default:
 		break;
