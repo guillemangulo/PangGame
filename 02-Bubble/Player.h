@@ -13,6 +13,7 @@ class Player :
 			const glm::vec2 spriteBlock = glm::vec2(1.0f, 1.0f)) override;
 		void update(int deltaTime); 
 		void addPoints(int p) { points += p; };
+		int getPoints() { return points; };
 		//*/
 	private:
 

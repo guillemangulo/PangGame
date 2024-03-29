@@ -1,4 +1,5 @@
 #include "Joc.h"
+#include "Game.h"
 
 #define SCREEN_X 0
 #define SCREEN_Y 0
@@ -41,6 +42,7 @@ void Joc::clearMem()
 
 void Joc::init(int nivell)
 {
+	game = &Game::instance();
 	initShaders();
 	map = TileMap::createTileMap("levels/N" + std::to_string(nivell) + ".txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH / SCALING), float(SCREEN_HEIGHT / SCALING), 0.f);
@@ -54,11 +56,22 @@ void Joc::init(int nivell)
 	background->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "images/BackgroundLvls/L" + std::to_string(nivell) + ".png", glm::ivec2(SCREEN_WIDTH/SCALING, SCREEN_HEIGHT/SCALING - 32), glm::vec2(1.f,1.f));
 	background->doGravity(false);
 
-	TextWritter* text = new TextWritter();
-	text->writeText("player-1A", glm::vec2(2 * 8, 26 * 8), texProgram);
-	text->writeText("player-2A", glm::vec2(36* 8, 26 * 8), texProgram);
-	text->writeText(getLevelName(nivell), glm::vec2(19 * 8, 26 * 8), texProgram);
-	texts.push_back(text);
+	TextWritter* estatics = new TextWritter();
+	estatics->writeText("player-1", glm::vec2(2 * 8, 26 * 8), texProgram);
+	estatics->writeText("player-2", glm::vec2(36* 8, 26 * 8), texProgram);
+
+	TextWritter* nomNivell = new TextWritter();
+	estatics->writeText(to_string((int)glm::ceil(nivell/3.f))+"-"+to_string(nivell)+" stage", glm::vec2(20 * 8, 27 * 8), texProgram);
+	estatics->writeText("hi:"+to_string(game->getPunts()), glm::vec2(20 * 8, 28 * 8), texProgram);
+	nomNivell->writeText(getLevelName(nivell), glm::vec2(24 * 8, 26 * 8), texProgram);
+	nomNivell->centerText();
+
+	puntsDisplay = new TextWritter();
+	if (auto pla = dynamic_cast<Player*>(player)) 
+		puntsDisplay->writeText(to_string(pla->getPoints()), glm::vec2(4 * 8, 27 * 8), texProgram);
+
+	texts.push_back(estatics);
+	texts.push_back(nomNivell);
 
 
 	soundEngine = irrklang::createIrrKlangDevice();
@@ -71,7 +84,7 @@ void Joc::init(int nivell)
 
 void Joc::update(int deltaTime)
 {
-#define tickRate 1000/50
+	#define tickRate 1000/50
 	currentTime += deltaTime;
 	cumulatedTime += deltaTime;
 	//Aixó garanteix un tickrate de no més de tickRate hz evitant que es moguin massa ràpid sent una alternativa al deltaTime tradicional
@@ -81,6 +94,14 @@ void Joc::update(int deltaTime)
 		currentTick++;
 		cumulatedTime -= tickRate;
 		player->update(tickRate);
+		if (auto pla = dynamic_cast<Player*>(player))
+		{
+			if (pla->getPoints() != oldPunts)
+			{
+				oldPunts = pla->getPoints();
+				puntsDisplay->changeText(to_string(pla->getPoints()));
+			}
+		}
 		calculateCollisions();
 		if (freezeTime > 0)
 		{
@@ -125,6 +146,7 @@ void Joc::render()
 	for (unsigned int i = 0; i < texts.size(); i++)
 		texts[i]->render();
 
+	puntsDisplay->render();
 	player->render();
 
 }
@@ -287,39 +309,39 @@ void Joc::removePowerUP(int obj)
 char* Joc::getLevelName(int nivell)
 {
 	if (nivell == 1 || nivell == 2 || nivell == 3)
-		return "mt.fujiA";
+		return "mt.fuji";
 	else if (nivell == 4 || nivell == 5 || nivell == 6)
-		return "mt.keirinA";
+		return "mt.keirin";
 	else if (nivell == 7 || nivell == 8 || nivell == 9)
-		return "emerald templeA";
+		return "emerald temple";
 	else if (nivell == 10 || nivell == 11 || nivell == 12)
-		return "ankor wattA";
+		return "ankor watt";
 	else if (nivell == 13 || nivell == 14 || nivell == 15)
-		return "australiaA";
+		return "australia";
 	else if (nivell == 16 || nivell == 17 || nivell == 18)
-		return "taj mahalA";
+		return "taj mahal";
 	else if (nivell == 19 || nivell == 20 || nivell == 21)
-		return "leningradA";
+		return "leningrad";
 	else if (nivell == 22 || nivell == 23 || nivell == 24)
-		return "parisA";
+		return "paris";
 	else if (nivell == 25 || nivell == 26 || nivell == 27)
-		return "londonA";
+		return "london";
 	else if (nivell == 28 || nivell == 29 || nivell == 30)
-		return "barcelonaA";
+		return "barcelona";
 	else if (nivell == 31 || nivell == 32 || nivell == 33)
-		return "athensA";
+		return "athens";
 	else if (nivell == 34 || nivell == 35 || nivell == 36)
-		return "egyptA";
+		return "egypt";
 	else if (nivell == 37 || nivell == 38 || nivell == 39)
-		return "kenyaA";
+		return "kenya";
 	else if (nivell == 40 || nivell == 41 || nivell == 42)
-		return "new yorkA";
+		return "new york";
 	else if (nivell == 43 || nivell == 44 || nivell == 45)
-		return "mayaA";
+		return "maya";
 	else if (nivell == 46 || nivell == 47 || nivell == 48)
-		return "antarticaA";
+		return "antartica";
 	else if (nivell == 49 || nivell == 50 || nivell == 51)
-		return "easter islandA";
+		return "easter island";
 	else
 		return "errorA";
 }
