@@ -145,7 +145,7 @@ void Joc::update(int deltaTime)
 		}
 	}
 	// ja no queden bombolles
-	if (bubbles.size() == 0)
+	if (bubbles.size() == 0) game->seguentNivell();
 
 
 }

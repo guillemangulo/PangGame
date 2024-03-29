@@ -1,0 +1,43 @@
+David Gonzalez Marchante
+Guillem Angulo Hidalgo
+
+
+FUNCIONALITATS IMPLEMENTADES
+
+	- Estructura bàsica de 4 pantalles: menú principal, jugar (mapa interactiu), instruccions i crèdits.
+	- Tots els nivells del joc, amb barreres i escales.
+	- Bombolles afectades per la gravetat, rebotant per l'escenari amb els blocs i les barreres.
+	- Jugador dispara amb ganxo i destrueix bombolles.
+	- 3 Power-ups implementats --> FREEZE_TIME, DOUBLE_WIRE, SLOW_TIME.
+	- Objectes de menjar que proporcionen punts al jugador.
+	- Jugador puja i baixa escales.
+	- Interfície gràfica que mostra puntuació acumulada.
+	- Tecles per a saltar contingut --> Especificades en la imatge instr2.png
+	- So i música de fons
+
+INSTRUCCIONS
+
+1. Objectiu → L'objectiu principal a Pang és destruir totes les bombolles que apareixen a la pantalla.
+
+2. Controls → Les principals accions són moure's i disparar. La primera es pot fer amb les fletxes o amb WASD. Per disparar es pot fer amb la tecla F o amb el Shift dret.
+
+3. Jugabilitat:
+   - El jugador controla un personatge que es pot moure horitzontalment per la part inferior de la pantalla.
+   - Des de la part superior de la pantalla, bombolles de diferents mides comencen a baixar cap avall.
+   - El jugador ha d'evitar que aquestes bombolles el toquin mentre les dispara.
+   - En disparar una bombolla gran, aquesta es dividirà en dues bombolles més petites, i així successivament fins que siguin prou petites per desaparèixer.
+   - El jugador avança a través de diferents nivells, cadascun amb el seu conjunt de desafiaments i patrons de bombolles.
+
+4. Power-ups:
+   - Al llarg del joc, poden aparèixer power-ups que proporcionen avantatges temporals al jugador o punts extres.
+
+6. Puntuació:
+   - Els jugadors acumulen punts per cada bombolla que destrueixen.
+   - Al final de cada nivell, s'atorguen bonificacions de punts basades en el temps restant, el nombre de vides restants i altres factors.
+
+7. Game Over:
+   - El joc acaba quan el jugador perd totes les vides. En aquest moment, es mostra la puntuació final i el jugador pot tenir l'opció de continuar des del darrer nivell assolit, depenent de la configuració del joc.
+
+
+
+

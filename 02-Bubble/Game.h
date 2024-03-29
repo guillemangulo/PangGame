@@ -53,6 +53,13 @@ public:
 	void addPunts(int p) { puntsTot += p; }
 	int getPunts() { return puntsTot; }
 
+	void seguentNivell() {
+		level += 1;
+		if (level > 50)
+			level = 50;
+		loadScreen(GAME);
+	}
+
 private:
 	bool bPlay; // Continue to play game?
 	bool keys[GLFW_KEY_LAST+1]; // Store key states so that 
