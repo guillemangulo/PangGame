@@ -5,6 +5,12 @@
 #include "Joc.h"
 
 
+Animated::~Animated()
+{
+	if (sprite != nullptr) delete sprite;
+	if (fallTable != nullptr) delete fallTable;
+}
+
 void Animated::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, const std::string sprtsht, const glm::ivec2 tamany, const glm::vec2 spriteBlock)
 {
 	spritesheet.loadFromFile(sprtsht, TEXTURE_PIXEL_FORMAT_RGBA);

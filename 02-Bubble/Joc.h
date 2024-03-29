@@ -7,12 +7,13 @@
 #include "PowerUp.h"
 #include "Bubble.h"
 #include "Food.h"
+#include "Cadena.h"
 #include "TextWritter.h"
 #include <memory>
 #include <vector>
-#include "Cadena.h"
+#include <string>
 
-
+class Game;
 
 class Joc :
 	public Pantalla
@@ -62,7 +63,13 @@ private:
 	int slowTime = 0;
 	int freezeTime = 0;
 
-	char* mapName;
+	Game* game;
+
+	string mapName;
+
+	TextWritter* puntsDisplay;
+
+	int oldPunts = 0;
 
 	std::vector<TextWritter*> texts;
 	std::vector<std::shared_ptr<Animated>> powerUps;

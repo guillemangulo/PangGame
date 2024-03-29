@@ -50,6 +50,9 @@ public:
 
 	void setLevel(int l){level = l;}
 
+	void addPunts(int p) { puntsTot += p; }
+	int getPunts() { return puntsTot; }
+
 private:
 	bool bPlay; // Continue to play game?
 	bool keys[GLFW_KEY_LAST+1]; // Store key states so that 
@@ -58,6 +61,8 @@ private:
 	int mouseX, mouseY;
 	bool mouse_down = false;
 	bool paused = false;
+
+	int puntsTot = 0;
 
 	int level = 1;
 

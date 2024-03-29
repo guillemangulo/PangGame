@@ -284,24 +284,22 @@ glm::vec2 TextWritter::charToPos(char a)
 	}
 }
 
-void TextWritter::writeText(const char* text, glm::vec2 pos, ShaderProgram& program)
+void TextWritter::writeText(string text, glm::vec2 pos, ShaderProgram& program)
 {
-	changed = true;
-	glm::ivec2 size = glm::ivec2(10,10);
-	glm::vec2 blockSize = glm::vec2(1.f / 15.f, 1.f / 8.f);
+	this->text = text;
+	this->program = program;
 	position = pos;
-	for (int i = 0; text[i] != 'A'; i++)
+	for (int i = 0; i < text.size(); i++)
 	{
 		Animated* letter = new Animated();
-		letter->init(glm::vec2(0.0f, 0.0f), program, "images/text.png", size ,blockSize);
-		letter->setPosition(pos+glm::vec2(i*(size.x*.9),0));
+		letter->init(glm::vec2(0.0f, 0.0f), program, "images/text.png", charSize ,blockSize);
+		letter->setPosition(pos+glm::vec2(i*(charSize.x*.9),0));
 		letter->setNumAnims(1);
 		letter->setAnimSpeed(0,1);
 		glm::vec2 charPos = charToPos(text[i]);
 		letter->addKeyframe(0, glm::vec2(charPos.x*blockSize.x, charPos.y * blockSize.y));
 		letter->setAnimation(0);
 		letters.push_back(letter);
-		position.x += charSize.x;
 	}
 }
 
@@ -310,5 +308,38 @@ void TextWritter::render()
 	for each (Animated * var in letters)
 	{
 		var->render();
+	}
+}
+
+void TextWritter::centerText()
+{
+	int middle = text.size() / 2 * charSize.x;
+	for each (Animated * var in letters)
+	{
+		glm::ivec2 pos = var->getPosition();
+		pos.x -= middle;
+		var->setPosition(pos);
+	}
+}
+
+void TextWritter::changeText(string text)
+{
+	this->text = text;
+	for each (Animated * var in letters)
+	{
+		delete var;
+	}
+	letters.clear();
+	for (int i = 0; i < text.size(); i++)
+	{
+		Animated* letter = new Animated();
+		letter->init(glm::vec2(0.0f, 0.0f), program, "images/text.png", charSize, blockSize);
+		letter->setPosition(position + glm::vec2(i * (charSize.x * .9), 0));
+		letter->setNumAnims(1);
+		letter->setAnimSpeed(0, 1);
+		glm::vec2 charPos = charToPos(text[i]);
+		letter->addKeyframe(0, glm::vec2(charPos.x * blockSize.x, charPos.y * blockSize.y));
+		letter->setAnimation(0);
+		letters.push_back(letter);
 	}
 }

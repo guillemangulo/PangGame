@@ -14,6 +14,8 @@ class Joc;
 class Animated
 {
 public:
+
+	~Animated();
 	virtual void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram,
 		const std::string sprtsht = "images/varied.png",
 		const glm::ivec2 tamany = glm::ivec2(32, 32),
@@ -105,7 +107,7 @@ public:
 		void fallStateUpdate(short col, int deltaTime = 0);
 		glm::ivec2 tileMapDispl, pos;
 
-		Joc* joc;
+		Joc* joc = nullptr;
 		int index = NULL;
 
 		bool falling = false;
@@ -113,8 +115,8 @@ public:
 		int fallFrame = 0;
 		int* fallTable = new int[fallTableSize]{2,0,1,0,1,1,2,1,2,2,2,2,3,2,3,3,3,4};
 		Texture spritesheet;
-		Sprite* sprite;
-		TileMap* map;
+		Sprite* sprite = nullptr;
+		TileMap* map = nullptr;
 };
 #endif // _ANIMATED_INCLUDE
 
