@@ -137,6 +137,14 @@ void Game::keyPressed(int key)
 			}
 			break;
 		}
+		case GLFW_KEY_S:
+			activeScene->pauseSound(true);
+			break;
+
+		case GLFW_KEY_A:
+			activeScene->pauseSound(false);
+			break;
+
 		default:
 		{
 			break;

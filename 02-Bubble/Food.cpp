@@ -26,6 +26,7 @@ void Food::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int 
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + pos.x), float(tileMapDispl.y + pos.y)));
 	setColisionFlags(0b1001);
 	setTipus(tip);
+	size = glm::ivec2(16 * SCALING, 16 * SCALING);
 }
 
 void Food::onCollision(short flags)

@@ -14,7 +14,7 @@ public:
 		INVINCIBILITY,
 		SLOW_TIME
 	};
-	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int tip, const char* sprtsht = "images/varied.png");
+	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int tip, const char* sprtsht = "images/i&w1.png");
 
 	void update(int deltaTime);
 
@@ -33,7 +33,7 @@ private:
 	bool collected = false;
 
 	int currTime = 0;
-	int timeOut = 30000;
+	int timeOut =  8000;
 };
 
 

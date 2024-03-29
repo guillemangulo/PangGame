@@ -77,9 +77,12 @@ void Joc::init(int nivell)
 	soundEngine = irrklang::createIrrKlangDevice();
 	playLevelSong(nivell);
 
-
-	
 	currentTime = 0.0f;
+	
+	createBubble(20, 20, 20);
+	createBubble(60, 30, 20);
+	createBubble(40, 80, 20);
+	createBubble(90, 50, 20);
 }
 
 void Joc::update(int deltaTime)
@@ -141,6 +144,8 @@ void Joc::update(int deltaTime)
 			}
 		}
 	}
+	// ja no queden bombolles
+	if (bubbles.size() == 0)
 
 
 }
@@ -156,7 +161,6 @@ void Joc::render()
 		cadena[i]->render();
 	}
 
-	
 	for (unsigned int i = 0; i < powerUps.size(); i++)
 		powerUps[i]->render();
 
@@ -200,7 +204,7 @@ void Joc::createPowerUp(int x, int y, int type)
 {
 	std::shared_ptr<Animated> newPU = std::make_shared<PowerUp>();
 	if (auto PU = std::dynamic_pointer_cast<PowerUp>(newPU)) {
-		PU->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, type);// "images/PowerUp.png");
+		PU->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, type, "images/i&w1.png");
 		PU->setPosition(glm::vec2(x / SCALING, y / SCALING));
 		PU->setTileMap(map);
 		PU->setIndex(powerUps.size());
@@ -216,7 +220,6 @@ void Joc::createFood(int x, int y, int type)
 		PU->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, type, "images/foods.png");
 		PU->setPosition(glm::vec2(x / SCALING, y / SCALING));
 		PU->setColisionFlags(0b1101);
-		PU->setColSize(glm::ivec2(16, 16));
 		PU->setTileMap(map);
 		PU->setIndex(menjar.size());
 		PU->setParent(this);
@@ -306,6 +309,21 @@ void Joc::playLevelSong(const int level)
 void Joc::calculateCollisions()
 {
 	glm::ivec2 playerPos = player->getPosition();
+
+	for (unsigned int i = 0; i < bubbles.size(); i++)
+	{
+		if (auto PU = std::dynamic_pointer_cast<Cadena>(cadena[i])) {
+			for (int j = 0; j < bubbles.size(); ++j) {
+				bool hihacol =
+					PU->circleRect(bubbles[j]->getPosition().x, bubbles[j]->getPosition().y, bubbles[j]->getSize().x);
+				if (hihacol) {
+					bubbles[j]->onCollision(0b0100);
+					removeCadena(i);
+				}
+			}
+
+		}
+	}
 	for (unsigned int i = 0; i < powerUps.size(); i++)
 	{
 		if (powerUps[i]->shouldCollideWithPlayer())
