@@ -6,6 +6,9 @@ void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, co
 	Animated::init(tileMapPos, shaderProgram, sprtsht);
 	setColisionFlags(0b1110);
 	doGravity(false);
+	int randx = std::rand() % 4 - 2;
+	int randy = std::rand() % 4 - 2;
+	velocity = glm::ivec2(randx != 0 ? randx:1 , randy!= 0? randy:1);
 	size = glm::ivec2(diam, diam);
 	sprite = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.25f, 0.25f), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(1);
@@ -21,6 +24,31 @@ void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, co
 
 	sprite->changeAnimation(0);
 }
+
+bool Bubble::circleRect(float rx, float ry, float rw, float rh) {
+
+	// temporary variables to set edges for testing
+	float testX = pos.x;
+	float testY = pos.y;
+
+	// which edge is closest?
+	if (pos.x < rx)         testX = rx;      // test left edge
+	else if (pos.x > rx + rw) testX = rx + rw;   // right edge
+	if (pos.y < ry)         testY = ry;      // top edge
+	else if (pos.y > ry + rh) testY = ry + rh;   // bottom edge
+
+	// get distance from closest edges
+	float distX = pos.x - testX;
+	float distY = pos.y - testY;
+	float distance = sqrt((distX * distX) + (distY * distY));
+
+	// if the distance is less than the radius, collision!
+	if (distance <= size.x) {
+		return true;
+	}
+	return false;
+}
+
 
 void Bubble::update(int deltaTime)
 {
